@@ -3,7 +3,7 @@
 
 #define FB_BASE		0x9c000000UL	/* reserved-memory cont_splash_region */
 #define FB_W		1080
-#define FB_H		2400
+#define FB_H		2160	/* bonito: 1080x2160 sofef00/nt37700f */
 #define FB_STRIDE	(FB_W * 4)	/* a8r8g8b8, matches mainline simplefb */
 
 #define RED	0xffff0000U

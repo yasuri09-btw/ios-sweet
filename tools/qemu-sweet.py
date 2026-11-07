@@ -22,7 +22,7 @@ An undecodable or blank screen returns 3 with --fail-on-panic.
 """
 import argparse, json, os, shutil, socket, struct, subprocess, sys, time, zlib
 
-FB_BASE, FB_W, FB_H = 0x9c000000, 1080, 2400
+FB_BASE, FB_W, FB_H = 0x9c000000, 1080, 2160
 FB_STRIDE = FB_W * 4
 PAGE = 0x4000
 STUB_PA = 0x40200000	# above the dtb QEMU places at RAM base

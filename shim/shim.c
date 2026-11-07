@@ -12,9 +12,9 @@
 #include "loader.h"
 #include "ufs.h"
 
-#define IMEM_RESTART_REASON	0x146aa65cUL	/* qcom,msm-imem restart_reason@65c */
+#define IMEM_RESTART_REASON	0x146bf65cUL	/* bonito: qcom,msm-imem@146bf000 restart_reason@65c */
 #define RESTART_BOOTLOADER	0x77665500U
-#define PSHOLD			0x0c264000UL
+#define PSHOLD			0x0c264000UL	/* same on SDM670 (downstream restart@10ac000) */
 
 #define GICD_BASE		0x17a00000UL
 #define GICR_BASE		0x17a60000UL
@@ -377,20 +377,18 @@ void shim_main(uint64_t dtb)
 	/* An xnu payload in the ramdisk means: boot it (MMU stays off). */
 	stage = "loader";
 	con_clear(RED);
-	con_str("SHIM", "sweet milestone 4: xnu loader");
+	con_str("SHIM", "bonito milestone 1: hello pixel");
 	con_skip();
 	const char *why = loader_boot(dtb);
 	con_str("LOADER", why);
 	con_skip();
 
-	/* No payload: probe the internal UFS while the MMU is still off. */
+	/* bonito has eMMC (sdhc_1@7c4000), not UFS: there is nothing at sweet's
+	 * ufshc@1d84000, so skip test_ufs() and run the MMU/PSCI/GIC checks. */
 	stage = "ufs";
-	test_ufs();
+	con_str("UFS", "skipped (bonito: eMMC)");
 	con_skip();
-	/* Keep the probe results on screen (later tests clear it); reset after 3 min. */
-	con_str("UFS", "probe done, reset in ~3 min");
-	delay_ms(180000);
-	reset(20);
+	delay_ms(5000);
 
 	stage = "fill off";
 	uint64_t fill_off = ticks_fill(RED);
@@ -405,7 +403,7 @@ void shim_main(uint64_t dtb)
 	if (rc)
 		con_clear(RED);
 
-	con_str("SHIM", "sweet milestone 3");
+	con_str("SHIM", "bonito milestone 1: diagnostics");
 	con_skip();
 	con_hex2("DTB", "at=", dtb, "magic=", dtb ? __builtin_bswap32(rd32(dtb)) : 0);
 	con_hex2("IMAGE", "lo=", mi.img_lo, "hi=", mi.img_hi);
