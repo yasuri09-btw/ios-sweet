@@ -236,3 +236,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 17:15: reflash with the ByHost fix done (`research/ipsw-x/flash-userdata6.log`, 47/47), slot a
   reset (retry was 0), `shim/out/bonito-ios6-log.img` booted 17:14:52. Expect: no datamigrator,
   SpringBoard lock screen. Next after that: touch (Synaptics RMI4, GENI I2C9 @0x20) = kernel work.
+- 17:22: log of the 17:14 run (`logs/boot-0084c.txt`, ~6 min only): SpringBoard exec'd (line 691),
+  datamigrator still exec'd twice (may only be SpringBoard's "migration needed?" query); no
+  `migrationpluginwrapper` in this or the previous log, so "migration blocks SpringBoard" is
+  NOT proven yet. Run ended in the daemon wave (pulled too early).
+- 17:23: `shim/out/bonito-ios7-sbsample.img` = 0085 + 0082 cmdline + `ufslogsecs=2
+  sweetsamplesecs=120` (sampler default names SpringBoard,backboardd), booted 17:23:05.
+  Plan: run ~25 min untouched, then pull -> SMP samples show what SpringBoard waits on.
