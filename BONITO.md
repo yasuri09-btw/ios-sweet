@@ -171,3 +171,9 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 16:09: 0085 CI 42418579986 success -> `xnu/out-0085`; image `shim/out/bonito-ios4-sample.img`
   (0084 cmdline + `sweetsample=* sweetsamplesecs=45`), booted 16:08:58 (TWRP -> adb reboot
   bootloader -> fastboot boot, no buttons). Pull after a few minutes stuck.
+- 16:12: **"Nothing boots" = slot a unbootable.** After the 0085 attempt, TWRP and the shim both
+  bounced to the bootloader. Battery fine (`getvar battery-voltage` 4320, soc-ok yes). Slot a:
+  `slot-unbootable:a yes, retry-count 0, successful no` (this morning: successful yes, retry 2).
+  Fixed with `doas fastboot set_active a` (user OK) -> unbootable no, retry 3. TWRP boots again.
+  The eMMC log was still 0084's (total 29865, flush #5): **0085 never ran**; retry it.
+  Watch the retry count: nothing marks the slot successful now, so it may run out again.
