@@ -1,0 +1,439 @@
+Darwin Kernel Version 22.6.0: Mon Aug 14 05:06:07 UTC 2023; runner:xnu-8796.141.3
+pmap_startup() init/release time: 13286 microsec
+pmap_startup() delayed init/release of 0 pages
+vm_page_bootstrap: 126263 free pages, 2873 wired pages, (up to 0 of which are delayed free)
+VM boostrap: 97 maps, 204 entries and 512 holes available
+Maximum number of VM swap files: 100
+zones                   : 0xfffffe100017c000 - 0xfffffe300017c000 (128G)
+ipc_kernel_map          : 0xfffffe300017c000 - 0xfffffe300417c000 (64M)
+io_submap               : 0xfffffe300417c000 - 0xfffffe300497c000 (8M)
+zone_meta               : 0xfffffe300497c000 - 0xfffffe300cf6c000 (133M)
+bufferhdr               : 0xfffffe300cf6c000 - 0xfffffe300d0dc000 (1472K)
+gIOKitPageableFixed2    : 0xfffffe300d0dc000 - 0xfffffe30130dc000 (96M)
+gIOKitPageableFixed0    : 0xfffffe30130dc000 - 0xfffffe30190dc000 (96M)
+ipc_kernel_copy_map     : 0xfffffe30190dc000 - 0xfffffe30198dc000 (8M)
+compressor              : 0xfffffe30198dc000 - 0xfffffe37fb810000 (31G)
+mb                      : 0xfffffe37fb810000 - 0xfffffe37ff810000 (64M)
+kmem_ptr_range          : 0xfffffe37ff810000 - 0xfffffe4dfb890000 (87G)
+kmem_sprayqtn_range     : 0xfffffe4dfb890000 - 0xfffffe4e396f4000 (990M)
+kmem_ptr_range_meta     : 0xfffffe4e396f4000 - 0xfffffe4e39f34000 (8M)
+bsd_pageable            : 0xfffffe4e39f34000 - 0xfffffe4e3c13c000 (34M)
+gIOKitPageableFixed3    : 0xfffffe4e3c13c000 - 0xfffffe4e4213c000 (96M)
+gIOKitPageableFixed1    : 0xfffffe4e4213c000 - 0xfffffe4e4813c000 (96M)
+kmem_data_range         : 0xfffffe4e4813c000 - 0xfffffe8fffdfc000 (262G)
+kmem_large_ranges[1]    : 0 - 0 (0B)
+kmem_large_ranges[2]    : 0 - 0 (0B)
+kmem_large_ranges[3]    : 0 - 0 (0B)
+kmem_large_ranges[4]    : 0xfffffe4e0345c800 - 0xfffffe4e396f4000 (866M)
+kmem_large_ranges[5]    : 0xfffffe567f0d4000 - 0xfffffe8fffdfc000 (230G)
+"vm_compressor_mode" is 4
+zone_init: pgzalloc  0xfffffe100017c000:0xfffffe10010f8000 (15M) [495 slots]
+zone_init: map VM    0xfffffe10010f8000:0xfffffe14cdb70000 (19G)
+zone_init: map RO    0xfffffe14cdb70000:0xfffffe1667440000 (6G)
+zone_init: map GEN0  0xfffffe1667440000:0xfffffe1b33eb8000 (19G)
+zone_init: map GEN1  0xfffffe1b33eb8000:0xfffffe2000934000 (19G)
+zone_init: map GEN2  0xfffffe2000934000:0xfffffe24cd3b0000 (19G)
+zone_init: map GEN3  0xfffffe24cd3b0000:0xfffffe2999e2c000 (19G)
+zone_init: map DATA  0xfffffe2999e2c000:0xfffffe300017c000 (25G)
+zone_init: metadata  0xfffffe300498c000:0xfffffe300c98c000 (128M)
+zone_init: metabits  0xfffffe300c98c000:0xfffffe300cf5c000 (5M)
+zone_init: extra     0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 502 holes left
+Long logs support configured: size: 16384
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+Log queues configured: slot count: 8, per-slot size: 32768, total size: 262144
+Firehose configured: 16 chunks, 8 io pages
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+kdp_core zlib memory 0x8000
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+iBoot version: sweet-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+SWEET FB: AppleCLCD 1080x2160 stride 4320 at 0x9c000000, default surface 1, presented as 1125x2436
+SWEET CPU: requested=1 selected=1 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+	The Regents of the University of California. All rights reserved.
+
+MAC Framework successfully initialized
+using 2535 buffer headers and 2535 cluster IO buffer headers
+SWEET CPU: 1/1 CPUs initialized, SGI1 verified
+ktriage_register_subsystem_strings: set subsystem 8 strings
+calling mpo_policy_init for SWEET AMFI
+Security policy loaded: SWEET built-in Mobile File Integrity (SWEET AMFI)
+SWEET AMFI: platform binary policy registered (0)
+calling mpo_policy_init for Sandbox
+Security policy loaded: SWEET permissive sandbox stand-in (Sandbox)
+SWEET Sandbox: permissive policy registered (0)
+SWEET HFS: hfs-627.100.6 registered
+mcache: 1 CPU(s), 64 bytes CPU cache line size
+mbinit: done [64 MB total pool size, (42/21) split]
+dlil_init: Waiting for all the create dlil kernel threads to get scheduled at least once.
+dlil_init: All the created dlil kernel threads have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface lo0 have been scheduled at least once. Proceeding.
+ifnet_attach: Waiting for all kernel threads created for interface gif0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface gif0 have been scheduled at least once. Proceeding.
+skip attaching fsw to lo0 using legacy TX modelifnet_attach: Waiting for all kernel threads created for interface stf0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface stf0 have been scheduled at least once. Proceeding.
+SWEET EMMC: card ready, rca 1, 8-bit high speed (pwr 0x2/0x4)
+SWEET EMMC: "userdata": first sector 0x108e400, 51163 MiB, read-write, DMA at 0xe0000000
+BSD root: emmcroot0, major 1, minor 0
+jnl: b(1, 0): replay_journal: from: 5058560 to: 6724096 (joffset 0x82000)
+jnl: b(1, 0): journal replay done.
+hfs: Removed 2 orphaned / unlinked files and 3 directories 
+hfs: mounted iOSRoot on device b(1, 0)
+SWEET: root volume is not authenticated (error 25); continuing unsealed
+SWEET LOG: console log to the last 4100 KiB of the eMMC partition (sector 0x7479fd0)
+VM Swap Subsystem is ON
+No POST boot-arg set.
+load_init_program: attempting to load /usr/appleinternal/sbin/launchd.development
+load_init_program: attempting to load /sbin/launchd
+exec launchd
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] check_np(0x16f03bbc0) vm_shared_region_start_address() failed
+SWEET Sandbox: launchd op 2
+Darwin Ignition Sequence Version 1.0.0: Tue Jul  2 20:41:23 PDT 2024; root:libignition-51~1974/libignition_core/RELEASE_ARM64
+libignition: 1: arguments           :
+libignition: 1:   ignition level    : 0x1
+libignition: 1:   force dylib root  : 0x0
+libignition: 1:   halt after stage  : n/a
+libignition: 1: ignition blob not available
+libignition: 1: configuration         :
+libignition: 1:   program             : launchd
+libignition: 1:   os environment      : n/a
+libignition: 1:   rd                  : emmcroot0
+libignition: 1:   arp0                : n/a
+libignition: 1:   rp                  : n/a
+libignition: 1:   pivot src           : n/a
+libignition: 1:   root ramdisk        : 0x0
+libignition: 1:   restore             : 0x0
+libignition: 1:   root device info    : 0x0
+libignition: 1:   can haz debugger    : 0x1
+libignition: 1:   rootfs mount flags  : 0x480d000
+libignition: 1:   ecid                : 0x0
+libignition: 1:   hardware target     : d22ap
+libignition: 1:   initproc            : 0x1
+libignition: 1:   single user         : 0x0
+libignition: 1:   userspace reboot    : 0x0
+libignition: 1:   secure boot level   : 0x0
+libignition: 1:   os version          : n/a
+libignition: 1: parameters          :
+libignition: 1:   version           : 0x1
+libignition: 1:   argc              : 0x1
+libignition: 1:   log fd            : 0xffffffffffffffff
+libignition: 1:   platform          : 0x2
+libignition: 1: boot spec           :
+libignition: 1:   name              : local
+libignition: 1:   stage count       : 0x7
+libignition: 1:        hello: commence primary ignition
+libignition: 1:        hello: hello from launchd.1
+libignition: 1:      preboot: ignition level insufficient: actual = 1, required >= 2
+libignition: 1: cryptex1 sniff: ignition level insufficient: actual = 1, required >= 2
+libignition: 1:        graft: ignition level insufficient: actual = 1, required >= 3
+libignition: 1: select os cryptex path: ignition level insufficient: actual = 1, required >= 3
+libignition: 1:  dylib_cache: discovering shared library cache
+libignition: 1:  dylib_cache: finding shared cache on system volume: ignition level = 1, search root fd = 4, subpath = System/Library/Caches/com.apple.dyld/
+libignition: 1:  dylib_cache: opened shared cache directory: /System/Library/Caches/com.apple.dyld
+libignition: 1:      goodbye: ignition sequence complete
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] check_np(0x16f03b150) vm_shared_region_start_address() failed
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd7145:'dyld_shared_cache_arm64'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd7035:'dyld_shared_cache_arm64.01'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd6f25:'dyld_shared_cache_arm64.02'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd6e15:'dyld_shared_cache_arm64.03'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd6d05:'dyld_shared_cache_arm64.04'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3e45:'dyld_shared_cache_arm64.05'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3d35:'dyld_shared_cache_arm64.06'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3c25:'dyld_shared_cache_arm64.07'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3b15:'dyld_shared_cache_arm64.08'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3a05:'dyld_shared_cache_arm64.09'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd38f5:'dyld_shared_cache_arm64.10'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd37e5:'dyld_shared_cache_arm64.11'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd36d5:'dyld_shared_cache_arm64.12'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd46c5:'dyld_shared_cache_arm64.13'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd45b5:'dyld_shared_cache_arm64.14'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd44a5:'dyld_shared_cache_arm64.15'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4395:'dyld_shared_cache_arm64.16'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4285:'dyld_shared_cache_arm64.17'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4175:'dyld_shared_cache_arm64.18'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4065:'dyld_shared_cache_arm64.19'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd3f55:'dyld_shared_cache_arm64.20'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5275:'dyld_shared_cache_arm64.21'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5165:'dyld_shared_cache_arm64.22'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5055:'dyld_shared_cache_arm64.23'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4f45:'dyld_shared_cache_arm64.24'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4e35:'dyld_shared_cache_arm64.25'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4d25:'dyld_shared_cache_arm64.26'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd4c15:'dyld_shared_cache_arm64.27.dylddata'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd48e5:'dyld_shared_cache_arm64.28.dyldlinkedit'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5d15:'dyld_shared_cache_arm64.29'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5c05:'dyld_shared_cache_arm64.30'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5af5:'dyld_shared_cache_arm64.31'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd59e5:'dyld_shared_cache_arm64.32'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd58d5:'dyld_shared_cache_arm64.33'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd57c5:'dyld_shared_cache_arm64.34'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5495:'dyld_shared_cache_arm64.35'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5385:'dyld_shared_cache_arm64.36'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd6045:'dyld_shared_cache_arm64.37'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5f35:'dyld_shared_cache_arm64.38'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abd5e25:'dyld_shared_cache_arm64.39'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abbe155:'dyld_shared_cache_arm64.40'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abbe9d5:'dyld_shared_cache_arm64.41.dylddata'): not in trust cache
+shared_region: 0x36e8120a4b0e1f75 [1(launchd)] map(0x36e8120a4abbe8c5:'dyld_shared_cache_arm64.42.dyldlinkedit'): not in trust cache
+SWEET Sandbox: launchd op 4
+SWEET NET: launchd lo0 add address 127.0.0.1
+skip attaching fsw to lo0 using legacy TX modelcom.apple.xpc.launchd|1969-12-31 16:00:51.490020 <Notice>: hello
+com.apple.xpc.launchd|1969-12-31 16:00:51.499257 <Error>: Could not opt into 50 MB Jetsam high watermark: 22: Invalid argument
+com.apple.xpc.launchd|1969-12-31 16:00:51.499676 <Notice>: Darwin Bootstrapper Version 7.0.0: Thu Feb  1 20:33:09 PST 2024; root:libxpc_executables-2462.140.4.702.1~1/launchd/RELEASE_ARM64
+com.apple.xpc.launchd|1969-12-31 16:00:51.499840 <Notice>: boot-args = debug=0xc serial=3 cpus=1 keepsyms=1 -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 sweetkeys=0 sweettouch=0 sweetusb=0 ufslogsecs=2 sweetsamplesecs=120
+com.apple.xpc.launchd|1969-12-31 16:00:51.516228 (system) <Notice>: entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:00:51.518214 (system) <Notice>: created
+com.apple.xpc.launchd|1969-12-31 16:00:51.522775 (mount-phase-1) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xfffffe24cd159690 is in state of change (start)
+vnode_create_internal: alias vnode 0xfffffe24cd159690 is in state of change (end)
+exec mount_hfs
+GetMasterBlock: Error 16 opening /dev/emmcroot0
+/dev/emmcroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:00:52.241643 (data-protection) <Notice>: Doing boot task
+exec seputil
+init_data_protection: No SEP present on this device
+com.apple.xpc.launchd|1969-12-31 16:00:52.957915 (finish-obliteration) <Notice>: Doing boot task
+exec mobile_obliterator
+Obliterator: In INIT check
+Wed Dec 31 16:00:53 1969: checkOblitNVRAMkey: IORegistryEntryFromPath failed [gF: 0x0000000000000000]
+Obliterator: No obliteration needed, continue booting, returning 0
+com.apple.xpc.launchd|1969-12-31 16:00:53.329479 (detect-installed-roots) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:53.331130 <Notice>: No cookie from system volume
+com.apple.xpc.launchd|1969-12-31 16:00:53.331372 <Notice>: No cookie: /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/.roots-installed
+com.apple.xpc.launchd|1969-12-31 16:00:53.331424 (commit-boot-mode) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:53.331459 <Notice>: boot-mode committed: (null)
+com.apple.xpc.launchd|1969-12-31 16:00:53.331497 (restore-datapartition) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:53.334536 (restore-datapartition) <Notice>: optional boot task not present
+com.apple.xpc.launchd|1969-12-31 16:00:53.334652 (mount-phase-2) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/Pearl/System/Library/Pearl/ReferenceFrames failed error: 2
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/FactoryData/System/Library/Caches/com.apple.factorydata failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:00:53.361506 (init-with-data-volume) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:53.391128 (MSUEarlyBootTask) <Notice>: Doing boot task
+exec MSUEarlyBootTask
+MSUEarlyBootTask: MSUEarlyBootTask running
+main: Content from the ramdisk will be present at /private/var/MobileSoftwareUpdate//5cbe36011d7d831515cdf1122a93ffcad48b05e9194388ad12e9752a1ae4a5a0b934008b37985301041d7e086fff5205-MSUData if it exists
+MSUEarlyBootTask: I have nothing to do. Goodbye!!
+com.apple.xpc.launchd|1969-12-31 16:00:53.785969 (fips) <Notice>: Doing boot task
+exec cc_fips_test
+About to call the FIPS_POST function in the corecrypto.dylib
+Tracing: disabled
+FIPSPOST_USER [1033680843] fipspost_post:152: [FIPSPOST][Module-ID] Apple corecrypto Module v13.0 [Apple ARM, User, Software, SL1]
+FIPSPOST_USER [1033714505] fipspost_post:160: PASSED: (1 ms) - fipspost_post_hmac
+FIPSPOST_USER [1033770616] fipspost_post:164: PASSED: (2 ms) - fipspost_post_integrity
+FIPSPOST_USER [1033779859] fipspost_post:168: PASSED: (0 ms) - fipspost_post_indicator
+FIPSPOST_USER [1033784716] fipspost_post:169: PASSED: (0 ms) - fipspost_post_aes_ecb
+FIPSPOST_USER [1033789465] fipspost_post:170: PASSED: (0 ms) - fipspost_post_aes_cbc
+FIPSPOST_USER [1034067962] fipspost_post:171: PASSED: (14 ms) - fipspost_post_rsa_sig
+FIPSPOST_USER [1034558647] fipspost_post:172: PASSED: (25 ms) - fipspost_post_ecdsa
+FIPSPOST_USER [1034581434] fipspost_post:173: PASSED: (0 ms) - fipspost_post_ecdh
+FIPSPOST_USER [1034586284] fipspost_post:174: PASSED: (0 ms) - fipspost_post_aes_ccm
+FIPSPOST_USER [1034591275] fipspost_post:175: PASSED: (0 ms) - fipspost_post_aes_cmac
+FIPSPOST_USER [1034598087] fipspost_post:176: PASSED: (0 ms) - fipspost_post_hkdf
+FIPSPOST_USER [1035269263] fipspost_post:177: PASSED: (34 ms) - fipspost_post_pbkdf
+FIPSPOST_USER [1035275530] fipspost_post:178: PASSED: (0 ms) - fipspost_post_drbg_hmac
+FIPSPOST_USER [1035282189] fipspost_post:180: PASSED: (0 ms) - fipspost_post_kdf_ctr
+FIPSPOST_USER [1035287082] fipspost_post:181: PASSED: (0 ms) - fipspost_post_aes_gcm
+FIPSPOST_USER [1035291900] fipspost_post:182: PASSED: (0 ms) - fipspost_post_aes_xts
+FIPSPOST_USER [1035297952] fipspost_post:183: PASSED: (0 ms) - fipspost_post_tdes_ecb
+FIPSPOST_USER [1035303003] fipspost_post:184: PASSED: (0 ms) - fipspost_post_drbg_ctr
+FIPSPOST_USER [1036290706] fipspost_post:186: PASSED: (51 ms) - fipspost_post_ffdh
+FIPSPOST_USER [1036845410] fipspost_post:187: PASSED: (28 ms) - fipspost_post_rsa_enc_dec
+FIPSPOST_USER [1036850327] fipspost_post:206: all tests PASSED (165 ms)
+Returned from calling the FIPS_POST function in the corecrypto.dylib: result = true
+com.apple.xpc.launchd|1969-12-31 16:00:54.004472 (keybag) <Notice>: Doing boot task
+exec keybagd
+****** IN MKB_INIT ****
+SWEET AKS: keybagd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+MKB_INIT: mount is with NO CPROTECT:0x1480d000 on  (/private/var/)
+MKB_INIT: mount point (/private/var/) does not support Data Protection
+MKB_INIT: System Keybag loaded
+MKB_INIT: Could not get options entry from the device tree
+Unable to set /private/var//tmp to class D!****** DONE MKB_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:00:54.168406 (usermanagerd) <Notice>: Doing boot task
+exec usermanagerd
+****** IN UMD_INIT ****
+****** STARTING EARLYBOOT SETUP ****
+UMD_INIT: STARTING EARLYBOOT SETUP
+UMD_INIT: LOADING USER SESSIONS
+UMD_INIT: Device Configuration Type:0
+UMD_INIT: BOOTEDUSER is:501
+UMD_INIT: diskLoadUserSessions, APNSID:, set to 18446744073709551615
+UMD_INIT: Reloaded _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "DD1EE112-D395-4943-B2FC-24B0EA060D0F";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: FOUND NO SYNC BUBBLE UIDS:0
+UMD_INIT: FOUND NO LRU TABLE UIDS:0
+UMD_INIT: FOUND NO VOLUMETYPE, setting up volume type
+UMD_INIT: Set the new volume type to APFSNativeDevice
+UMD_INIT: SAVING SESSION TODISK
+UMD_INIT: SESSION TABLE TO BLOB
+UMD_INIT: NOTHING TO SAVE IN LRU UID LIST
+UMD_INIT: diskSaveUserSessions Success
+UMD_INIT: Read user sessions in _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "DD1EE112-D395-4943-B2FC-24B0EA060D0F";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: LOADED USER SESSIONS
+UMD_INIT: failed to read nextsession dict
+UMD_INIT: Unable to Obtained foreground, curFG:502, nextID:-1
+UMD_INIT: Failed to get next session, booting with default id to be Loginwindow UID
+UMD_INIT: BootedUser is:501
+UMD_INIT: Regular mode Setup for user:501: Num Sessions:1, CurrentsessionID:-1
+UMD_INIT: FAILED to Set Foreground ID + multiuser in commpage successfully
+UMD_INIT: LOADING PERSONA..
+UMD_INIT: Manifest version: 1
+UMD_INIT: Loaded Persona Generation ID from manifest:1
+UMD_INIT: Adding 1000 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 100 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 0 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 200 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 199 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Adding 99 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Loaded persona manifest
+UMD_INIT: Failed to retrieve info for kernel persona 199: No such process
+UMD_INIT: PersonaID:199 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 199, Type: 6, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 99: No such process
+UMD_INIT: PersonaID:99 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 99, Type: 4, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 1000: No such process
+UMD_INIT: PersonaID:1000 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 1000, Type: 5, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 100: No such process
+UMD_INIT: PersonaID:100 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 100, Type: 4, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 200: No such process
+UMD_INIT: PersonaID:200 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 200, Type: 6, UID: 501
+UMD_INIT: setup kernel personas
+UMD_INIT: Failed to notify_register_check com.apple.mobile.usermanagerd.personageneration_changed: 8
+UMD_INIT: Failed to notify generation changed: Failed to register for darwin notification token
+UMD_INIT: DONE EARLYBOOT SETUP
+****** DONE EARLYBOOT SETUP ****
+****** DONE UMD_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:00:54.730336 (dirs_cleaner) <Notice>: Doing boot task
+exec dirs_cleaner
+dc_reset: /tmp: Invalid argument
+dc_reset: /var/run: Invalid argument
+exec xpcroleaccountd
+[System Event] [1052628941] [INFO] [Subsystem: launchd] [Event: mount-phase-1] Doing boot task
+[System Event] [1052635864] [INFO] [Subsystem: launchd] [Event: data-protection] Doing boot task
+[System Event] [1052641856] [INFO] [Subsystem: launchd] [Event: finish-obliteration] Doing boot task
+[System Event] [1052647919] [INFO] [Subsystem: launchd] [Event: detect-installed-roots] Doing boot task
+[System Event] [1052655908] [INFO] [Subsystem: launchd] [Event: commit-boot-mode] Doing boot task
+[System Event] [1052662806] [INFO] [Subsystem: launchd] [Event: restore-datapartition] Doing boot task
+[System Event] [1052668715] [INFO] [Subsystem: launchd] [Event: restore-datapartition] optional boot task not present
+[System Event] [1052674847] [INFO] [Subsystem: launchd] [Event: mount-phase-2] Doing boot task
+[System Event] [1052680584] [INFO] [Subsystem: launchd] [Event: init-with-data-volume] Doing boot task
+[System Event] [1053012121] [INFO] [Subsystem: launchd] [Event: MSUEarlyBootTask] Doing boot task
+[System Event] [1053018022] [INFO] [Subsystem: launchd] [Event: fips] Doing boot task
+[System Event] [1053023675] [INFO] [Subsystem: launchd] [Event: keybag] Doing boot task
+[System Event] [1053029356] [INFO] [Subsystem: launchd] [Event: usermanagerd] Doing boot task
+[System Event] [1053035068] [INFO] [Subsystem: launchd] [Event: dirs_cleaner] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:54.759852 <Notice>: launchd logging initialized. name: com.apple.xpc.launchd pid: 1
+com.apple.xpc.launchd|1969-12-31 16:00:54.759876 (xpcroleaccountd) <Notice>: Doing boot task
+[System Event] [1053052684] [INFO] [Subsystem: launchd] [Event: xpcroleaccountd] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:02.758673 (init_featureflags) <Notice>: Doing boot task
+[System Event] [1204994186] [INFO] [Subsystem: launchd] [Event: init_featureflags] Doing boot task
+exec init_featureflags
+com.apple.xpc.launchd|1969-12-31 16:01:03.347495 (auearlyboot) <Notice>: Doing boot task
+[System Event] [1216298654] [INFO] [Subsystem: launchd] [Event: auearlyboot] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:03.353074 (auearlyboot) <Notice>: optional boot task not present
+[System Event] [1216406180] [INFO] [Subsystem: launchd] [Event: auearlyboot] optional boot task not present
+exec tzinit
+com.apple.xpc.launchd|1969-12-31 16:01:03.353099 (tzinit) <Notice>: Doing boot task
+[System Event] [1217452501] [INFO] [Subsystem: launchd] [Event: tzinit] Doing boot task
+SMP --- sample 0
+SMP --- sample 1
+com.apple.xpc.launchd|1969-12-31 16:04:51.561093 (finish-restore) <Notice>: Doing boot task
+[System Event] [5598002012] [INFO] [Subsystem: launchd] [Event: finish-restore] Doing boot task
+exec FinishRestoreFromBackup
+com.apple.xpc.launchd|1969-12-31 16:04:51.579837 (finish-demo-restore) <Notice>: Doing boot task
+[System Event] [5598355552] [INFO] [Subsystem: launchd] [Event: finish-demo-restore] Doing boot task
+exec finish_demo_restore
+com.apple.xpc.launchd|1969-12-31 16:04:51.625786 (sysstatuscheck) <Notice>: Doing boot task
+[System Event] [5599242063] [INFO] [Subsystem: launchd] [Event: sysstatuscheck] Doing boot task
+exec sysstatuscheck
+com.apple.xpc.launchd|1969-12-31 16:04:51.655956 (prng_seedctl) <Notice>: Doing boot task
+[System Event] [5599817865] [INFO] [Subsystem: launchd] [Event: prng_seedctl] Doing boot task
+exec prng_seedctl
+kern.prng.user_reseed_count: (-1) (2) No such file or directory
+failed to load virtual random: (-147) (-536870212)
+com.apple.xpc.launchd|1969-12-31 16:04:51.688552 (launchd_cache_loader) <Notice>: Doing boot task
+[System Event] [5600443775] [INFO] [Subsystem: launchd] [Event: launchd_cache_loader] Doing boot task
+exec launchd_cache_loader
+SMP --- sample 2
+SMP --- sample 3
+SMP --- sample 4

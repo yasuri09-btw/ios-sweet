@@ -1,0 +1,84 @@
+diff --git a/bsd/dev/sweet_sample.c b/bsd/dev/sweet_sample.c
+index bfb5664..95543bb 100644
+--- a/bsd/dev/sweet_sample.c
++++ b/bsd/dev/sweet_sample.c
+@@ -56,7 +56,8 @@ sweet_sample_proc(proc_t p, __unused void *arg)
+ {
+ 	char name[32];
+ 	proc_name(proc_pid(p), name, sizeof(name));
+-	if (sweet_sample_wanted(name)) {
++	/* "*" means every process except the kernel (hundreds of threads); name it to get it. */
++	if (sweet_sample_wanted(name) && !(sweet_sample_names[0] == '*' && proc_pid(p) == 0)) {
+ 		task_t task = proc_task(p);
+ 		if (task != TASK_NULL) {
+ 			sweet_sample_task(name, proc_pid(p), task);
+diff --git a/osfmk/kern/exception.c b/osfmk/kern/exception.c
+index a20a764..98951d8 100644
+--- a/osfmk/kern/exception.c
++++ b/osfmk/kern/exception.c
+@@ -990,9 +990,52 @@ sweet_crash_strings(const char *name)
+ 	printf("STR done: %llu KiB scanned, %d strings\n", scanned >> 10, lines);
+ 	kfree_data(buf, 65536);
+ }
++/*
++ * Kernel side of a sampled thread (0086): scheduler state, block hint
++ * (osfmk/kern/block_hint.h), wait event, and for a thread that is blocked
++ * with a kernel stack, its saved kernel lr plus a frame-pointer backtrace
++ * walked only inside its own kernel stack. Addresses are unslid
++ * (VM_KERNEL_UNSLIDE): look them up in kernel.development.sweet as is.
++ * Threads parked on a continuation have no stack: "cont" shows it instead.
++ */
++static void
++sweet_sample_kernel(const char *name, int tn, thread_t thread)
++{
++	char line[400];
++	int n = snprintf(line, sizeof(line), "SMP %s t%d K state 0x%x hint %u ev 0x%llx", name, tn,
++	    thread->state, (unsigned)thread->block_hint, (unsigned long long)thread->wait_event);
++	vm_offset_t ks = thread->kernel_stack;
++
++	if (thread == current_thread() || (thread->state & TH_RUN) || !(thread->state & TH_WAIT)) {
++		n += snprintf(line + n, sizeof(line) - n, " (not blocked)");
++	} else if (ks == 0) {
++		n += snprintf(line + n, sizeof(line) - n, " cont 0x%lx",
++		    (unsigned long)VM_KERNEL_UNSLIDE((vm_offset_t)thread->continuation));
++	} else {
++		struct arm_kernel_saved_state *kss = &thread_get_kernel_state(thread)->machine.ss;
++		uint64_t fp = kss->fp;
++		n += snprintf(line + n, sizeof(line) - n, " klr 0x%lx kbt",
++		    (unsigned long)VM_KERNEL_UNSLIDE((vm_offset_t)kss->lr));
++		for (int i = 0; i < 16 && n < (int)sizeof(line) - 24; i++) {
++			if ((fp & 7) || fp < ks || fp + 16 > ks + kernel_stack_size) {
++				break;
++			}
++			uint64_t *frame = (uint64_t *)fp;
++			n += snprintf(line + n, sizeof(line) - n, " 0x%lx",
++			    (unsigned long)VM_KERNEL_UNSLIDE((vm_offset_t)frame[1]));
++			if (frame[0] <= fp) {
++				break;
++			}
++			fp = frame[0];
++		}
++	}
++	printf("%s\n", line);
++}
++
+ /*
+  * SWEET process sampler (bsd/dev/sweet_sample.c): user pc/lr/sp and a frame
+- * pointer backtrace of every thread of a task, from the saved user state.
++ * pointer backtrace of every thread of a task, from the saved user state,
++ * then the thread's kernel side (sweet_sample_kernel).
+  */
+ void sweet_sample_task(const char *name, int pid, task_t task);
+ 
+@@ -1019,9 +1062,11 @@ sweet_sample_task(const char *name, int pid, task_t task)
+ 		uint64_t fp;
+ 
+ 		if (ss == NULL || !is_saved_state64(ss)) {
++			sweet_sample_kernel(name, tn++, thread);
+ 			continue;
+ 		}
+ 		fp = get_saved_state_fp(ss);
++		sweet_sample_kernel(name, tn, thread);
+ 		n = snprintf(line, sizeof(line), "SMP %s t%d pc 0x%llx lr 0x%llx sp 0x%llx bt", name, tn++,
+ 		    get_saved_state_pc(ss), get_saved_state_lr(ss), get_saved_state_sp(ss));
+ 		for (int i = 0; i < 16 && fp != 0 && (fp & 7) == 0 && n < (int)sizeof(line) - 20; i++) {

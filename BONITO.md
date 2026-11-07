@@ -261,3 +261,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   bonito-ios2.adt + cpus=1 + ufslogsecs=2 + sweetsamplesecs=120.
   Also from flame, not done yet: lsd may wait for "seeding" forever if the LaunchServices
   migrator never ran (flame ran 00LaunchServicesMigrator by hand); IORTC removed a 30 s wait.
+- 17:53: log of the MAC run (`logs/boot-mac.txt`, cpus=1): boot-task durations from launchd's
+  timestamps: all < 1 s except xpcroleaccountd 8 s, **tzinit 228 s**, **launchd_cache_loader > 6 min**
+  (still running at the pull). Boot tasks are serial, so one stalled task stalls everything; the
+  stall moves between tasks per boot and also happens on one core.
+- Patch **0086** (user OK for kernel work: "best kernel optimizations" -> first find the stall):
+  sampler prints per thread `SMP name tN K state hint ev klr kbt ...` (scheduler state, block
+  hint, wait event, saved kernel lr + fp backtrace inside its kernel stack, unslid) or `cont`;
+  `sweetsample=*` skips kernel_task (name it explicitly to get it).
