@@ -149,3 +149,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   /dev/block/mmcblk0p72, 53648801280 bytes. dtbo_b still zeros. XNU's device tree is
   our ADT in the payload, so overlays cannot reach iOS; only open point: does ABL still accept the
   shim's appended DTB with dtbo_a present (next boot shows). Undo = `fastboot erase dtbo_a`.
+- 15:54: 0084 CI success (`xnu/out-0084`, SHA256SUMS OK). Image `shim/out/bonito-ios3-emmclog.img` =
+  0084 + `shim/out/bonito-ios.adt` + milestone-5 cmdline with `sweetusb=2 ufslogsecs=2`
+  (build: `MKBOOTIMG="python3 /home/ada/codestuff/tools/mkbootimg/mkbootimg.py" shim/build.sh ABS_PAYLOAD`).
+  Booted 15:54:27 with dtbo_a = factory overlays. Then: TWRP + tools/sweet-log-pull.sh.
