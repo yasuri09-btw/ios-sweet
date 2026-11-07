@@ -1,8 +1,8 @@
 #!/bin/bash
-# Build the shim and wrap it in a boot.img v2 that mirrors the stock PixelOS header.
+# Build the shim and wrap it in a boot.img v0 (Image.gz-dtb) the way pmOS does for bonito.
 set -euo pipefail
 cd "$(dirname "$0")"
-CC=aarch64-linux-gnu-gcc
+CC=${CC:-aarch64-linux-gnu-gcc}
 OBJCOPY=aarch64-linux-gnu-objcopy
 CFLAGS="-O2 -ffreestanding -nostdlib -fno-pic -mgeneral-regs-only -mstrict-align -fno-stack-protector -Wall -Wextra"
 mkdir -p out
@@ -26,10 +26,16 @@ if [ -n "${1:-}" ]; then
 else
 	(cd out && rm -rf rd && mkdir rd && cd rd && find . | cpio -o -H newc --quiet | gzip -9 > ../ramdisk.bin)
 fi
-mkbootimg --header_version 2 --kernel out/Image --ramdisk out/ramdisk.bin \
-	--dtb "${DTB:-../dtb/boot_unpacked/dtb}" --base 0 --kernel_offset 0x8000 --ramdisk_offset 0x1000000 \
-	--tags_offset 0x100 --dtb_offset 0x1f00000 --pagesize 4096 \
-	--os_version 17.0.0 --os_patch_level 2035-06 \
+# bonito ABL (b4s4-0.4-8048689) takes what pmOS ships: header v0 with the DTB
+# appended to a gzip'd kernel (Image.gz-dtb). DTB = pmOS's bonito-sdc build
+# (bonito-dump/pmos-bonito-sdc.dtb); ABL patches memory/chosen into it.
+MKBOOTIMG=${MKBOOTIMG:-mkbootimg}
+DTB=${DTB:-../../bonito-dump/pmos-bonito-sdc.dtb}
+gzip -9 -n -c out/Image > out/Image.gz
+cat out/Image.gz "$DTB" > out/Image.gz-dtb
+$MKBOOTIMG --header_version 0 --kernel out/Image.gz-dtb --ramdisk out/ramdisk.bin \
+	--base 0 --kernel_offset 0x8000 --ramdisk_offset 0x1000000 \
+	--tags_offset 0x100 --pagesize 4096 \
 	--cmdline "console=null" -o out/shim-boot.img
 # Host render of the console layout.
 gcc -O1 -Wall -o out/host_test console.c host_test.c && ./out/host_test
