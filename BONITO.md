@@ -128,3 +128,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   `xpcproxy` -> `nesessionmanager`; the user flags `symptomsd-diag` (after suggestd, assetsd) as
   the one that looks wrong (exact message unread). Next: 0083 boot with sweetusb=2 +
   `tools/bonito-usblog.py logs/boot-0083-usb.txt` to get the log off the phone.
+- 15:45: TWRP for log reads: `recovery/twrp/twrp-3.7.1_12-1-bonito.img` (official dl.twrp.me,
+  SHA256 e0781b59...78d0 matches the published .sha256; not in git). Use only via temporary
+  `doas fastboot boot` (never flash). Plan: move the 0047 console ring writer to the eMMC
+  (last 1025 blocks of userdata), pull it from TWRP with adb (tools/sweet-log-pull.sh).
+  Untested: whether TWRP's adb comes up and sees /dev/block/by-name/userdata on this ABL.
