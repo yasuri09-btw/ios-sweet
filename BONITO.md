@@ -97,3 +97,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   to receive the console on udp/5140.
 - Next after that: read the spindump cause from the live log; then sweetfb_noconsole=1;
   RTC (clock starts 1970); RMI4 touch driver.
+- UPDATE 13:55: the cleaned image (bluetoothd + fairplayd.H2 jobs removed) is ON userdata now.
+  Boots with it stop at the `xpcroleaccountd` boot task (last line `<Notice>: launchd`, cut off),
+  with BOTH kernel 0083 (sweetusb=2) and 0082 -> not the USB code. The earlier image (jobs kept)
+  went past it to the Apple logo. Next: boot once more (first-boot state may differ); if it stops
+  again, revert the job removal in tools/bonito-root-tweaks.py, rebuild the .simg, reflash.
+  USB on 0083: no USB device enumerated on the PC; the `SWEET USB:` lines (just after
+  `SWEET EMMC: "userdata"`) are still unread. Suspect ABL powers USB down at exit (GDSC/clocks).
