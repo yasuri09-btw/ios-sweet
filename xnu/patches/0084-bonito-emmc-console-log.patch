@@ -1,0 +1,168 @@
+diff --git a/bsd/dev/sweet_emmc.c b/bsd/dev/sweet_emmc.c
+index 94cab08..4d5f73d 100644
+--- a/bsd/dev/sweet_emmc.c
++++ b/bsd/dev/sweet_emmc.c
+@@ -30,6 +30,7 @@
+ #include <miscfs/devfs/devfs.h>
+ #include <kern/locks.h>
+ #include <kern/clock.h>
++#include <kern/sched_prim.h>
+ #include <machine/machine_routines.h>
+ #include <pexpert/pexpert.h>
+ #include <pexpert/device_tree.h>
+@@ -39,6 +40,12 @@
+ extern vm_offset_t ml_io_map(vm_offset_t phys_addr, vm_size_t size);
+ extern vm_offset_t ml_io_map_wcomb(vm_offset_t phys_addr, vm_size_t size);
+ extern void sweet_usb_probe(void);        /* bsd/dev/sweet_usb.c (boot-arg sweetusb) */
++/* bsd/dev/sweet_ufs.c: the 4 MiB console ring every console byte goes to */
++extern const char *sweet_log_ring_buffer(uint32_t *size);
++extern uint64_t sweet_log_position(void);
++extern kern_return_t kernel_thread_start(thread_continue_t, void *, thread_t *);
++extern void thread_deallocate(thread_t);
++extern int hz;
+ 
+ /* SDHCI */
+ #define SD_BLKSIZE      0x04    /* block size (16) | block count (16) */
+@@ -632,6 +639,8 @@ static const struct cdevsw sweet_emmc_cdevsw = {
+ 	.d_type       = D_DISK,
+ };
+ 
++static void sweet_emmc_log_start(void);
++
+ static int
+ sweet_emmc_init(void)
+ {
+@@ -691,11 +700,112 @@ sweet_emmc_init(void)
+ 	se.ready = true;
+ 	printf("SWEET EMMC: \"%s\": first sector 0x%llx, %llu MiB, %s, DMA at 0x%x\n",
+ 	    want, se.first, se.nsect >> 11, se.writable ? "read-write" : "read-only", se.dma_pa);
++	sweet_emmc_log_start();
+ 	/* As sweet_ufs_init does: USB device mode (USB Ethernet, live console log). */
+ 	sweet_usb_probe();
+ 	return 0;
+ }
+ 
++/*
++ * Persistent console log on the eMMC, the same layout patch 0047 writes to
++ * sweet's UFS (tools/sweet-log-pull.sh reads it unchanged from a recovery):
++ * the last 1 + 1024 4-KiB blocks of the partition, block 0 a header
++ *   "SWEETLOG" | u32 version 1 | u32 ring size | u64 total bytes | u64 flush seq
++ * then the ring (console byte n at ring offset n % size). Every
++ * ufslogsecs seconds (default 10, 1-60) new ring blocks, then the header,
++ * are written, then the card's cache is flushed (EXT_CSD FLUSH_CACHE; if the
++ * card refuses it, e.g. cache off, flushing stops). Needs emmcrw=1; the HFS
++ * root ends far before (16 GiB image in a ~50 GiB partition).
++ * Boot-arg sweetlog=0 disables it.
++ */
++#define LOG_BLOCK       4096u
++#define LOG_SPB         (LOG_BLOCK / SECTOR)    /* sectors per 4 KiB block */
++
++struct sweet_log_header {
++	char magic[8];
++	uint32_t version, size;
++	uint64_t total, seq;
++};
++
++static int sweet_emmc_log_chan;
++static uint32_t sweet_emmc_log_secs = 10;
++
++static void
++sweet_emmc_log_thread(__unused void *arg, __unused wait_result_t wr)
++{
++	uint32_t size = 0;
++	const char *ring = sweet_log_ring_buffer(&size);
++	uint32_t nblk = 1 + size / LOG_BLOCK;
++	/* Whole 4 KiB blocks from the partition start, as the pull script counts. */
++	uint64_t base = se.first + (se.nsect / LOG_SPB - nblk) * LOG_SPB;
++	uint64_t flushed = 0, seq = 0;
++	bool cache_flush = true;
++	void *bounce = (void *)(se.dma + DMA_BOUNCE);
++
++	printf("SWEET LOG: console log to the last %u KiB of the eMMC partition (sector 0x%llx)\n",
++	    nblk * LOG_BLOCK >> 10, base);
++	for (;;) {
++		(void)tsleep(&sweet_emmc_log_chan, PZERO, "sweetlog", hz * (int)sweet_emmc_log_secs);
++		uint64_t total = sweet_log_position();
++		if (total == flushed) {
++			continue;
++		}
++		uint64_t pos = total - flushed >= size ? total - size : flushed;
++		int error = 0;
++
++		lck_mtx_lock(&sweet_emmc_lock);
++		while (pos < total && !error) {
++			uint32_t off = (uint32_t)(pos % size);
++			uint32_t blk = off / LOG_BLOCK;
++			uint64_t need = ((uint64_t)off % LOG_BLOCK + (total - pos) + LOG_BLOCK - 1) / LOG_BLOCK;
++			uint32_t n = (uint32_t)MIN(MIN(need, (uint64_t)(size / LOG_BLOCK - blk)),
++			    (uint64_t)(BOUNCE_SIZE / LOG_BLOCK));
++			memcpy(bounce, ring + (uint64_t)blk * LOG_BLOCK, n * LOG_BLOCK);
++			error = emmc_write(base + (uint64_t)(1 + blk) * LOG_SPB, n * LOG_SPB);
++			pos += (uint64_t)(blk + n) * LOG_BLOCK - off;
++		}
++		if (!error) {
++			struct sweet_log_header h = {
++				.magic = { 'S', 'W', 'E', 'E', 'T', 'L', 'O', 'G' },
++				.version = 1, .size = size, .total = total, .seq = ++seq,
++			};
++			bzero(bounce, LOG_BLOCK);
++			memcpy(bounce, &h, sizeof(h));
++			error = emmc_write(base, LOG_SPB);
++		}
++		if (!error && cache_flush && ext_csd_switch(32, 1)) {
++			cache_flush = false;
++			printf("SWEET LOG: eMMC cache flush refused; writing without it\n");
++		}
++		lck_mtx_unlock(&sweet_emmc_lock);
++		if (error) {
++			printf("SWEET LOG: eMMC write failed (%d), stopping\n", error);
++			return;
++		}
++		flushed = total;
++	}
++}
++
++static void
++sweet_emmc_log_start(void)
++{
++	uint32_t on = 1, size = 0;
++	thread_t thread;
++
++	(void)sweet_log_ring_buffer(&size);
++	PE_parse_boot_argn("sweetlog", &on, sizeof(on));
++	if (!on || !se.writable || se.nsect / LOG_SPB < 2 * (1 + size / LOG_BLOCK)) {
++		return;
++	}
++	PE_parse_boot_argn("ufslogsecs", &sweet_emmc_log_secs, sizeof(sweet_emmc_log_secs));
++	if (sweet_emmc_log_secs == 0 || sweet_emmc_log_secs > 60) {
++		sweet_emmc_log_secs = 10;
++	}
++	if (kernel_thread_start(sweet_emmc_log_thread, NULL, &thread) == KERN_SUCCESS) {
++		thread_deallocate(thread);
++	}
++}
++
+ /* Root device for rd=emmcroot0 (IOFindBSDRoot). */
+ int sweet_emmc_rootdev(dev_t *dev);
+ 
+diff --git a/bsd/dev/sweet_ufs.c b/bsd/dev/sweet_ufs.c
+index 6b926fe..608d798 100644
+--- a/bsd/dev/sweet_ufs.c
++++ b/bsd/dev/sweet_ufs.c
+@@ -722,6 +722,16 @@ sweet_log_copy(uint64_t *pos, char *out, uint32_t max)
+ 	return n;
+ }
+ 
++/* The ring itself, for the log writer on bonito's eMMC (sweet_emmc.c). */
++const char *sweet_log_ring_buffer(uint32_t *size);
++
++const char *
++sweet_log_ring_buffer(uint32_t *size)
++{
++	*size = SWEET_LOG_SIZE;
++	return sweet_log_ring;
++}
++
+ uint64_t sweet_log_position(void);
+ 
+ uint64_t
