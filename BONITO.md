@@ -217,3 +217,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 16:40: the 16:32:42 boot (0082, fresh image) passed finish-demo-restore after a ~3 min pause
   and reached **backboardd** (~8 min after fastboot boot), then the **APPLE LOGO** (~16:42,
   third time on bonito). Waiting works.
+- 16:55: the 16:32 boot (0082) reached logo + spindump + daemon wave (triald, mmaintenanced,
+  medialibraryd, mount_hfs, lots of SWEET AKS lines) but NO `exec SpringBoard` after 22 min.
+  Next run: `shim/out/bonito-ios6-log.img` = 0084 + exactly the 0082 cmdline (sweetusb=0) +
+  ufslogsecs=2, booted 16:55:21 (set_active a first: retry was 0). Plan: run ~25 min, pull the
+  log via TWRP, look for SpringBoard/launchd job lines.
