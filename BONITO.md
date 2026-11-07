@@ -204,3 +204,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   hold). Flame also reads XBL/ABL reset forensics from the `klog` partition (TWRP, `strings`).
   Flame avoids `fastboot flash userdata` (Pixel 4 ABL hung on long zero FILL chunks); our
   img2simg uses DONT_CARE, five bonito flashes finished fine.
+- 16:36: the 16:32:42 boot (0082 on the fresh image) stalled at MSUEarlyBootTask, then RESUMED
+  by itself (user: now at finish-demo-restore). Same kernel + same image content as the 15:31
+  logo boot. => The stall is intermittent (minutes, sometimes permanent?) and was present
+  before 0083-0085; shim passes nothing from ABL's FDT except the initrd range, so dtbo_a is
+  not involved. 0085's sample: the stalled thread sits in a kernel page fault (dyld store).
