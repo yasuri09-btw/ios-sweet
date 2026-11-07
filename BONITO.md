@@ -168,3 +168,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
     0x64646464/0x23232323/0x67676767/0x90909090 (wrong address for SDM670, or PHY off).
 - Patch **0085**: thread sampler (0054) started from the eMMC init too; `sweetsample=*` = all
   processes; `sweetsamplesecs=N` (5-600) first delay and interval.
+- 16:09: 0085 CI 42418579986 success -> `xnu/out-0085`; image `shim/out/bonito-ios4-sample.img`
+  (0084 cmdline + `sweetsample=* sweetsamplesecs=45`), booted 16:08:58 (TWRP -> adb reboot
+  bootloader -> fastboot boot, no buttons). Pull after a few minutes stuck.
