@@ -51,6 +51,7 @@
 
 #define PS_CMD_INHIBIT	(1u << 0)
 #define PS_DAT_INHIBIT	(1u << 1)
+#define PS_BUF_RD_EN	(1u << 11)
 
 #define INT_CMD_DONE	(1u << 0)
 #define INT_XFER_DONE	(1u << 1)
@@ -130,6 +131,26 @@ static uint32_t wait_int(uint32_t want, unsigned ms)
 }
 
 /*
+ * Data-phase wait: done when the status has want (or an error), or the present
+ * state has all of ps_set, or none of ps_clear. Returns the status (with want
+ * or'ed in when the present state decided), 0 on timeout.
+ */
+static uint32_t wait_data(uint32_t want, uint32_t ps_set, uint32_t ps_clear, unsigned ms)
+{
+	uint64_t end = ticks() + ms_ticks(ms);
+	for (;;) {
+		uint32_t s = rd(HC(SD_INTSTS));
+		if (s & (want | INT_ERROR))
+			return s;
+		uint32_t ps = rd(HC(SD_PRESENT));
+		if ((ps_set && (ps & ps_set) == ps_set) || (ps_clear && !(ps & ps_clear)))
+			return s | want;
+		if (ticks() > end)
+			return 0;
+	}
+}
+
+/*
  * One command. For reads, nblk sectors are moved into out by PIO.
  * Returns 0, or E_* | SDHCI error status bits.
  */
@@ -164,8 +185,13 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 	if (resp)
 		*resp = rd(HC(SD_RESP0));
 
+	/*
+	 * Data phase. Besides the interrupt status bits, poll the present state
+	 * (buffer read enable, DAT inhibit): on bonito the card's data reaches
+	 * the buffer (PS bit 11) without Buffer Read Ready ever latching.
+	 */
 	for (uint32_t b = 0; b < nblk; b++) {
-		s = wait_int(INT_BUF_RD, 1000);
+		s = wait_data(INT_BUF_RD, PS_BUF_RD_EN, 0, 1000);
 		if (!s || (s & INT_ERROR))
 			goto data_err;
 		wr(HC(SD_INTSTS), INT_BUF_RD);
@@ -174,7 +200,7 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 			w[i] = rd(HC(SD_DATA));
 	}
 	if (nblk || (flags & 3) == C_RESP_48B) {
-		s = wait_int(INT_XFER_DONE, 1000);
+		s = wait_data(INT_XFER_DONE, 0, PS_DAT_INHIBIT, 1000);
 		if (!s || (s & INT_ERROR))
 			goto data_err;
 		wr(HC(SD_INTSTS), INT_XFER_DONE);
@@ -470,8 +496,10 @@ void test_emmc(void)
 	con_hex("CMD8 rc", rc);
 	if (rc) {
 		con_hex2(" sts", "int=", last_sts, "present=", last_present);
+		con_hex(" int_en", rd(HC(SD_INTSTS_EN)));
 		return;
 	}
+	con_hex2("CMD8 ok", "int_en=", rd(HC(SD_INTSTS_EN)), "present=", rd(HC(SD_PRESENT)));
 	uint32_t sectors = le32(buf + 212);
 	con_hex2("EXTCSD", "rev=", buf[192], "sectors=", sectors);
 	con_hex2("EXTCSD", "part_cfg=", buf[179], "cmdq_en=", buf[15]);
