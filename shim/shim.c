@@ -429,5 +429,9 @@ void shim_main(uint64_t dtb)
 	test_gic();
 
 	stage = "done";
-	reset(40);
+	/* bonito: hold the results on screen; the user resets with Power+VolDown. */
+	con_skip();
+	con_str("HALT", "done. hold Power+VolDown for fastboot");
+	for (;;)
+		__asm__ volatile("wfe");
 }
