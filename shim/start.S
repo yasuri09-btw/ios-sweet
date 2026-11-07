@@ -7,7 +7,7 @@
 _head:
 	b	_start			/* code0 */
 	.long	0			/* code1 */
-	.quad	0			/* text_offset */
+	.quad	0x80000			/* text_offset: bonito ABL rejects 0 ("Invalid Parameter") */
 	.quad	_end			/* image_size (linked at 0) */
 	.quad	0xa			/* flags: LE, 4K pages, place anywhere */
 	.quad	0			/* res2 */
