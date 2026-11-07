@@ -243,3 +243,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 17:23: `shim/out/bonito-ios7-sbsample.img` = 0085 + 0082 cmdline + `ufslogsecs=2
   sweetsamplesecs=120` (sampler default names SpringBoard,backboardd), booted 17:23:05.
   Plan: run ~25 min untouched, then pull -> SMP samples show what SpringBoard waits on.
+- 17:29: log of the 17:23 sampler run (`logs/boot-0085b.txt`): real stop after `exec tzinit` at
+  ~55 s (screen's "fips" = launchd's [System Event] replay of the boot-task list, misleading).
+  tzinit passed instantly on all earlier boots -> same random freeze. Next: `cpus=1` run
+  (`shim/out/bonito-ios5-cpu1.img`, 0085, sampler on all processes every 45 s), no new patch.
