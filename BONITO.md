@@ -185,3 +185,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   samples during the stall). Open: what the fault waits on (page-in of dyld/cache __DATA?).
   `tools/dsc-a2s.py` resolves cache addresses to images (symbol lookup still prints `?`).
   Slot a retry count: 1 left after this TWRP boot. User: no more kernel patches for now.
+- 16:24: cpus=1 test (`shim/out/bonito-ios5-cpu1.img`, 0085 + cpus=1, booted 16:21:15) abandoned
+  before a result. User rolled back to the logo kernel: **0082 `shim/out/bonito-ios1.img`**
+  booted 16:23:54 (slot a retry 2). Kernels 0084/0085 stay in the repo; the user does not want
+  more kernel patches for now.
