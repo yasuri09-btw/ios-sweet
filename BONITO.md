@@ -83,6 +83,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   bring-up; the driver here is written from the SDHCI/JEDEC specs with it as the guide.
 - **ios-sweet** (dipa-studio) and the hackiosx.dev ports: everything XNU, which this port builds on.
 - **blacktop/darwin-xnu-build** and Apple's open-source XNU releases.
+- **ios-flame** (NWylynko, Pixel 4) and **ios-sailfish** (joranv1, Pixel 1): reference notes, e.g.
+  the SMMU setup for USB DMA after ABL.
 
 ## Handoff (2026-11-07 ~13:30 CST, session paused for usage limit)
 - Phone: booted iOS once with logo; console then flooded by bluetoothd + fairplayd.H2 relaunch
@@ -189,3 +191,16 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   before a result. User rolled back to the logo kernel: **0082 `shim/out/bonito-ios1.img`**
   booted 16:23:54 (slot a retry 2). Kernels 0084/0085 stay in the repo; the user does not want
   more kernel patches for now.
+- 16:33: **userdata reflashed** with a fresh image (user OK): `research/ipsw-x/ios16-root.simg`
+  rebuilt 16:26 = mkiosroot + sweet tweaks + bonito-root-tweaks `--remove-jobs` (same content as
+  the 15:31 logo image). `fastboot flash userdata` 16:26:31-16:32:31, 47/47 OKAY, 360 s
+  (`research/ipsw-x/flash-userdata5.log`). Then 0082 `shim/out/bonito-ios1.img` booted 16:32:42
+  (slot a retry 1 before the boot). Note: the eMMC log area survives (DONT_CARE chunks).
+- References (user-supplied, read 16:30): github.com/NWylynko/ios-flame (Pixel 4, SM8150) and
+  github.com/joranv1/ios-sailfish (Pixel 1, MSM8996), both ios-sweet descendants on UFS.
+  Flame's USB fix: the apps SMMU blocks DWC3 DMA after ABL; bypass refused by the hypervisor;
+  what works = a free SMR for the USB stream -> own context bank with CBAR 0x1f000, CBA2R 1,
+  SCTLR 0xe0 (translation off) — matches our `ep0 cmd 0x1 timeout` (needs a kernel patch; on
+  hold). Flame also reads XBL/ABL reset forensics from the `klog` partition (TWRP, `strings`).
+  Flame avoids `fastboot flash userdata` (Pixel 4 ABL hung on long zero FILL chunks); our
+  img2simg uses DONT_CARE, five bonito flashes finished fine.
