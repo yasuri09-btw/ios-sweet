@@ -215,4 +215,5 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   "hangs" were most likely cut off too early. (0085 sample: the pause is a kernel page fault in
   a dyld store; worth a look once kernel work resumes, but not a blocker.)
 - 16:40: the 16:32:42 boot (0082, fresh image) passed finish-demo-restore after a ~3 min pause
-  and reached **backboardd** (~8 min after fastboot boot). Waiting works.
+  and reached **backboardd** (~8 min after fastboot boot), then the **APPLE LOGO** (~16:42,
+  third time on bonito). Waiting works.
