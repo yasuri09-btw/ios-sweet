@@ -15,6 +15,9 @@ on:
       keep_going:
         description: make -k (collect all compile errors in one run)
         default: "true"
+      runner:
+        description: runner image (macos-14 was retired by GitHub in late 2026)
+        default: macos-15
   push:
     branches: [main]
     paths:
@@ -34,9 +37,10 @@ env:
 
 jobs:
   build:
-    # macos-14 still ships Xcode 15.x: its iig matches the xnu-8796 IORPC ABI
-    # (Xcode 16's iig emits IORPC.kernelContent, which this xnu lacks)
-    runs-on: macos-14
+    # xnu-8796 wants Xcode 15.x's iig (Xcode 16's iig emits IORPC.kernelContent,
+    # which this xnu lacks). macos-14 had it but GitHub retired that image;
+    # Deps lists what the chosen runner ships and picks the oldest Xcode.
+    runs-on: ${{ inputs.runner || 'macos-15' }}
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
