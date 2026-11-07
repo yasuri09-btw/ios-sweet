@@ -320,7 +320,7 @@ static uint32_t reinit_card(void)
 	wr(HC(MSM_PWRCTL_MASK), 0xf);
 	line_reset(0x01);
 	uint32_t p0 = pwr_handshake();
-	con_hex2("RESET", "all, pwr irq=", p0, "present=", rd(HC(SD_PRESENT)));
+	con_hex2("RST", "irq=", p0, "ps=", rd(HC(SD_PRESENT)));
 
 	wr(HC(SD_INTSIG_EN), 0);
 	wr(HC(SD_INTSTS_EN), 0x03ff003f);
