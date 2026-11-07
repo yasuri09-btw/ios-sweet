@@ -184,6 +184,134 @@ data_err: {
 	}
 }
 
+/* ---- full re-initialization (ABL hands over a host at power-on defaults) ---- */
+
+#define MSM_PWRCTL_STATUS	0x240
+#define MSM_PWRCTL_MASK		0x244
+#define MSM_PWRCTL_CLEAR	0x248
+#define MSM_PWRCTL_CTL		0x24c
+#define MSM_VENDOR_SPEC		0x20c
+#define PWR_BUS_ON		(1u << 1)
+#define PWR_IO_LOW		(1u << 2)
+#define PWR_IO_HIGH		(1u << 3)
+#define ACK_BUS_OK		(1u << 0)
+#define ACK_IO_OK		(1u << 2)
+#define VS_IO_PAD_PWR_SWITCH	(1u << 16)
+#define GCC_SDCC1_APPS_RCGR	0x26028		/* CMD_RCGR; CFG +4, M +8, N +0xc */
+
+/*
+ * A power-control or signalling-voltage write on sdhci-msm raises a request
+ * in PWRCTL_STATUS that software must clear and acknowledge. The regulators
+ * are left on by ABL, so acknowledging success is all there is to do.
+ */
+static uint32_t pwr_handshake(void)
+{
+	uint64_t end = ticks() + ms_ticks(50);
+	uint32_t st;
+	while (!(st = rd(HC(MSM_PWRCTL_STATUS)) & 0xf))
+		if (ticks() > end)
+			return 0;
+	for (int i = 0; i < 10 && (rd(HC(MSM_PWRCTL_STATUS)) & st); i++)
+		wr(HC(MSM_PWRCTL_CLEAR), st);
+	uint32_t ack = 0;
+	if (st & 0x3)
+		ack |= ACK_BUS_OK;
+	if (st & (PWR_IO_LOW | PWR_IO_HIGH))
+		ack |= ACK_IO_OK;
+	wr(HC(MSM_PWRCTL_CTL), ack);
+	return st;
+}
+
+/* Card clock = base / (2 * div), 10-bit divider; div 0 = base. */
+static int set_clock(uint32_t div)
+{
+	uint16_t c = (uint16_t)rd(HC(SD_CLKCTL)) & ~0x4;	/* card clock off */
+	wr16(HC(SD_CLKCTL), c);
+	c = (uint16_t)((div & 0xff) << 8 | ((div >> 8) & 0x3) << 6 | 0x1);
+	wr16(HC(SD_CLKCTL), c);
+	uint64_t end = ticks() + ms_ticks(150);
+	while (!(rd(HC(SD_CLKCTL)) & 0x2))
+		if (ticks() > end)
+			return -1;
+	wr16(HC(SD_CLKCTL), c | 0x4);
+	return 0;
+}
+
+static void delay_ms(unsigned ms)
+{
+	uint64_t end = ticks() + ms_ticks(ms);
+	while (ticks() < end)
+		;
+}
+
+/*
+ * Bring the card from whatever ABL left to transfer state at default speed,
+ * 1-bit bus, RCA 1. CMD0 only resets the card's state machine; it never
+ * touches stored data.
+ */
+/* step (command index, or 0xc for clock) in the top byte, cmd() code below */
+#define FAIL(step, rc)	((uint32_t)(step) << 24 | (rc))
+
+static uint32_t reinit_card(void)
+{
+	uint32_t rcgr = GCC_BASE + GCC_SDCC1_APPS_RCGR;
+	con_hex2("RCG", "cfg=", rd(rcgr + 4), "m/n=", (rd(rcgr + 8) & 0xff) << 16 | (rd(rcgr + 0xc) & 0xff));
+
+	wr(HC(MSM_PWRCTL_MASK), 0xf);
+	wr(HC(SD_INTSIG_EN), 0);
+	wr(HC(SD_INTSTS_EN), 0x03ff003f);
+	wr8(HC(SD_TIMEOUT), 0x0e);
+
+	/* Bus power on (VDD field 3.0 V for the 2.95 V vmmc), then 1.8 V signalling. */
+	wr8(HC(SD_HOSTCTL + 1), 0x0c | 0x01);
+	uint32_t p1 = pwr_handshake();
+	uint32_t ctl2 = rd(HC(SD_HOSTCTL2));
+	wr16(HC(SD_HOSTCTL2 + 2), (uint16_t)((ctl2 >> 16) | (1u << 3)));
+	uint32_t p2 = pwr_handshake();
+	wr(HC(MSM_VENDOR_SPEC), rd(HC(MSM_VENDOR_SPEC)) | VS_IO_PAD_PWR_SWITCH);
+	con_hex2("POWER", "bus irq=", p1, "io irq=", p2);
+	con_hex2("POWER", "hostctl=", rd(HC(SD_HOSTCTL)), "ctl2=", rd(HC(SD_HOSTCTL2)));
+
+	if (set_clock(0x3ff))				/* <= 188 kHz at 384 MHz */
+		return FAIL(0xc, 1);
+	delay_ms(10);					/* >= 74 clocks before CMD0 */
+
+	uint32_t rc, r = 0;
+	rc = cmd(0, 0, C_RESP_NONE, 0, 0, 0, 0);	/* GO_IDLE_STATE */
+	if (rc)
+		return FAIL(0, rc);
+	delay_ms(2);
+
+	/* SEND_OP_COND until not busy: 1.7-1.95 V + 2.7-3.6 V, sector mode. */
+	uint64_t end = ticks() + ms_ticks(1500);
+	do {
+		rc = cmd(1, 0x40ff8080, C_RESP_48, 0, 0, &r, 0);
+		if (rc)
+			return FAIL(1, rc);
+		if (r & (1u << 31))
+			break;
+		delay_ms(10);
+	} while (ticks() < end);
+	con_hex2("CMD1", "ocr=", r, "sector=", (r >> 30) & 1);
+	if (!(r & (1u << 31)))
+		return FAIL(1, 0xbb);
+
+	rc = cmd(2, 0, C_RESP_136 | C_CRC, 0, 0, &r, 0);	/* ALL_SEND_CID */
+	if (rc)
+		return FAIL(2, rc);
+	rca = 1;
+	rc = cmd(3, rca << 16, R1, 0, 0, &r, 0);	/* SET_RELATIVE_ADDR */
+	if (rc)
+		return FAIL(3, rc);
+	rc = cmd(7, rca << 16, C_RESP_48B | C_CRC | C_IDX, 0, 0, &r, 0);	/* SELECT */
+	if (rc)
+		return FAIL(7, rc);
+
+	if (set_clock(8))				/* <= 24 MHz at 384 MHz */
+		return FAIL(0xc, 8);
+	return 0;
+}
+
 /* Read n (<= 64) sectors at lba: CMD17 for one, CMD18 + auto CMD12 for more. */
 static uint32_t read_sectors(uint32_t lba, uint32_t n, uint8_t *out)
 {
@@ -259,48 +387,34 @@ void test_emmc(void)
 	uint32_t cqcfg = rd(CQ_BASE + 0x08);
 	con_hex2("CQHCI", "ver=", rd(CQ_BASE + 0x00), "cfg=", cqcfg);
 
-	/* Bus power is ABL's business (on sdhci-msm a power write needs the
-	 * vendor power-irq handshake): only proceed if it was left on. */
-	if (!(rd(HC(SD_HOSTCTL)) & (1u << 8))) {
-		con_str("EMMC", "bus power off: stop");
-		return;
-	}
-	/*
-	 * Hosts gate the card clock between commands. Re-enable it as the SDHCI
-	 * spec orders it (internal clock on, wait stable, card clock on), keeping
-	 * ABL's divider so the card runs at the rate its timing mode was set for.
-	 */
-	uint16_t clk = (uint16_t)rd(HC(SD_CLKCTL));
-	if ((clk & 0x7) != 0x7) {
-		clk |= 0x1;					/* internal clock enable */
-		wr16(HC(SD_CLKCTL), clk);
-		uint64_t end = ticks() + ms_ticks(150);
-		while (!(rd(HC(SD_CLKCTL)) & 0x2))
-			if (ticks() > end) {
-				con_hex("EMMC clk not stable", rd(HC(SD_CLKCTL)));
-				return;
-			}
-		clk = (uint16_t)rd(HC(SD_CLKCTL)) | 0x4;	/* SD clock enable */
-		wr16(HC(SD_CLKCTL), clk);
-		con_hex2("SDHCI", "clk now=", rd(HC(SD_CLKCTL)) & 0xffff, "was=", clk & ~0x4u);
-	}
 	if (cqcfg & 1) {
 		con_str("EMMC", "host in command queue mode: stop");
 		return;
 	}
-
-	/* Polled: latch every status bit, signal nothing. */
-	wr(HC(SD_INTSIG_EN), 0);
-	wr(HC(SD_INTSTS_EN), 0x03ff003f);		/* errors + cmd/xfer/gap/dma/buf; no card events */
-	wr8(HC(SD_TIMEOUT), 0x0e);
 	wr(HC(SD_INTSTS), 0xffffffff);
 
-	/* ABL's RCA isn't known: CMD13 answers only to the right one. */
 	uint32_t st = 0, rc = 1;
-	for (rca = 1; rca <= 4; rca++) {
+	if (!(rd(HC(SD_HOSTCTL)) & (1u << 8))) {
+		/* ABL left the host at power-on defaults: initialize the card again. */
+		rc = reinit_card();
+		con_hex("REINIT rc", rc);
+		if (rc)
+			return;
 		rc = cmd(13, rca << 16, R1, 0, 0, &st, 0);
-		if (!rc)
-			break;
+	} else {
+		/* Host still configured: gated card clock back on, keeping ABL's divider. */
+		uint16_t clk = (uint16_t)rd(HC(SD_CLKCTL));
+		if ((clk & 0x7) != 0x7 && set_clock((clk >> 8) | ((clk >> 6) & 3) << 8)) {
+			con_str("EMMC", "clock not stable: stop");
+			return;
+		}
+		wr(HC(SD_INTSIG_EN), 0);
+		wr(HC(SD_INTSTS_EN), 0x03ff003f);
+		wr8(HC(SD_TIMEOUT), 0x0e);
+		/* ABL's RCA isn't known: CMD13 answers only to the right one. */
+		for (rca = 1; rca <= 4; rca++)
+			if (!(rc = cmd(13, rca << 16, R1, 0, 0, &st, 0)))
+				break;
 	}
 	con_hex2("CMD13", "rca=", rca, "rc=", rc);
 	if (rc)
