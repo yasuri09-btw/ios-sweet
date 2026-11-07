@@ -146,5 +146,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   `fastboot flash dtbo_a` with dtbo.img from the factory image bonito-sp2a.220505.008
   (zip SHA256 db19d2aa...0002 = Google's; dtbo.img SHA256 ba8b2b6e...a80a; in
   recovery/factory/, not in git), 15:49:44. TWRP then booted: adb root, userdata =
-  /dev/block/mmcblk0p72, 53648801280 bytes. dtbo_b still zeros. UNTESTED: whether our iOS boot
-  images still boot with dtbo_a present (ABL may overlay the pmOS DTB); undo = `fastboot erase dtbo_a`.
+  /dev/block/mmcblk0p72, 53648801280 bytes. dtbo_b still zeros. XNU's device tree is
+  our ADT in the payload, so overlays cannot reach iOS; only open point: does ABL still accept the
+  shim's appended DTB with dtbo_a present (next boot shows). Undo = `fastboot erase dtbo_a`.
