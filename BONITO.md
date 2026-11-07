@@ -133,3 +133,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   `doas fastboot boot` (never flash). Plan: move the 0047 console ring writer to the eMMC
   (last 1025 blocks of userdata), pull it from TWRP with adb (tools/sweet-log-pull.sh).
   Untested: whether TWRP's adb comes up and sees /dev/block/by-name/userdata on this ABL.
+- 15:55: patch **0084** (`bsd/dev/sweet_emmc.c`): eMMC writer for the 0047 console ring, same
+  layout (last 1025 4-KiB blocks of userdata, header + ring), every ufslogsecs s (default 10),
+  then EXT_CSD FLUSH_CACHE (stops trying if refused). Needs emmcrw=1. CI run 42417348540
+  (commit 3685435). Not compiled locally (no Apple clang here). Read: TWRP via
+  `doas fastboot boot recovery/twrp/...img`, then `tools/sweet-log-pull.sh logs/NAME.txt`.
+  Open puzzle: on 0083 (sweetusb=2) the user sees NO `SWEET USB:` lines at all, although the
+  probe prints GDSC unconditionally right after `SWEET EMMC: "userdata"`; the log will show.
+  Also seen on the 15:40 boot: a `driverkitd` CRASH line (text unread; user's phone camera dead).
