@@ -222,3 +222,14 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Next run: `shim/out/bonito-ios6-log.img` = 0084 + exactly the 0082 cmdline (sweetusb=0) +
   ufslogsecs=2, booted 16:55:21 (set_active a first: retry was 0). Plan: run ~25 min, pull the
   log via TWRP, look for SpringBoard/launchd job lines.
+- 17:08: **0084 log of the 16:55 run** (`logs/boot-0084b.txt`, 129760 bytes, flush #38): SpringBoard
+  WAS exec'd early (line 472) and is alive (AKS calls at the end); backboardd presented only 4
+  frames (logo). `com.apple.datamigrator` exec'd 3 times -> **data migration**, which SpringBoard
+  waits on. Cause (sweet NOTES 2026-10-17): datamigrator reads LastSystemVersion as a
+  CurrentHost pref = `Preferences/ByHost/com.apple.migration.<IOPlatformUUID>.plist`; sweet's v11
+  added it by hand, it never reached the tools, bonito's image had no ByHost dir.
+  Fix: `tools/sweet-root-tweaks.py` byhost_pref() writes it (UUID A9683613-3704-53F2-95D0-98A8FB574E78,
+  computed like IOPlatformExpertDevice::generatePlatformUUID from the ADT's synthetic
+  unique-chip-id/chip-id; upper + lower case file names, 501:501 0600, dir 0755).
+  Also seen: driverkitd CRASH sig 9 (line 606); securityd AKS sel 10 (wrap_key) -> unsupported x44.
+  Image rebuilt + reflash (user: "do it for me") 17:09, then boot `shim/out/bonito-ios6-log.img`.

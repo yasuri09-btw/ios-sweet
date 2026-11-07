@@ -15,7 +15,11 @@ screen (image versions v8-v14 in NOTES.md):
   containers      /private/var/containers/{Bundle,Data/System,Shared/SystemGroup,Temp}
                   (on iOS they live on the data volume)
   migration       LastSystemVersion so DataMigration does not run for an hour
-                  on every boot
+                  on every boot; datamigrator reads it as a CurrentHost pref, i.e.
+                  Preferences/ByHost/com.apple.migration.<IOPlatformUUID>.plist
+                  (UUID from the ADT's synthetic unique-chip-id/chip-id; sweet's
+                  image v11 had this file added by hand, bonito lacked it and
+                  SpringBoard waited on the migration)
   audio           VirtualAudio HAL plug-in disabled (mediaserverd crash)
   MediaToolbox    StartRecorderServer=false (camera filter prewarm calls a
                   NULL OpenGL function without a GPU -> mediaserverd crash loop)
@@ -43,6 +47,26 @@ def save(path, data, uid, gid, mode, fmt=plistlib.FMT_BINARY):
         plistlib.dump(data, f, fmt=fmt)
     os.chown(path, uid, gid)
     os.chmod(path, mode)
+
+
+# IOPlatformUUID that XNU derives (IOPlatformExpertDevice::generatePlatformUUID)
+# from tools/mkadt.py's /chosen unique-chip-id 0x5357454554000001 + chip-id 0x8015.
+PLATFORM_UUID = 'A9683613-3704-53F2-95D0-98A8FB574E78'
+
+
+def byhost_pref(root, name, values):
+    """Merge keys into ByHost/NAME.<UUID>.plist (upper- and lower-case UUID)."""
+    d = os.path.join(root, 'private/var/mobile/Library/Preferences/ByHost')
+    if not os.path.isdir(d):
+        os.makedirs(d)
+    os.chown(d, MOBILE, MOBILE)
+    os.chmod(d, 0o755)
+    for u in (PLATFORM_UUID, PLATFORM_UUID.lower()):
+        path = os.path.join(d, f'{name}.{u}.plist')
+        data = load(path) if os.path.exists(path) else {}
+        data.update(values)
+        save(path, data, MOBILE, MOBILE, 0o600)
+    print('byhost pref', name, sorted(values))
 
 
 def merge_pref(root, name, values):
@@ -130,6 +154,7 @@ def main():
     containers(root)
     activation(root)
     audio(root)
+    byhost_pref(root, 'com.apple.migration', {'LastSystemVersion': BUILD})
     merge_pref(root, 'com.apple.migration', {
         'LastSystemVersion': BUILD,
         'DMUserDataDisposition': {'SyntheticDidUpgrade': False, 'buildVersion': BUILD}})
