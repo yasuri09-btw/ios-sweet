@@ -108,8 +108,18 @@ static uint64_t ms_ticks(unsigned ms)
 }
 
 static uint32_t rca;
+/* ADMA2 (32-bit) instead of PIO: one descriptor per command, <= 64 KiB. */
+static int use_dma;
+static struct adma2 {
+	uint16_t attr, len;
+	uint32_t addr;
+} adma __attribute__((aligned(8)));
+#define SD_ADMA_ERR	0x54
+#define SD_ADMA_ADDR	0x58	/* 64-bit: lo at 0x58, hi at 0x5c */
+#define TM_DMA		(1u << 0)
+#define ADMA_VALID_END_TRAN	0x0023	/* valid | end | act = tran */
 /* raw state at the last failed command, for the screen */
-static uint32_t last_sts, last_present, last_acmd, last_blk, last_after, last_w0;
+static uint32_t last_sts, last_present, last_acmd, last_blk, last_after, last_w0, last_adma;
 static uint8_t buf[64 * SECTOR] __attribute__((aligned(64)));
 
 static void line_reset(uint8_t mask)
@@ -170,6 +180,17 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 	if (nblk)	/* block size + count as one 32-bit write (16-bit may be ignored) */
 		wr(HC(SD_BLKSIZE), nblk << 16 | SECTOR);
 	last_blk = rd(HC(SD_BLKSIZE));
+	if (nblk && use_dma) {
+		adma.attr = ADMA_VALID_END_TRAN;
+		adma.len = (uint16_t)(nblk * SECTOR);		/* 0 would mean 64 KiB */
+		adma.addr = (uint32_t)(uintptr_t)out;
+		__asm__ volatile("dsb sy" ::: "memory");
+		wr(HC(SD_ADMA_ADDR), (uint32_t)(uintptr_t)&adma);
+		wr(HC(SD_ADMA_ADDR + 4), 0);
+		/* Host Control 1 DMA select = 2 (ADMA2 32-bit) */
+		wr8(HC(SD_HOSTCTL), (rd8(HC(SD_HOSTCTL)) & ~0x18) | 0x10);
+		tm |= TM_DMA;
+	}
 	wr(HC(SD_ARG), arg);
 	wr(HC(SD_XFER_CMD), CMD(idx, flags | (nblk ? C_DATA : 0)) | tm);
 
@@ -192,7 +213,7 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 	 * (buffer read enable, DAT inhibit): on bonito the card's data reaches
 	 * the buffer (PS bit 11) without Buffer Read Ready ever latching.
 	 */
-	for (uint32_t b = 0; b < nblk; b++) {
+	for (uint32_t b = 0; b < (use_dma ? 0 : nblk); b++) {
 		s = wait_int(INT_BUF_RD, 3000);
 		if (!s || (s & INT_ERROR))
 			goto data_err;
@@ -214,6 +235,7 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 data_err:
 	last_sts = rd(HC(SD_INTSTS));
 	last_present = rd(HC(SD_PRESENT));
+	last_adma = rd(HC(SD_ADMA_ERR));
 	{
 		uint32_t err = s ? (s >> 16) : E_DATA_TIMEOUT;
 		wr(HC(SD_INTSTS), 0xffffffff);
@@ -534,13 +556,17 @@ void test_emmc(void)
 		/* Where does the card think it is, and does slower/CMD17 help? */
 		uint32_t s13 = 0, r13 = cmd(13, rca << 16, R1, 0, 0, &s13, 0);
 		con_hex2(" CMD13", "rc=", r13, "status=", s13);
-		set_clock(0x3ff);
+		use_dma = 1;
+		for (unsigned i = 0; i < 128; i++)
+			((uint32_t *)buf)[i] = 0;
+		con_hex2(" ADMA", "desc=", (uint32_t)(uintptr_t)&adma, "buf=", (uint32_t)(uintptr_t)buf);
 		rc = cmd(8, 0, R1, 1, TM_READ, &r8, buf);
-		con_hex2(" slow CMD8", "rc=", rc, "r1=", r8);
-		uint32_t r17 = 0, rc17 = cmd(17, 0, R1, 1, TM_READ, &r17, buf);
-		con_hex2(" slow CMD17", "rc=", rc17, "r1=", r17);
-		con_hex2(" err", "data=", last_sts >> 16, "present=", last_present);
-		set_clock(8);
+		uint32_t x = 0;
+		for (unsigned i = 0; i < 128; i++)
+			x ^= ((uint32_t *)buf)[i];
+		con_hex2(" ADMA CMD8", "rc=", rc, "xor=", x);
+		if (rc)
+			con_hex2(" ADMA err", "data=", last_sts >> 16, "adma=", last_adma);
 	}
 	if (rc) {
 		con_hex2(" sts", "int=", last_sts, "present=", last_present);
