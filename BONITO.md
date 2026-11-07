@@ -112,3 +112,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Done locally: `research/ipsw-x/ios16-root.img` now has both jobs again (530 LaunchDaemons),
   `.simg` rebuilt 15:34. NOT flashed yet (waiting for user OK). After flashing, boot
   `shim/out/bonito-ios1.img`; expect the Apple logo again (earlier result with the jobs kept).
+- UPDATE ~15:38: NOT a hang. The 15:31:20 boot resumed by itself after the persona-99 line
+  (several minutes; resumed ~15:37 per the user) and is now exec'ing daemons. So the cleaned
+  image is probably fine and the earlier xpcroleaccountd "stop" was likely the same stall,
+  judged too early. Restored-jobs .simg was NOT flashed (userdata still = cleaned image). Open:
+  what waits there (a timeout of a few minutes; time it, find it from the live log).
