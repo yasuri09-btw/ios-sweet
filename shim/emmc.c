@@ -106,7 +106,7 @@ static uint64_t ms_ticks(unsigned ms)
 
 static uint32_t rca;
 /* raw state at the last failed command, for the screen */
-static uint32_t last_sts, last_present, last_acmd;
+static uint32_t last_sts, last_present, last_acmd, last_blk, last_after, last_w0;
 static uint8_t buf[64 * SECTOR] __attribute__((aligned(64)));
 
 static void line_reset(uint8_t mask)
@@ -164,10 +164,9 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 			return E_INHIBIT;
 
 	wr(HC(SD_INTSTS), 0xffffffff);			/* clear everything (W1C) */
-	if (nblk) {
-		wr16(HC(SD_BLKSIZE), SECTOR);
-		wr16(HC(SD_BLKCNT), (uint16_t)nblk);
-	}
+	if (nblk)	/* block size + count as one 32-bit write (16-bit may be ignored) */
+		wr(HC(SD_BLKSIZE), nblk << 16 | SECTOR);
+	last_blk = rd(HC(SD_BLKSIZE));
 	wr(HC(SD_ARG), arg);
 	wr(HC(SD_XFER_CMD), CMD(idx, flags | (nblk ? C_DATA : 0)) | tm);
 
@@ -198,6 +197,8 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 		uint32_t *w = (uint32_t *)(out + b * SECTOR);
 		for (unsigned i = 0; i < SECTOR / 4; i++)
 			w[i] = rd(HC(SD_DATA));
+		last_after = rd(HC(SD_PRESENT));
+		last_w0 = w[0] ^ w[1] ^ w[48] ^ w[53];	/* any EXT_CSD content */
 	}
 	if (nblk || (flags & 3) == C_RESP_48B) {
 		s = wait_data(INT_XFER_DONE, 0, PS_DAT_INHIBIT, 1000);
@@ -496,7 +497,8 @@ void test_emmc(void)
 	con_hex("CMD8 rc", rc);
 	if (rc) {
 		con_hex2(" sts", "int=", last_sts, "present=", last_present);
-		con_hex(" int_en", rd(HC(SD_INTSTS_EN)));
+		con_hex2(" blk", "regs=", last_blk, "after=", last_after);
+		con_hex2(" data", "xor=", last_w0, "blk now=", rd(HC(SD_BLKSIZE)));
 		return;
 	}
 	con_hex2("CMD8 ok", "int_en=", rd(HC(SD_INTSTS_EN)), "present=", rd(HC(SD_PRESENT)));
