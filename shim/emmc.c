@@ -500,8 +500,21 @@ void test_emmc(void)
 		return;
 	}
 
-	rc = cmd(8, 0, R1, 1, TM_READ, 0, buf);
-	con_hex("CMD8 rc", rc);
+	uint32_t r8 = 0;
+	rc = cmd(8, 0, R1, 1, TM_READ, &r8, buf);
+	con_hex2("CMD8", "rc=", rc, "r1=", r8);
+	if (rc) {
+		/* Where does the card think it is, and does slower/CMD17 help? */
+		uint32_t s13 = 0, r13 = cmd(13, rca << 16, R1, 0, 0, &s13, 0);
+		con_hex2(" CMD13", "rc=", r13, "status=", s13);
+		set_clock(0x3ff);
+		rc = cmd(8, 0, R1, 1, TM_READ, &r8, buf);
+		con_hex2(" slow CMD8", "rc=", rc, "r1=", r8);
+		uint32_t r17 = 0, rc17 = cmd(17, 0, R1, 1, TM_READ, &r17, buf);
+		con_hex2(" slow CMD17", "rc=", rc17, "r1=", r17);
+		con_hex2(" err", "data=", last_sts >> 16, "present=", last_present);
+		set_clock(8);
+	}
 	if (rc) {
 		con_hex2(" sts", "int=", last_sts, "present=", last_present);
 		con_hex2(" err", "data=", last_sts >> 16, "acmd=", last_acmd & 0xffff);
