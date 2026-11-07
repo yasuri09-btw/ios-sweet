@@ -154,3 +154,17 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   (build: `MKBOOTIMG="python3 /home/ada/codestuff/tools/mkbootimg/mkbootimg.py" shim/build.sh ABS_PAYLOAD`).
   Booted 15:54:27 with dtbo_a = factory overlays: ABL boots the shim fine (usual kernel text), so
   dtbo_a stays factory (TWRP + iOS both boot). Then: TWRP + tools/sweet-log-pull.sh.
+- 16:05: **first eMMC log pulled** (`logs/boot-0084.txt`, 29865 bytes, flush #5; TWRP + doas adb,
+  userdata = mmcblk0p72; .bin kept out of git). Findings:
+  - Boot stops after `exec init_featureflags` (boot tasks: mount-phase-1/2, data-protection,
+    MSUEarlyBootTask, fips, keybag, usermanagerd, dirs_cleaner, xpcroleaccountd, init_featureflags);
+    nothing printed afterwards (writer flushes only on new text). No eMMC errors (every eMMC
+    command times out <= 6 s and prints).
+  - dirs_cleaner `dc_reset: /tmp|/var/run: Invalid argument` = its renamex_np(RENAME_SWAP)
+    (HFS has no swap; same as usermanagerd's .kb saves). Non-fatal; the next task runs.
+  - Timestamps: launchd at ~205 s because the arch counter includes ABL fastboot time.
+  - USB (lines were in the log, never seen on screen): GDSC + all 7 clocks ON, DWC3 GSNPSID
+    0x5533300a, soft reset ok, `ep0 cmd 0x1 timeout` -> `endpoint 0 setup failed`; QUSB2 reads
+    0x64646464/0x23232323/0x67676767/0x90909090 (wrong address for SDM670, or PHY off).
+- Patch **0085**: thread sampler (0054) started from the eMMC init too; `sweetsample=*` = all
+  processes; `sweetsamplesecs=N` (5-600) first delay and interval.
