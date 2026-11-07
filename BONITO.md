@@ -122,3 +122,9 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   as the first logo boot. Cleaned image (no bluetoothd/fairplayd.H2) is good; no reflash needed.
   Next: USB live log (read the `SWEET USB:` lines: photo of the early console on a 0083 boot),
   then sweetfb_noconsole=1, RTC, RMI4 touch.
+- UPDATE 15:50: after the logo the 15:31 boot went to spindump; NO SpringBoard (the console is
+  drawn over the GUI, so SpringBoard would be visible; noconsole is not the issue). Last lines
+  seen: AKS calls from siriinferenced, fileproviderd, searchd, aggregated, coreidvd; last exec
+  `xpcproxy` -> `nesessionmanager`; the user flags `symptomsd-diag` (after suggestd, assetsd) as
+  the one that looks wrong (exact message unread). Next: 0083 boot with sweetusb=2 +
+  `tools/bonito-usblog.py logs/boot-0083-usb.txt` to get the log off the phone.
