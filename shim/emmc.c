@@ -259,10 +259,30 @@ void test_emmc(void)
 	uint32_t cqcfg = rd(CQ_BASE + 0x08);
 	con_hex2("CQHCI", "ver=", rd(CQ_BASE + 0x00), "cfg=", cqcfg);
 
-	uint32_t clk = rd(HC(SD_CLKCTL));
-	if (!(clk & 0x2) || !(clk & 0x4)) {
-		con_str("EMMC", "SD clock not running: stop");
+	/* Bus power is ABL's business (on sdhci-msm a power write needs the
+	 * vendor power-irq handshake): only proceed if it was left on. */
+	if (!(rd(HC(SD_HOSTCTL)) & (1u << 8))) {
+		con_str("EMMC", "bus power off: stop");
 		return;
+	}
+	/*
+	 * Hosts gate the card clock between commands. Re-enable it as the SDHCI
+	 * spec orders it (internal clock on, wait stable, card clock on), keeping
+	 * ABL's divider so the card runs at the rate its timing mode was set for.
+	 */
+	uint16_t clk = (uint16_t)rd(HC(SD_CLKCTL));
+	if ((clk & 0x7) != 0x7) {
+		clk |= 0x1;					/* internal clock enable */
+		wr16(HC(SD_CLKCTL), clk);
+		uint64_t end = ticks() + ms_ticks(150);
+		while (!(rd(HC(SD_CLKCTL)) & 0x2))
+			if (ticks() > end) {
+				con_hex("EMMC clk not stable", rd(HC(SD_CLKCTL)));
+				return;
+			}
+		clk = (uint16_t)rd(HC(SD_CLKCTL)) | 0x4;	/* SD clock enable */
+		wr16(HC(SD_CLKCTL), clk);
+		con_hex2("SDHCI", "clk now=", rd(HC(SD_CLKCTL)) & 0xffff, "was=", clk & ~0x4u);
 	}
 	if (cqcfg & 1) {
 		con_str("EMMC", "host in command queue mode: stop");
