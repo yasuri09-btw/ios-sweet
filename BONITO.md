@@ -141,3 +141,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Open puzzle: on 0083 (sweetusb=2) the user sees NO `SWEET USB:` lines at all, although the
   probe prints GDSC unconditionally right after `SWEET EMMC: "userdata"`; the log will show.
   Also seen on the 15:40 boot: a `driverkitd` CRASH line (text unread; user's phone camera dead).
+- 15:50: **TWRP works.** 3.7.1_12-1 first crashed (Google logo, black, reboot to fastboot):
+  dtbo_a/dtbo_b were erased (all zeros in bonito-backup/parts) for pmOS. With the user's OK,
+  `fastboot flash dtbo_a` with dtbo.img from the factory image bonito-sp2a.220505.008
+  (zip SHA256 db19d2aa...0002 = Google's; dtbo.img SHA256 ba8b2b6e...a80a; in
+  recovery/factory/, not in git), 15:49:44. TWRP then booted: adb root, userdata =
+  /dev/block/mmcblk0p72, 53648801280 bytes. dtbo_b still zeros. UNTESTED: whether our iOS boot
+  images still boot with dtbo_a present (ABL may overlay the pmOS DTB); undo = `fastboot erase dtbo_a`.
