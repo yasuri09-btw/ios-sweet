@@ -26,6 +26,9 @@
 #define GCC_SDCC1_APPS_CBCR	0x26004
 #define GCC_SDCC1_AHB_CBCR	0x26008
 #define CBCR_CLK_OFF	(1u << 31)
+#define GCC_SDCC1_ICE_CBCR	0x2600c
+#define GCC_AGGRE_UFS_AXI_CBCR	0x82024
+#define ICE_BASE	0x007c8000UL	/* sdhc_1 "ice" */
 
 /* SDHCI standard registers */
 #define SD_BLKSIZE	0x04	/* 16 */
@@ -441,6 +444,20 @@ static void list_partitions(uint32_t elba, uint32_t nent)
 	}
 }
 
+/* Enable a GCC branch clock (CBCR bit 0) and wait for CLK_OFF to drop. */
+static int branch_on(uint32_t cbcr)
+{
+	uintptr_t r = GCC_BASE + cbcr;
+	if (!(rd(r) & CBCR_CLK_OFF))
+		return 1;
+	wr(r, rd(r) | 1);
+	uint64_t end = ticks() + ms_ticks(10);
+	while (rd(r) & CBCR_CLK_OFF)
+		if (ticks() > end)
+			return 0;
+	return 1;
+}
+
 void test_emmc(void)
 {
 	con_str("EMMC", "probe sdhc_1 (read-only, PIO)");
@@ -452,13 +469,23 @@ void test_emmc(void)
 		con_str("EMMC", "sdcc1 clocks off: stop");
 		return;
 	}
+	/*
+	 * mainline also clocks sdhc_1 with "ice" (inline crypto engine, which
+	 * sits in the data path) and "bus" (its AXI port). ABL may have turned
+	 * them off on exit; switch them on like the clock framework would.
+	 */
+	uint32_t ice0 = rd(GCC_BASE + GCC_SDCC1_ICE_CBCR), bus0 = rd(GCC_BASE + GCC_AGGRE_UFS_AXI_CBCR);
+	int ice_on = branch_on(GCC_SDCC1_ICE_CBCR), bus_on = branch_on(GCC_AGGRE_UFS_AXI_CBCR);
+	con_hex2("GCC was", "ice=", ice0, "bus=", bus0);
+	con_hex2("GCC now", "ice=", rd(GCC_BASE + GCC_SDCC1_ICE_CBCR), "bus=", rd(GCC_BASE + GCC_AGGRE_UFS_AXI_CBCR));
+	if (ice_on)
+		con_hex2("ICE", "ver=", rd(ICE_BASE + 0x08), "ctl=", rd(ICE_BASE + 0x00));
+	(void)bus_on;
 
 	uint32_t ver = rd(HC(SD_VERSION)) >> 16;
 	con_hex2("SDHCI", "ver=", ver, "mci=", rd(HC(MSM_MCI_VERSION)));
-	con_hex2("SDHCI", "caps=", rd(HC(SD_CAPS)), "caps1=", rd(HC(SD_CAPS1)));
 	con_hex2("SDHCI", "present=", rd(HC(SD_PRESENT)), "hostctl=", rd(HC(SD_HOSTCTL)));
 	con_hex2("SDHCI", "clk=", rd(HC(SD_CLKCTL)), "ctl2=", rd(HC(SD_HOSTCTL2)));
-	con_hex2("SDHCI", "intsts=", rd(HC(SD_INTSTS)), "sig=", rd(HC(SD_INTSIG_EN)));
 	uint32_t cqcfg = rd(CQ_BASE + 0x08);
 	con_hex2("CQHCI", "ver=", rd(CQ_BASE + 0x00), "cfg=", cqcfg);
 
