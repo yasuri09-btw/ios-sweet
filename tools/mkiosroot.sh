@@ -16,6 +16,7 @@
 # cryptex shared cache (ignition_level=1 looks there), and
 # /private/var/keybags/systembag.kb is the plain-plist system keybag that
 # keybagd reads with /defaults/no-effaceable-storage (tools/mkadt.py).
+SUDO=${SUDO:-sudo}	# e.g. SUDO=doas
 set -euo pipefail
 
 [[ $# -ge 4 ]] || { sed -n '2,12p' "$0"; exit 2; }
@@ -43,7 +44,7 @@ cleanup() {
 	local busy=0
 	for m in "${mounts[@]}"; do
 		if mountpoint -q "$m"; then
-			sudo umount "$m" 2>/dev/null || true
+			$SUDO umount "$m" 2>/dev/null || true
 		fi
 		mountpoint -q "$m" && busy=1
 	done
@@ -64,7 +65,7 @@ apfs_mount() {
 	ln -s "$1" "$work/$2.dmg"
 	mkdir "$work/$2"
 	# As root: a user's FUSE mount is unreadable to the root rsync below.
-	sudo "$(command -v apfs-fuse)" "$work/$2.dmg" "$work/$2"
+	$SUDO "$(command -v apfs-fuse)" "$work/$2.dmg" "$work/$2"
 	mounts+=("$work/$2")
 }
 apfs_mount "$os" os
@@ -74,13 +75,13 @@ apfs_mount "$appos" appos
 truncate -s "$size" "$out"
 mkfs.hfsplus -s -J -v iOSRoot "$out"
 mkdir "$work/root"
-sudo mount -t hfsplus -o loop,force "$out" "$work/root"
+$SUDO mount -t hfsplus -o loop,force "$out" "$work/root"
 mounts=("$work/root" "${mounts[@]}")
 
 copy() {
 	echo "copying $1 -> ${2#"$work/root"}"
-	sudo mkdir -p "$2"
-	sudo rsync -aH --numeric-ids "$1/" "$2/"
+	$SUDO mkdir -p "$2"
+	$SUDO rsync -aH --numeric-ids "$1/" "$2/"
 }
 copy "$work/os/root" "$work/root"
 copy "$work/sysos/root" "$work/root/private/preboot/Cryptexes/OS"
@@ -88,23 +89,23 @@ copy "$work/appos/root" "$work/root/private/preboot/Cryptexes/App"
 
 # Shared cache where dyld looks at ignition level 1: hard links, no extra space.
 dsc=private/preboot/Cryptexes/OS/System/Library/Caches/com.apple.dyld
-sudo mkdir -p "$work/root/System/Library/Caches/com.apple.dyld"
+$SUDO mkdir -p "$work/root/System/Library/Caches/com.apple.dyld"
 for f in "$work/root/$dsc"/*; do
-	sudo ln "$f" "$work/root/System/Library/Caches/com.apple.dyld/${f##*/}"
+	$SUDO ln "$f" "$work/root/System/Library/Caches/com.apple.dyld/${f##*/}"
 done
 
 # dyld does not search the cryptexes at ignition level 1: hard-link every
 # cryptex file that has no counterpart in the OS root (libobjc-trampolines,
 # libffi-trampolines, libstdc++, ...) to its root path.
 for c in OS App; do
-	(cd "$work/root/private/preboot/Cryptexes/$c" && sudo find . ! -type d ! -path './System/Library/Caches/com.apple.dyld/*') |
+	(cd "$work/root/private/preboot/Cryptexes/$c" && $SUDO find . ! -type d ! -path './System/Library/Caches/com.apple.dyld/*') |
 	while IFS= read -r f; do
 		f=${f#./}
-		if ! sudo test -e "$work/root/$f" && ! sudo test -L "$work/root/$f"; then
-			sudo mkdir -p "$work/root/$(dirname "$f")"
+		if ! $SUDO test -e "$work/root/$f" && ! $SUDO test -L "$work/root/$f"; then
+			$SUDO mkdir -p "$work/root/$(dirname "$f")"
 			src="$work/root/private/preboot/Cryptexes/$c/$f"
 			# Linux hfsplus cannot hard-link symlinks: copy those.
-			if sudo test -L "$src"; then sudo cp -P "$src" "$work/root/$f"; else sudo ln "$src" "$work/root/$f"; fi
+			if $SUDO test -L "$src"; then $SUDO cp -P "$src" "$work/root/$f"; else $SUDO ln "$src" "$work/root/$f"; fi
 			echo "linked $c:/$f"
 		fi
 	done
@@ -114,21 +115,21 @@ done
 # and mode, plus a .migrated marker, else asks a helper and crashes
 # ("BUG IN LIBTRACE: Failed to migrate directory").
 db="$work/root/private/var/db"
-sudo install -d -o 272 -g 272 -m 0751 "$db/diagnostics"
-sudo install -d -o 272 -g 272 -m 0755 "$db/uuidtext" "$db/diagnostics/timesync"
+$SUDO install -d -o 272 -g 272 -m 0751 "$db/diagnostics"
+$SUDO install -d -o 272 -g 272 -m 0755 "$db/uuidtext" "$db/diagnostics/timesync"
 for d in diagnostics uuidtext diagnostics/timesync; do
-	sudo install -o 272 -g 272 -m 0644 /dev/null "$db/$d/.migrated"
+	$SUDO install -o 272 -g 272 -m 0644 /dev/null "$db/$d/.migrated"
 done
 
 # System keybag for the built-in AppleKeyStore (no passcode).
-sudo install -d -m 0700 -o 0 -g 0 "$work/root/private/var/keybags"
+$SUDO install -d -m 0700 -o 0 -g 0 "$work/root/private/var/keybags"
 printf '%s\n' '<?xml version="1.0" encoding="UTF-8"?>' \
 	'<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
 	'<plist version="1.0"><dict><key>KeyBagKeys</key><data>U1dFRVQ=</data></dict></plist>' |
-	sudo install -m 0600 -o 0 -g 0 /dev/stdin "$work/root/private/var/keybags/systembag.kb"
+	$SUDO install -m 0600 -o 0 -g 0 /dev/stdin "$work/root/private/var/keybags/systembag.kb"
 
 df -h "$work/root"
-sudo umount "$work/root"
+$SUDO umount "$work/root"
 # Linux hfsplus decomposes some non-ASCII names (localized Shortcuts examples)
 # differently from Apple's tables; let fsck_hfs rewrite them, then verify.
 fsck.hfsplus -f -y "$out" | grep -v 'Illegal name' || true
