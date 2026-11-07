@@ -117,7 +117,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   image is probably fine and the earlier xpcroleaccountd "stop" was likely the same stall,
   judged too early. Restored-jobs .simg was NOT flashed (userdata still = cleaned image). Open:
   what waits there (a timeout of a few minutes; time it, find it from the live log).
-- UPDATE 15:40: same boot reached backboardd (its usual log spam on the fb console), i.e. as far
+- UPDATE 15:40: same boot reached backboardd (its usual log spam on the fb console), then the
+  APPLE LOGO (second time on bonito), i.e. as far
   as the first logo boot. Cleaned image (no bluetoothd/fairplayd.H2) is good; no reflash needed.
   Next: USB live log (read the `SWEET USB:` lines: photo of the early console on a 0083 boot),
   then sweetfb_noconsole=1, RTC, RMI4 touch.
