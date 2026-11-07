@@ -2,7 +2,7 @@
 """Build the minimal Apple Device Tree that the SWEET xnu needs to boot.
 
 Only what the early boot path actually reads (see NOTES.md); every MMIO
-address comes from the sweet live FDT. Usage:  mkadt.py OUT.adt [--dump] [--qemu] [--highmem] [--no-ufs]
+address comes from the sweet live FDT. Usage:  mkadt.py OUT.adt [--dump] [--qemu] [--highmem] [--no-ufs] [--emmc]
 """
 import hashlib, os, struct, sys
 
@@ -33,6 +33,10 @@ SWEET_ECID = 0x5357454554000001  # 'SWEET' + 1, synthetic
 FB_W, FB_H, FB_STRIDE = 1080, 2160, 1080 * 4
 # Internal UFS host (ufshc@1d84000 "ufs_mem"); QEMU virt has none
 UFS, UFS_SIZE = 0x01d84000, 0x3000
+# bonito internal eMMC (sdhc_1 "hc", sdhci-msm v5) and its DMA bounce region in the
+# low DDR bank, which xnu does not manage with --highmem (bsd/dev/sweet_emmc.c)
+EMMC, EMMC_SIZE = 0x007c4000, 0x1000
+EMMC_DMA, EMMC_DMA_SIZE = 0xe0000000, 0x200000
 TIMEBASE = 19200000
 VTIMER_INTID = 19
 # QEMU virt (-M virt,gic-version=3 -cpu cortex-a76): GICD/GICR and the generic timer's CNTFRQ
@@ -74,7 +78,7 @@ def node(name, props=(), children=()):
     return n
 
 
-def build(seed=None, qemu=False, highmem=False, no_ufs=False):
+def build(seed=None, qemu=False, highmem=False, no_ufs=False, emmc=False):
     """qemu=True: same tree, but with QEMU virt's GIC addresses and CNTFRQ (tools/qemu-sweet.py)."""
     phys_base, mem_size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if highmem else (PHYS_BASE, MEM_SIZE)
     # Carve the panic log off the top so the kernel never allocates over it.
@@ -198,6 +202,12 @@ def build(seed=None, qemu=False, highmem=False, no_ufs=False):
     ])
 
     # bsd/dev/sweet_ufs.c: the UFS host ABL leaves running (absolute physical reg).
+    emmc_node = node('sweet-emmc', [
+        ph(),
+        ('compatible', cstr('qcom,sdhci-msm-v5')),
+        ('reg', u64(EMMC, EMMC_SIZE)),
+        ('dma', u64(EMMC_DMA, EMMC_DMA_SIZE)),
+    ])
     ufs = node('sweet-ufs', [
         ph(),
         ('compatible', cstr('qcom,ufshc')),
@@ -238,13 +248,13 @@ def build(seed=None, qemu=False, highmem=False, no_ufs=False):
         ('manufacturer', cstr('Apple Inc.')),
         ('#address-cells', u32(2)),
         ('#size-cells', u32(2)),
-    ], [chosen, defaults, cpus, arm_io, fbcon, buttons, pram] + product + ([] if qemu or no_ufs else [ufs]))
+    ], [chosen, defaults, cpus, arm_io, fbcon, buttons, pram] + product + ([] if qemu or no_ufs else [ufs]) + ([emmc_node] if emmc else []))
 
 
 if __name__ == '__main__':
     # --no-ufs: bonito has eMMC; without the node sweet_ufs never touches 0x1d84000
     root = build(qemu='--qemu' in sys.argv, highmem='--highmem' in sys.argv,
-                 no_ufs='--no-ufs' in sys.argv)
+                 no_ufs='--no-ufs' in sys.argv, emmc='--emmc' in sys.argv)
     blob = adt.serialize(root)
     open(sys.argv[1], 'wb').write(blob)
     if '--dump' in sys.argv:
