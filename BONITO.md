@@ -47,6 +47,20 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    On screen: `SWEET EMMC: card ready`, `SWEET EMMC: "userdata" ...`, `BSD root: emmcroot0`,
    then `Could not mount root, errno = 19` (ENODEV: userdata still holds pmOS's ext4). Read-only.
 
+5. 2026-11-07 ~13:15 CST **APPLE LOGO on bonito.** iOS 16.7.16 (20H392, iPhone X userland) root
+   flashed to userdata (`tools/img2simg.py` sparse image, ~6 min), kernel 0082, ADT
+   `--highmem --no-ufs --emmc` with D22AP /product, cmdline `debug=0xc serial=3 cpus=6 keepsyms=1
+   -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1 ignition_level=1
+   wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 sweetkeys=0
+   sweettouch=0 sweetusb=0` (image `shim/out/bonito-ios1.img`). 6 A55 cores (SMP works).
+   First boot hung after `exec auearlyboot` (MobileAccessoryUpdater FUD early boot waits on a
+   semaphore for AppleFirmwareUpdate callbacks that never come); it is an optional boot task
+   (no RequireSuccess/RequireRun in launchd's embedded Boot list), so `tools/bonito-root-tweaks.py`
+   renames it. Then: MSUEarlyBootTask, FIPSPOST_USER (4 passed, 8 ms), daemon wave,
+   backboardd, Apple logo. Clock starts at 1970 (no RTC driver).
+   Gentoo's fsck.hfsplus (diskdev_cmds 332.14) segfaults even on a fresh volume: image checked by
+   read-only mount instead. Flashing a raw image makes ABL write FILL chunks: use the .simg.
+
 ## Decisions
 - 2026-11-07: the user is fine with losing postmarketOS: the iOS root goes into `userdata`
   (no GPT changes). Before the first write: back up persist, modemst1/2, fsg, fsc, devinfo,
