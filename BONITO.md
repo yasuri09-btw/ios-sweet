@@ -54,3 +54,13 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - Persistent log: sweet's 0047 writes to the end of UFS userdata; needs the eMMC driver.
 - Touch: RMI4 over GENI I2C9 (sweet: Goodix on its own SE; 0060/0062/0063/0071).
 - Then the iOS root image (mkiosroot.sh) into userdata, D22AP /product (d22ap.lzfse needs lzfse).
+
+## Credits
+- **Nura (formerly postmarketOS)**: the running install that gave us bonito's live device tree,
+  memory map, boot image format and the eMMC driver's real-world configuration.
+- **The sdm670-mainline team** (gitlab.com/sdm670-mainline), including Richard Acayan's bonito
+  device trees: the hardware map for this phone (addresses, regulators, panel, touch, eMMC).
+- **Mainline Linux** (`sdhci-msm`, `sdhci`, `gcc-sdm845`): the hardware reference for the eMMC
+  bring-up; the driver here is written from the SDHCI/JEDEC specs with it as the guide.
+- **ios-sweet** (dipa-studio) and the hackiosx.dev ports: everything XNU, which this port builds on.
+- **blacktop/darwin-xnu-build** and Apple's open-source XNU releases.
