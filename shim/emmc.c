@@ -78,9 +78,9 @@
 #define R1		(C_RESP_48 | C_CRC | C_IDX)
 #define SECTOR		512u
 
-#define E_CMD_TIMEOUT	0x100	/* our own codes; low 16 bits = SDHCI error status */
-#define E_DATA_TIMEOUT	0x200
-#define E_INHIBIT	0x300
+#define E_CMD_TIMEOUT	0x10000	/* our own codes; low 16 bits = SDHCI error status */
+#define E_DATA_TIMEOUT	0x20000
+#define E_INHIBIT	0x30000
 
 static inline uint32_t rd(uintptr_t a) { return *(volatile uint32_t *)a; }
 static inline void wr(uintptr_t a, uint32_t v) { *(volatile uint32_t *)a = v; }
@@ -104,6 +104,8 @@ static uint64_t ms_ticks(unsigned ms)
 }
 
 static uint32_t rca;
+/* raw state at the last failed command, for the screen */
+static uint32_t last_sts, last_present, last_acmd;
 static uint8_t buf[64 * SECTOR] __attribute__((aligned(64)));
 
 static void line_reset(uint8_t mask)
@@ -150,6 +152,9 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 
 	uint32_t s = wait_int(INT_CMD_DONE, 100);
 	if (!s || (s & INT_ERROR)) {
+		last_sts = rd(HC(SD_INTSTS));
+		last_present = rd(HC(SD_PRESENT));
+		last_acmd = rd(HC(SD_HOSTCTL2));
 		uint32_t err = s ? (s >> 16) : E_CMD_TIMEOUT;
 		wr(HC(SD_INTSTS), 0xffffffff);
 		line_reset(RST_CMD | (nblk ? RST_DAT : 0));
@@ -250,7 +255,7 @@ static void delay_ms(unsigned ms)
  * touches stored data.
  */
 /* step (command index, or 0xc for clock) in the top byte, cmd() code below */
-#define FAIL(step, rc)	((uint32_t)(step) << 24 | (rc))
+#define FAIL(step, rc)	((uint32_t)(step) << 24 | ((rc) & 0xffffff))
 
 static uint32_t reinit_card(void)
 {
@@ -299,10 +304,19 @@ static uint32_t reinit_card(void)
 	rc = cmd(2, 0, C_RESP_136 | C_CRC, 0, 0, &r, 0);	/* ALL_SEND_CID */
 	if (rc)
 		return FAIL(2, rc);
+	con_hex2("CMD2", "cid0=", r, "sts=", rd(HC(SD_INTSTS)));
 	rca = 1;
-	rc = cmd(3, rca << 16, R1, 0, 0, &r, 0);	/* SET_RELATIVE_ADDR */
+	for (int i = 0; i < 3; i++) {			/* SET_RELATIVE_ADDR */
+		rc = cmd(3, rca << 16, R1, 0, 0, &r, 0);
+		con_hex2("CMD3", "try=", i, "rc=", rc);
+		if (!rc)
+			break;
+		con_hex2(" sts", "int=", last_sts, "present=", last_present);
+		delay_ms(5);
+	}
 	if (rc)
 		return FAIL(3, rc);
+	con_hex("CMD3 r1", r);
 	rc = cmd(7, rca << 16, C_RESP_48B | C_CRC | C_IDX, 0, 0, &r, 0);	/* SELECT */
 	if (rc)
 		return FAIL(7, rc);
