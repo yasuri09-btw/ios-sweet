@@ -104,3 +104,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   again, revert the job removal in tools/bonito-root-tweaks.py, rebuild the .simg, reflash.
   USB on 0083: no USB device enumerated on the PC; the `SWEET USB:` lines (just after
   `SWEET EMMC: "userdata"`) are still unread. Suspect ABL powers USB down at exit (GDSC/clocks).
+- UPDATE 15:35: boot 15:31:20 (0082, `shim/out/bonito-ios1.img`) on the cleaned image stopped
+  with last line `Adding 99 entry to persona Table for user: FFFFFFFF-FFFF-...` (usermanagerd
+  UMD_INIT, persona 99 System). So two boots of the cleaned image stopped early at different
+  places. Job removal is now opt-in (`--remove-jobs`). `--restore-jobs ORIG_PLIST` puts the two
+  jobs back from the IPSW's original launchd.plist (apfs-fuse OS.dmg, root/System/Library/xpc/).
+  Done locally: `research/ipsw-x/ios16-root.img` now has both jobs again (530 LaunchDaemons),
+  `.simg` rebuilt 15:34. NOT flashed yet (waiting for user OK). After flashing, boot
+  `shim/out/bonito-ios1.img`; expect the Apple logo again (earlier result with the jobs kept).
