@@ -135,7 +135,7 @@ static uint32_t wait_int(uint32_t want, unsigned ms)
  * state has all of ps_set, or none of ps_clear. Returns the status (with want
  * or'ed in when the present state decided), 0 on timeout.
  */
-static uint32_t wait_data(uint32_t want, uint32_t ps_set, uint32_t ps_clear, unsigned ms)
+static uint32_t __attribute__((unused)) wait_data(uint32_t want, uint32_t ps_set, uint32_t ps_clear, unsigned ms)
 {
 	uint64_t end = ticks() + ms_ticks(ms);
 	for (;;) {
@@ -190,7 +190,7 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 	 * the buffer (PS bit 11) without Buffer Read Ready ever latching.
 	 */
 	for (uint32_t b = 0; b < nblk; b++) {
-		s = wait_data(INT_BUF_RD, PS_BUF_RD_EN, 0, 1000);
+		s = wait_int(INT_BUF_RD, 3000);
 		if (!s || (s & INT_ERROR))
 			goto data_err;
 		wr(HC(SD_INTSTS), INT_BUF_RD);
@@ -201,7 +201,7 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 		last_w0 = w[0] ^ w[1] ^ w[48] ^ w[53];	/* any EXT_CSD content */
 	}
 	if (nblk || (flags & 3) == C_RESP_48B) {
-		s = wait_data(INT_XFER_DONE, 0, PS_DAT_INHIBIT, 1000);
+		s = wait_int(INT_XFER_DONE, 3000);
 		if (!s || (s & INT_ERROR))
 			goto data_err;
 		wr(HC(SD_INTSTS), INT_XFER_DONE);
@@ -316,10 +316,17 @@ static uint32_t reinit_card(void)
 	vs &= ~(VS_SELECT_IN_EN | VS_SELECT_IN_MASK);
 	wr(HC(MSM_VENDOR_SPEC), vs);
 
+	/* As the sdhci core does next: full reset (raises a BUS_OFF request). */
 	wr(HC(MSM_PWRCTL_MASK), 0xf);
+	line_reset(0x01);
+	uint32_t p0 = pwr_handshake();
+	con_hex2("RESET", "all, pwr irq=", p0, "present=", rd(HC(SD_PRESENT)));
+
 	wr(HC(SD_INTSIG_EN), 0);
 	wr(HC(SD_INTSTS_EN), 0x03ff003f);
-	wr8(HC(SD_TIMEOUT), 0x0e);
+	wr8(HC(SD_TIMEOUT), 0x07);			/* short: report a real data timeout */
+	/* Non-removable eMMC: force "card inserted" via the card-detect test bits. */
+	wr8(HC(SD_HOSTCTL), rd8(HC(SD_HOSTCTL)) | 0xc0);
 
 	/* Bus power on (VDD field 3.0 V for the 2.95 V vmmc), then 1.8 V signalling. */
 	wr8(HC(SD_HOSTCTL + 1), 0x0c | 0x01);
@@ -497,6 +504,7 @@ void test_emmc(void)
 	con_hex("CMD8 rc", rc);
 	if (rc) {
 		con_hex2(" sts", "int=", last_sts, "present=", last_present);
+		con_hex2(" err", "data=", last_sts >> 16, "acmd=", last_acmd & 0xffff);
 		con_hex2(" blk", "regs=", last_blk, "after=", last_after);
 		con_hex2(" data", "xor=", last_w0, "blk now=", rd(HC(SD_BLKSIZE)));
 		return;
