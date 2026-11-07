@@ -11,6 +11,7 @@
 #include "mmu.h"
 #include "loader.h"
 #include "ufs.h"
+#include "emmc.h"
 
 #define IMEM_RESTART_REASON	0x146bf65cUL	/* bonito: qcom,msm-imem@146bf000 restart_reason@65c */
 #define RESTART_BOOTLOADER	0x77665500U
@@ -385,10 +386,13 @@ void shim_main(uint64_t dtb)
 
 	/* bonito has eMMC (sdhc_1@7c4000), not UFS: there is nothing at sweet's
 	 * ufshc@1d84000, so skip test_ufs() and run the MMU/PSCI/GIC checks. */
-	stage = "ufs";
-	con_str("UFS", "skipped (bonito: eMMC)");
+	stage = "emmc";
+	con_clear(BLUE);
+	test_emmc();
 	con_skip();
-	delay_ms(5000);
+	con_str("HALT", "hold Power+VolDown for fastboot");
+	for (;;)
+		__asm__ volatile("wfe");
 
 	stage = "fill off";
 	uint64_t fill_off = ticks_fill(RED);
