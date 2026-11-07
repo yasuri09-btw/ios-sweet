@@ -42,6 +42,12 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    ADMA 64-bit (dmesg: "using ADMA 64-bit", CQE, HS400, card RCA 0001, 58.2 GiB user area).
    GCC clocks apps/ahb/ice/bus all on at handoff; ICE v3.1 (0x0301004b) needs no setup.
 
+## Decisions
+- 2026-11-07: the user is fine with losing postmarketOS: the iOS root goes into `userdata`
+  (no GPT changes). Before the first write: back up persist, modemst1/2, fsg, fsc, devinfo,
+  boot/dtbo/vbmeta (both slots) from pmOS (ABL fastboot has no `fetch`), and confirm the
+  write with the user.
+
 ## Next
 - eMMC root driver in XNU (replace sweet_ufs: 0028/0030/0034/0069): port the shim sequence, ADMA2
   (64-bit descriptors: RAM is above 4 GiB), then 8-bit HS/HS200 via CMD6 for speed. rd=emmcroot0.
