@@ -181,7 +181,10 @@ static uint32_t cmd(uint32_t idx, uint32_t arg, uint32_t flags, uint32_t nblk, u
 	}
 	return 0;
 
-data_err: {
+data_err:
+	last_sts = rd(HC(SD_INTSTS));
+	last_present = rd(HC(SD_PRESENT));
+	{
 		uint32_t err = s ? (s >> 16) : E_DATA_TIMEOUT;
 		wr(HC(SD_INTSTS), 0xffffffff);
 		line_reset(RST_CMD | RST_DAT);
@@ -202,6 +205,15 @@ data_err: {
 #define ACK_BUS_OK		(1u << 0)
 #define ACK_IO_OK		(1u << 2)
 #define VS_IO_PAD_PWR_SWITCH	(1u << 16)
+#define VS_POR_VAL		0xa9c
+#define VS_MCLK_SEL_MASK	(3u << 8)
+#define VS_MCLK_SEL_DFLT	(2u << 8)
+#define VS_SELECT_IN_EN		(1u << 18)
+#define VS_SELECT_IN_MASK	(7u << 19)
+#define MSM_VENDOR_SPEC3	0x250
+#define VS3_PWRSAVE_DLL		(1u << 3)
+#define MSM_DLL_CONFIG		0x200
+#define MSM_DDR_200_CFG		0x224
 #define GCC_SDCC1_APPS_RCGR	0x26028		/* CMD_RCGR; CFG +4, M +8, N +0xc */
 
 /*
@@ -261,6 +273,21 @@ static uint32_t reinit_card(void)
 {
 	uint32_t rcgr = GCC_BASE + GCC_SDCC1_APPS_RCGR;
 	con_hex2("RCG", "cfg=", rd(rcgr + 4), "m/n=", (rd(rcgr + 8) & 0xff) << 16 | (rd(rcgr + 0xc) & 0xff));
+
+	/*
+	 * ABL's controller reset does not cover the Qualcomm vendor registers,
+	 * which may still select HS400's strobe-clocked data sampling. Do what
+	 * mainline sdhci-msm does: vendor spec to its power-on value, then the
+	 * default (non-HS400) input clock and no DLL power save.
+	 */
+	con_hex2("VENDOR", "spec=", rd(HC(MSM_VENDOR_SPEC)), "spec3=", rd(HC(MSM_VENDOR_SPEC3)));
+	con_hex2("VENDOR", "dll=", rd(HC(MSM_DLL_CONFIG)), "ddr200=", rd(HC(MSM_DDR_200_CFG)));
+	wr(HC(MSM_VENDOR_SPEC), VS_POR_VAL);
+	wr(HC(MSM_VENDOR_SPEC3), rd(HC(MSM_VENDOR_SPEC3)) & ~VS3_PWRSAVE_DLL);
+	uint32_t vs = rd(HC(MSM_VENDOR_SPEC));
+	vs = (vs & ~VS_MCLK_SEL_MASK) | VS_MCLK_SEL_DFLT;
+	vs &= ~(VS_SELECT_IN_EN | VS_SELECT_IN_MASK);
+	wr(HC(MSM_VENDOR_SPEC), vs);
 
 	wr(HC(MSM_PWRCTL_MASK), 0xf);
 	wr(HC(SD_INTSIG_EN), 0);
@@ -441,8 +468,10 @@ void test_emmc(void)
 
 	rc = cmd(8, 0, R1, 1, TM_READ, 0, buf);
 	con_hex("CMD8 rc", rc);
-	if (rc)
+	if (rc) {
+		con_hex2(" sts", "int=", last_sts, "present=", last_present);
 		return;
+	}
 	uint32_t sectors = le32(buf + 212);
 	con_hex2("EXTCSD", "rev=", buf[192], "sectors=", sectors);
 	con_hex2("EXTCSD", "part_cfg=", buf[179], "cmdq_en=", buf[15]);
