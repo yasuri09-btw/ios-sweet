@@ -233,3 +233,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   unique-chip-id/chip-id; upper + lower case file names, 501:501 0600, dir 0755).
   Also seen: driverkitd CRASH sig 9 (line 606); securityd AKS sel 10 (wrap_key) -> unsupported x44.
   Image rebuilt + reflash (user: "do it for me") 17:09, then boot `shim/out/bonito-ios6-log.img`.
+- 17:15: reflash with the ByHost fix done (`research/ipsw-x/flash-userdata6.log`, 47/47), slot a
+  reset (retry was 0), `shim/out/bonito-ios6-log.img` booted 17:14:52. Expect: no datamigrator,
+  SpringBoard lock screen. Next after that: touch (Synaptics RMI4, GENI I2C9 @0x20) = kernel work.
