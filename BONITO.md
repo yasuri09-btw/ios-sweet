@@ -42,6 +42,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    ADMA 64-bit (dmesg: "using ADMA 64-bit", CQE, HS400, card RCA 0001, 58.2 GiB user area).
    GCC clocks apps/ahb/ice/bus all on at handoff; ICE v3.1 (0x0301004b) needs no setup.
 
+4. 2026-11-07 **XNU roots on the eMMC.** Patch 0082 (`bsd/dev/sweet_emmc.c`), CI run 42399429115,
+   ADT `mkadt.py --highmem --no-ufs --emmc`, cmdline as milestone 2 but `rd=emmcroot0`.
+   On screen: `SWEET EMMC: card ready`, `SWEET EMMC: "userdata" ...`, `BSD root: emmcroot0`,
+   then `Could not mount root, errno = 19` (ENODEV: userdata still holds pmOS's ext4). Read-only.
+
 ## Decisions
 - 2026-11-07: the user is fine with losing postmarketOS: the iOS root goes into `userdata`
   (no GPT changes). Before the first write: back up persist, modemst1/2, fsg, fsc, devinfo,
@@ -49,8 +54,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   write with the user.
 
 ## Next
-- eMMC root driver in XNU (replace sweet_ufs: 0028/0030/0034/0069): port the shim sequence, ADMA2
-  (64-bit descriptors: RAM is above 4 GiB), then 8-bit HS/HS200 via CMD6 for speed. rd=emmcroot0.
+- eMMC: done read-only (0082). Still to verify: 8-bit HS switch result, writes (emmcrw=1), speed.
+  Later: HS200/HS400 + 64-bit ADMA from xnu RAM instead of the bounce buffer.
 - Persistent log: sweet's 0047 writes to the end of UFS userdata; needs the eMMC driver.
 - Touch: RMI4 over GENI I2C9 (sweet: Goodix on its own SE; 0060/0062/0063/0071).
 - Then the iOS root image (mkiosroot.sh) into userdata, D22AP /product (d22ap.lzfse needs lzfse).
