@@ -209,3 +209,8 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   logo boot. => The stall is intermittent (minutes, sometimes permanent?) and was present
   before 0083-0085; shim passes nothing from ABL's FDT except the initrd range, so dtbo_a is
   not involved. 0085's sample: the stalled thread sits in a kernel page fault (dyld store).
+- **Boot time rule (user, 16:37):** sweet's port also needs ~4 min to boot; the multi-minute
+  pauses in the boot tasks are known on sweet too. **Wait >= 10 min before calling a boot
+  stuck.** The 13:55 (xpcroleaccountd), 15:54 (init_featureflags) and 16:13 (MSUEarlyBootTask)
+  "hangs" were most likely cut off too early. (0085 sample: the pause is a kernel page fault in
+  a dyld store; worth a look once kernel work resumes, but not a blocker.)
