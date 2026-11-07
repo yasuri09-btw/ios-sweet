@@ -29,8 +29,22 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    (>4 min seen) after `Security policy loaded: SWEET built-in Mobile File Integrity`.
    `-enable_kprintf_spam` makes the fb console very slow.
 
+3. 2026-11-07 **eMMC read from our own code** (shim probe, commit 2c40dd8 + this note).
+   ABL hands sdhc_1 over at SDHCI power-on defaults (hostctl 0, ctl2 0, clk 0x3 = card clock off,
+   bus power off); the card itself stays powered. Working sequence (mirrors mainline sdhci-msm):
+   VENDOR_SPEC (+0x20c) := 0xa9c, MCLK_SEL default, HC_SELECT_IN off, VENDOR_SPEC3 PWRSAVE_DLL off;
+   RESET_ALL; bus power 3.0 V + 1.8 V signalling, each acked via PWRCTL (+0x240 status/+0x248
+   clear/+0x24c ctl: BUS_ON->BUS_SUCCESS, IO_LOW->IO_SUCCESS); IO_PAD_PWR_SWITCH; clock
+   div 0x3ff; CMD0, CMD1 (ocr 0xc0ff8080), CMD2, CMD3 rca 1, CMD7; clock div 8 (<=24 MHz), 1-bit.
+   **PIO does not work on this controller**: CMD8 is accepted (R1 0x900), the card returns to
+   tran, but Buffer Read Ready never latches, the data port reads 0 and no data timeout fires.
+   **ADMA2 (32-bit) works** with the SMMU (stream 0x140) as ABL left it. pmOS/mainline also uses
+   ADMA 64-bit (dmesg: "using ADMA 64-bit", CQE, HS400, card RCA 0001, 58.2 GiB user area).
+   GCC clocks apps/ahb/ice/bus all on at handoff; ICE v3.1 (0x0301004b) needs no setup.
+
 ## Next
-- eMMC root driver (replace sweet_ufs: 0028/0030/0034/0069) for sdhc_1, rd=emmcroot0 or similar.
+- eMMC root driver in XNU (replace sweet_ufs: 0028/0030/0034/0069): port the shim sequence, ADMA2
+  (64-bit descriptors: RAM is above 4 GiB), then 8-bit HS/HS200 via CMD6 for speed. rd=emmcroot0.
 - Persistent log: sweet's 0047 writes to the end of UFS userdata; needs the eMMC driver.
 - Touch: RMI4 over GENI I2C9 (sweet: Goodix on its own SE; 0060/0062/0063/0071).
 - Then the iOS root image (mkiosroot.sh) into userdata, D22AP /product (d22ap.lzfse needs lzfse).
