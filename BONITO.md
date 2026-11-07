@@ -250,3 +250,14 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 17:34: **cpus=1 run is much faster**: booted 17:29:12, short wait at `exec mount`, `exec
   SpringBoard` ~17:33, **Apple logo ~17:34** (6-core runs: 5-10+ min with multi-minute freezes).
   Supports: the freezes are an SMP race in our kernel (page-fault path, 0085 sample).
+- 17:38: **cpus=1 log** (`logs/boot-cpu1.txt`, 411797 bytes, 8 samples): SpringBoard main thread
+  blocked in a synchronous NSXPC call from CoreServices (LaunchServices) to **lsd** (samples 5-7,
+  same frames). lsd's busy thread: InstalledContentLibrary -> **libMobileGestalt**, waiting =
+  ios-flame's finding: MobileGestalt WifiAddress reads /chosen mac-address-wifi0, else waits 5 s
+  for an IONetworkController, per app bundle (~190 apps ~= 16 min). backboardd idle in runloops.
+  Fix (ADT only): `tools/mkadt.py` adds /chosen mac-address-wifi0/bluetooth0/ethernet0
+  (02:53:57:45:00:01..03). `shim/out/bonito-ios2.adt` (= `--highmem --no-ufs --emmc`, regenerated
+  ADT matches the old one except random-seed). Image `shim/out/bonito-ios8-mac.img` = 0085 +
+  bonito-ios2.adt + cpus=1 + ufslogsecs=2 + sweetsamplesecs=120.
+  Also from flame, not done yet: lsd may wait for "seeding" forever if the LaunchServices
+  migrator never ran (flame ran 00LaunchServicesMigrator by hand); IORTC removed a 30 s wait.
