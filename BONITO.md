@@ -83,3 +83,17 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   bring-up; the driver here is written from the SDHCI/JEDEC specs with it as the guide.
 - **ios-sweet** (dipa-studio) and the hackiosx.dev ports: everything XNU, which this port builds on.
 - **blacktop/darwin-xnu-build** and Apple's open-source XNU releases.
+
+## Handoff (2026-11-07 ~13:30 CST, session paused for usage limit)
+- Phone: booted iOS once with logo; console then flooded by bluetoothd + fairplayd.H2 relaunch
+  loops; `spindump` appeared (something hung; unknown what). userdata holds the image WITH
+  auearlyboot disabled but still WITH bluetoothd/fairplayd jobs.
+- Ready, NOT flashed: `research/ipsw-x/ios16-root.simg` = image + bonito-root-tweaks (auearlyboot
+  renamed, bluetoothd + fairplayd.H2 jobs removed). Flash: `doas fastboot flash userdata ...simg`
+  (~6 min; trust only the unbuffered log, never kill it early).
+- Building: kernel 0083 (USB live log, SDM670 USB clocks), CI run 42406204342 (commit e7d98b5).
+  When done: download to xnu/out-0083, mkpayload with the milestone-5 cmdline but sweetusb=1
+  (or omit), boot it, run `tools/sweet-usbnet.sh logs/boot.txt` on the PC (needs sudo->doas)
+  to receive the console on udp/5140.
+- Next after that: read the spindump cause from the live log; then sweetfb_noconsole=1;
+  RTC (clock starts 1970); RMI4 touch driver.
