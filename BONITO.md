@@ -247,3 +247,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   ~55 s (screen's "fips" = launchd's [System Event] replay of the boot-task list, misleading).
   tzinit passed instantly on all earlier boots -> same random freeze. Next: `cpus=1` run
   (`shim/out/bonito-ios5-cpu1.img`, 0085, sampler on all processes every 45 s), no new patch.
+- 17:34: **cpus=1 run is much faster**: booted 17:29:12, short wait at `exec mount`, `exec
+  SpringBoard` ~17:33, **Apple logo ~17:34** (6-core runs: 5-10+ min with multi-minute freezes).
+  Supports: the freezes are an SMP race in our kernel (page-fault path, 0085 sample).
