@@ -177,3 +177,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Fixed with `doas fastboot set_active a` (user OK) -> unbootable no, retry 3. TWRP boots again.
   The eMMC log was still 0084's (total 29865, flush #5): **0085 never ran**; retry it.
   Watch the retry count: nothing marks the slot successful now, so it may run out again.
+- 16:20: **0085 sampler result** (`logs/boot-0085.txt`, 3 samples, slide 0x14554000): stall at
+  MSUEarlyBootTask[8]; its only thread sits at the same pc in all samples, inside **dyld**
+  (unslid pc 0x1a4643e0c = `str xzr, [x23, #8]!`, a plain store near a function start) -> blocked
+  in a kernel page fault, before main(). launchd idle (libsystem_kernel/libdispatch waits).
+  Not memory (126258 free 16K pages at boot) and not eMMC (the log writer kept flushing the
+  samples during the stall). Open: what the fault waits on (page-in of dyld/cache __DATA?).
+  `tools/dsc-a2s.py` resolves cache addresses to images (symbol lookup still prints `?`).
+  Slot a retry count: 1 left after this TWRP boot. User: no more kernel patches for now.

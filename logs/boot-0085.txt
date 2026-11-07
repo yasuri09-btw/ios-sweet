@@ -1,0 +1,295 @@
+Darwin Kernel Version 22.6.0: Mon Aug 14 05:06:07 UTC 2023; runner:xnu-8796.141.3
+pmap_startup() init/release time: 13352 microsec
+pmap_startup() delayed init/release of 0 pages
+vm_page_bootstrap: 126258 free pages, 2878 wired pages, (up to 0 of which are delayed free)
+VM boostrap: 97 maps, 204 entries and 512 holes available
+Maximum number of VM swap files: 100
+ipc_kernel_copy_map     : 0xfffffe10000ac000 - 0xfffffe10008ac000 (8M)
+zones                   : 0xfffffe10008ac000 - 0xfffffe30008ac000 (128G)
+bufferhdr               : 0xfffffe30008ac000 - 0xfffffe3000a1c000 (1472K)
+gIOKitPageableFixed2    : 0xfffffe3000a1c000 - 0xfffffe3006a1c000 (96M)
+mb                      : 0xfffffe3006a1c000 - 0xfffffe300aa1c000 (64M)
+gIOKitPageableFixed3    : 0xfffffe300aa1c000 - 0xfffffe3010a1c000 (96M)
+kmem_sprayqtn_range     : 0xfffffe3010a1c000 - 0xfffffe304e880000 (990M)
+zone_meta               : 0xfffffe304e880000 - 0xfffffe3056e70000 (133M)
+kmem_data_range         : 0xfffffe3056e70000 - 0xfffffe720ebc0000 (262G)
+ipc_kernel_map          : 0xfffffe720ebc0000 - 0xfffffe7212bc0000 (64M)
+compressor              : 0xfffffe7212bc0000 - 0xfffffe79f4af4000 (31G)
+io_submap               : 0xfffffe79f4af4000 - 0xfffffe79f52f4000 (8M)
+gIOKitPageableFixed1    : 0xfffffe79f52f4000 - 0xfffffe79fb2f4000 (96M)
+kmem_ptr_range          : 0xfffffe79fb2f4000 - 0xfffffe8ff73b4000 (87G)
+kmem_ptr_range_meta     : 0xfffffe8ff73b4000 - 0xfffffe8ff7bf4000 (8M)
+bsd_pageable            : 0xfffffe8ff7bf4000 - 0xfffffe8ff9dfc000 (34M)
+gIOKitPageableFixed0    : 0xfffffe8ff9dfc000 - 0xfffffe8fffdfc000 (96M)
+kmem_large_ranges[1]    : 0 - 0 (0B)
+kmem_large_ranges[2]    : 0 - 0 (0B)
+kmem_large_ranges[3]    : 0 - 0 (0B)
+kmem_large_ranges[4]    : 0xfffffe30185e8800 - 0xfffffe304e880000 (866M)
+kmem_large_ranges[5]    : 0xfffffe388de1a000 - 0xfffffe720ebc0000 (230G)
+"vm_compressor_mode" is 4
+zone_init: pgzalloc  0xfffffe10008ac000:0xfffffe1001828000 (15M) [495 slots]
+zone_init: map VM    0xfffffe1001828000:0xfffffe14ce2a0000 (19G)
+zone_init: map RO    0xfffffe14ce2a0000:0xfffffe1667b70000 (6G)
+zone_init: map GEN0  0xfffffe1667b70000:0xfffffe1b345e8000 (19G)
+zone_init: map GEN1  0xfffffe1b345e8000:0xfffffe2001064000 (19G)
+zone_init: map GEN2  0xfffffe2001064000:0xfffffe24cdae0000 (19G)
+zone_init: map GEN3  0xfffffe24cdae0000:0xfffffe299a55c000 (19G)
+zone_init: map DATA  0xfffffe299a55c000:0xfffffe30008ac000 (25G)
+zone_init: metadata  0xfffffe304e890000:0xfffffe3056890000 (128M)
+zone_init: metabits  0xfffffe3056890000:0xfffffe3056e60000 (5M)
+zone_init: extra     0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 501 holes left
+Long logs support configured: size: 16384
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+Log queues configured: slot count: 48, per-slot size: 32768, total size: 1572864
+Firehose configured: 16 chunks, 8 io pages
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+kdp_core zlib memory 0x8000
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+iBoot version: sweet-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+SWEET FB: AppleCLCD 1080x2160 stride 4320 at 0x9c000000, default surface 1, presented as 1125x2436
+SWEET CPU: requested=6 selected=6 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+SWEET CPU: cpu=1 CPU_ON target=0x100 entry_pa=0x10148e000 context=1
+SWEET CPU: cpu=1 PSCI CPU_ON rc=0
+SWEET CPU: cpu=1 mpidr=0x100 came alive; SGI1 OK
+SWEET CPU: cpu=2 CPU_ON target=0x200 entry_pa=0x10148e000 context=2
+SWEET CPU: cpu=2 PSCI CPU_ON rc=0
+SWEET CPU: cpu=2 mpidr=0x200 came alive; SGI1 OK
+SWEET CPU: cpu=3 CPU_ON target=0x300 entry_pa=0x10148e000 context=3
+SWEET CPU: cpu=3 PSCI CPU_ON rc=0
+SWEET CPU: cpu=3 mpidr=0x300 came alive; SGI1 OK
+SWEET CPU: cpu=4 CPU_ON target=0x400 entry_pa=0x10148e000 context=4
+SWEET CPU: cpu=4 PSCI CPU_ON rc=0
+SWEET CPU: cpu=4 mpidr=0x400 came alive; SGI1 OK
+SWEET CPU: cpu=5 CPU_ON target=0x500 entry_pa=0x10148e000 context=5
+SWEET CPU: cpu=5 PSCI CPU_ON rc=0
+SWEET CPU: cpu=5 mpidr=0x500 came alive; SGI1 OK
+SWEET CPU: 6/6 CPUs initialized, SGI1 verified
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+	The Regents of the University of California. All rights reserved.
+
+MAC Framework successfully initialized
+using 2535 buffer headers and 2535 cluster IO buffer headers
+ktriage_register_subsystem_strings: set subsystem 8 strings
+calling mpo_policy_init for SWEET AMFI
+Security policy loaded: SWEET built-in Mobile File Integrity (SWEET AMFI)
+SWEET AMFI: platform binary policy registered (0)
+calling mpo_policy_init for Sandbox
+Security policy loaded: SWEET permissive sandbox stand-in (Sandbox)
+SWEET Sandbox: permissive policy registered (0)
+SWEET HFS: hfs-627.100.6 registered
+mcache: 6 CPU(s), 64 bytes CPU cache line size
+mbinit: done [64 MB total pool size, (42/21) split]
+dlil_init: Waiting for all the create dlil kernel threads to get scheduled at least once.
+dlil_init: All the created dlil kernel threads have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface lo0 have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface gif0 have been scheduled at least once. Proceeding.
+skip attaching fsw to lo0 using legacy TX modelifnet_attach: All kernel threads created for interface stf0 have been scheduled at least once. Proceeding.
+SWEET EMMC: card ready, rca 1, 8-bit high speed (pwr 0x2/0x4)
+SWEET EMMC: "userdata": first sector 0x108e400, 51163 MiB, read-write, DMA at 0xe0000000
+SWEET LOG: console log to the last 4100 KiB of the eMMC partition (sector 0x7479fd0)
+SWEET USB: GDSC usb30_prim 0xf8222000 (on)
+SWEET USB: clk master       CBCR 0x00004221 (on)
+SWEET USB: clk sleep        CBCR 0x00000001 (on)
+SWEET USB: clk utmi         CBCR 0x00000001 (on)
+SWEET USB: clk cfg-noc-axi  CBCR 0x00000001 (on)
+SWEET USB: clk aggre-axi    CBCR 0x00000001 (on)
+SWEET USB: clk ahb2phy      CBCR 0x00000001 (on)
+SWEET USB: clk clkref       CBCR 0x00000001 (on)
+SWEET USB: DWC3 GSNPSID 0x5533300a GCTL 0x00112000 GSTS 0x7e800000 GUSB2PHYCFG 0x00002400
+SWEET USB: DWC3 DCFG 0x004808f0 DCTL 0x10f00000 DEVTEN 0x00000277 DSTS 0x00d2e259 DALEPENA 0x0000000f
+SWEET USB: DWC3 GEVNTADR 0x0000000099762000 GEVNTSIZ 0x80001000 GEVNTCOUNT 0x00000000 GHWPARAMS0 0x4020400a
+ifnet_attach: All kernel threads created for interface ue0 have been scheduled at least once. Proceeding.
+skip attaching fsw to ue0 using legacy TX modelSWEET NET: kernel_task ue0 add address 192.168.7.2
+SWEET USB: ue0 192.168.7.2/24 up (err 0)
+SWEET USB: soft reset done after 1 ms, GCTL 0x00112000 DCFG 0x004808f0
+SWEET USB: ep0 cmd 0x1 timeout
+SWEET USB: endpoint 0 setup failed
+SWEET USB: QUSB2 PLL_STATUS 0x64646464 PWR_CTRL1 0x23232323 PORT_TUNE1 0x67676767 TEST1 0x90909090
+BSD root: emmcroot0, major 1, minor 0
+jnl: b(1, 0): replay_journal: from: 5554176 to: 6056448 (joffset 0x82000)
+jnl: b(1, 0): journal replay done.
+hfs: mounted iOSRoot on device b(1, 0)
+SWEET: root volume is not authenticated (error 25); continuing unsealed
+No POST boot-arg set.
+load_init_program: attempting to load /usr/appleinternal/sbin/launchd.development
+VM Swap Subsystem is ON
+load_init_program: attempting to load /sbin/launchd
+exec launchd
+shared_region: 0xac73a075d1e9f3df [1(launchd)] check_np(0x16d197bc0) vm_shared_region_start_address() failed
+SWEET Sandbox: launchd op 2
+Darwin Ignition Sequence Version 1.0.0: Tue Jul  2 20:41:23 PDT 2024; root:libignition-51~1974/libignition_core/RELEASE_ARM64
+libignition: 1: arguments           :
+libignition: 1:   ignition level    : 0x1
+libignition: 1:   force dylib root  : 0x0
+libignition: 1:   halt after stage  : n/a
+libignition: 1: ignition blob not available
+libignition: 1: configuration         :
+libignition: 1:   program             : launchd
+libignition: 1:   os environment      : n/a
+libignition: 1:   rd                  : emmcroot0
+libignition: 1:   arp0                : n/a
+libignition: 1:   rp                  : n/a
+libignition: 1:   pivot src           : n/a
+libignition: 1:   root ramdisk        : 0x0
+libignition: 1:   restore             : 0x0
+libignition: 1:   root device info    : 0x0
+libignition: 1:   can haz debugger    : 0x1
+libignition: 1:   rootfs mount flags  : 0x480d000
+libignition: 1:   ecid                : 0x0
+libignition: 1:   hardware target     : d22ap
+libignition: 1:   initproc            : 0x1
+libignition: 1:   single user         : 0x0
+libignition: 1:   userspace reboot    : 0x0
+libignition: 1:   secure boot level   : 0x0
+libignition: 1:   os version          : n/a
+libignition: 1: parameters          :
+libignition: 1:   version           : 0x1
+libignition: 1:   argc              : 0x1
+libignition: 1:   log fd            : 0xffffffffffffffff
+libignition: 1:   platform          : 0x2
+libignition: 1: boot spec           :
+libignition: 1:   name              : local
+libignition: 1:   stage count       : 0x7
+libignition: 1:        hello: commence primary ignition
+libignition: 1:        hello: hello from launchd.1
+libignition: 1:      preboot: ignition level insufficient: actual = 1, required >= 2
+libignition: 1: cryptex1 sniff: ignition level insufficient: actual = 1, required >= 2
+libignition: 1:        graft: ignition level insufficient: actual = 1, required >= 3
+libignition: 1: select os cryptex path: ignition level insufficient: actual = 1, required >= 3
+libignition: 1:  dylib_cache: discovering shared library cache
+libignition: 1:  dylib_cache: finding shared cache on system volume: ignition level = 1, search root fd = 4, subpath = System/Library/Caches/com.apple.dyld/
+libignition: 1:  dylib_cache: opened shared cache directory: /System/Library/Caches/com.apple.dyld
+libignition: 1:      goodbye: ignition sequence complete
+shared_region: 0xac73a075d1e9f3df [1(launchd)] check_np(0x16d197150) vm_shared_region_start_address() failed
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202f7df:'dyld_shared_cache_arm64'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202f6cf:'dyld_shared_cache_arm64.01'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202c80f:'dyld_shared_cache_arm64.02'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20306bf:'dyld_shared_cache_arm64.03'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20305af:'dyld_shared_cache_arm64.04'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d203049f:'dyld_shared_cache_arm64.05'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d203027f:'dyld_shared_cache_arm64.06'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d203016f:'dyld_shared_cache_arm64.07'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d203005f:'dyld_shared_cache_arm64.08'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202ff4f:'dyld_shared_cache_arm64.09'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202dc3f:'dyld_shared_cache_arm64.10'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202db2f:'dyld_shared_cache_arm64.11'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202da1f:'dyld_shared_cache_arm64.12'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202d90f:'dyld_shared_cache_arm64.13'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202e5cf:'dyld_shared_cache_arm64.14'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202e4bf:'dyld_shared_cache_arm64.15'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202e3af:'dyld_shared_cache_arm64.16'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202e29f:'dyld_shared_cache_arm64.17'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202e07f:'dyld_shared_cache_arm64.18'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202df6f:'dyld_shared_cache_arm64.19'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202de5f:'dyld_shared_cache_arm64.20'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202dd4f:'dyld_shared_cache_arm64.21'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202ef5f:'dyld_shared_cache_arm64.22'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202ee4f:'dyld_shared_cache_arm64.23'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202d7ff:'dyld_shared_cache_arm64.24'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202d5df:'dyld_shared_cache_arm64.25'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202d4cf:'dyld_shared_cache_arm64.26'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202d3bf:'dyld_shared_cache_arm64.27.dylddata'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202f4af:'dyld_shared_cache_arm64.28.dyldlinkedit'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202cc4f:'dyld_shared_cache_arm64.29'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202cb3f:'dyld_shared_cache_arm64.30'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d202c91f:'dyld_shared_cache_arm64.31'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20452af:'dyld_shared_cache_arm64.32'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d2045b2f:'dyld_shared_cache_arm64.33'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d2045a1f:'dyld_shared_cache_arm64.34'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d204590f:'dyld_shared_cache_arm64.35'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20457ff:'dyld_shared_cache_arm64.36'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20456ef:'dyld_shared_cache_arm64.37'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20455df:'dyld_shared_cache_arm64.38'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20454cf:'dyld_shared_cache_arm64.39'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20453bf:'dyld_shared_cache_arm64.40'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d20463af:'dyld_shared_cache_arm64.41.dylddata'): not in trust cache
+shared_region: 0xac73a075d1e9f3df [1(launchd)] map(0xac73a075d204629f:'dyld_shared_cache_arm64.42.dyldlinkedit'): not in trust cache
+SWEET Sandbox: launchd op 4
+com.apple.xpc.launchd|1969-12-31 16:00:58.948317 <Notice>: hello
+com.apple.xpc.launchd|1969-12-31 16:00:58.957444 <Error>: Could not opt into 50 MB Jetsam high watermark: 22: Invalid argument
+com.apple.xpc.launchd|1969-12-31 16:00:58.957864 <Notice>: Darwin Bootstrapper Version 7.0.0: Thu Feb  1 20:33:09 PST 2024; root:libxpc_executables-2462.140.4.702.1~1/launchd/RELEASE_ARM64
+com.apple.xpc.launchd|1969-12-31 16:00:58.958009 <Notice>: boot-args = debug=0xc serial=3 cpus=6 keepsyms=1 -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 sweetkeys=0 sweettouch=0 sweetusb=2 ufslogsecs=2 sweetsample=* sweetsamplesecs=45
+com.apple.xpc.launchd|1969-12-31 16:00:58.977222 (system) <Notice>: entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:00:58.979561 (system) <Notice>: created
+SWEET NET: launchd lo0 add address 127.0.0.1
+skip attaching fsw to lo0 using legacy TX modelcom.apple.xpc.launchd|1969-12-31 16:00:58.981622 (mount-phase-1) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xfffffe2001407bc0 is in state of change (start)
+vnode_create_internal: alias vnode 0xfffffe2001407bc0 is in state of change (end)
+exec mount_hfs
+GetMasterBlock: Error 16 opening /dev/emmcroot0
+/dev/emmcroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:00:59.685888 (data-protection) <Notice>: Doing boot task
+exec seputil
+init_data_protection: No SEP present on this device
+com.apple.xpc.launchd|1969-12-31 16:01:00.401609 (finish-obliteration) <Notice>: Doing boot task
+exec mobile_obliterator
+Obliterator: In INIT check
+Wed Dec 31 16:01:00 1969: checkOblitNVRAMkey: IORegistryEntryFromPath failed [gF: 0x0000000000000000]
+Obliterator: No obliteration needed, continue booting, returning 0
+com.apple.xpc.launchd|1969-12-31 16:01:00.772337 (detect-installed-roots) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:00.773922 <Notice>: No cookie from system volume
+com.apple.xpc.launchd|1969-12-31 16:01:00.774203 <Notice>: No cookie: /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/.roots-installed
+com.apple.xpc.launchd|1969-12-31 16:01:00.774258 (commit-boot-mode) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:00.774293 <Notice>: boot-mode committed: (null)
+com.apple.xpc.launchd|1969-12-31 16:01:00.774366 (restore-datapartition) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:00.775903 (restore-datapartition) <Notice>: optional boot task not present
+com.apple.xpc.launchd|1969-12-31 16:01:00.775995 (mount-phase-2) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/Pearl/System/Library/Pearl/ReferenceFrames failed error: 2
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/FactoryData/System/Library/Caches/com.apple.factorydata failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:01:00.801418 (init-with-data-volume) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:00.830312 (MSUEarlyBootTask) <Notice>: Doing boot task
+exec MSUEarlyBootTask
+SMP --- sample 0
+SMP MSUEarlyBootTask[8] slide 0x14554000 mh 0x1048f8000
+SMP MSUEarlyBootTask t0 pc 0x1b8b97e0c lr 0x1b8b99ee0 sp 0x16b5078f0 bt 0x1b8b99ee0 0x1b8b78238 0x0
+SMP launchd[1] slide 0x14554000 mh 0x102c68000
+SMP launchd t0 pc 0x1d6b6a178 lr 0x102ca6668 sp 0x16d21dc20 bt 0x102ca9e18 0x102ca8bdc 0x102ca8060 0x102ca8230 0x1a20eb7a8 0x1a20ec780 0x1a20c76fc 0x1a20c81b0 0x1a20d1f14 0x1e60eebd0 0x1e60ee720
+SMP launchd t1 pc 0x1d6b6c92c lr 0x1a20d27f4 sp 0x16d3c2f90 bt 0x1a20d27c8 0x0
+SMP launchd t2 pc 0x1d6b654f0 lr 0x1e60eec1c sp 0x16d336b30 bt 0x1e60ee720
+SMP kernel_task[0] slide 0x0 mh 0x0
+SMP --- sample 1
+SMP MSUEarlyBootTask[8] slide 0x14554000 mh 0x1048f8000
+SMP MSUEarlyBootTask t0 pc 0x1b8b97e0c lr 0x1b8b99ee0 sp 0x16b5078f0 bt 0x1b8b99ee0 0x1b8b78238 0x0
+SMP launchd[1] slide 0x14554000 mh 0x102c68000
+SMP launchd t0 pc 0x1d6b6a178 lr 0x102ca6668 sp 0x16d21dc20 bt 0x102ca9e18 0x102ca8bdc 0x102ca8060 0x102ca8230 0x1a20eb7a8 0x1a20ec780 0x1a20c76fc 0x1a20c81b0 0x1a20d1f14 0x1e60eebd0 0x1e60ee720
+SMP launchd t1 pc 0x1d6b6c92c lr 0x1a20d27f4 sp 0x16d3c2f90 bt 0x1a20d27c8 0x0
+SMP launchd t2 pc 0x1d6b654f0 lr 0x1e60eec1c sp 0x16d2aab30 bt 0x1e60ee720
+SMP kernel_task[0] slide 0x0 mh 0x0
+SMP --- sample 2
+SMP MSUEarlyBootTask[8] slide 0x14554000 mh 0x1048f8000
+SMP MSUEarlyBootTask t0 pc 0x1b8b97e0c lr 0x1b8b99ee0 sp 0x16b5078f0 bt 0x1b8b99ee0 0x1b8b78238 0x0
+SMP launchd[1] slide 0x14554000 mh 0x102c68000
+SMP launchd t0 pc 0x1d6b6a178 lr 0x102ca6668 sp 0x16d21dc20 bt 0x102ca9e18 0x102ca8bdc 0x102ca8060 0x102ca8230 0x1a20eb7a8 0x1a20ec780 0x1a20c76fc 0x1a20c81b0 0x1a20d1f14 0x1e60eebd0 0x1e60ee720
+SMP launchd t1 pc 0x1d6b6c92c lr 0x1a20d27f4 sp 0x16d3c2f90 bt 0x1a20d27c8 0x0
+SMP launchd t2 pc 0x1d6b654f0 lr 0x1e60eec1c sp 0x16d2aab30 bt 0x1e60ee720
+SMP kernel_task[0] slide 0x0 mh 0x0
