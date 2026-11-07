@@ -1,0 +1,45 @@
+diff --git a/bsd/dev/sweet_emmc.c b/bsd/dev/sweet_emmc.c
+index 12ad6d0..94cab08 100644
+--- a/bsd/dev/sweet_emmc.c
++++ b/bsd/dev/sweet_emmc.c
+@@ -38,6 +38,7 @@
+ /* osfmk/arm/machine_routines.h, not exported to the BSD layer */
+ extern vm_offset_t ml_io_map(vm_offset_t phys_addr, vm_size_t size);
+ extern vm_offset_t ml_io_map_wcomb(vm_offset_t phys_addr, vm_size_t size);
++extern void sweet_usb_probe(void);        /* bsd/dev/sweet_usb.c (boot-arg sweetusb) */
+ 
+ /* SDHCI */
+ #define SD_BLKSIZE      0x04    /* block size (16) | block count (16) */
+@@ -690,6 +691,8 @@ sweet_emmc_init(void)
+ 	se.ready = true;
+ 	printf("SWEET EMMC: \"%s\": first sector 0x%llx, %llu MiB, %s, DMA at 0x%x\n",
+ 	    want, se.first, se.nsect >> 11, se.writable ? "read-write" : "read-only", se.dma_pa);
++	/* As sweet_ufs_init does: USB device mode (USB Ethernet, live console log). */
++	sweet_usb_probe();
+ 	return 0;
+ }
+ 
+diff --git a/bsd/dev/sweet_usb.c b/bsd/dev/sweet_usb.c
+index b6c1a41..a883bb4 100644
+--- a/bsd/dev/sweet_usb.c
++++ b/bsd/dev/sweet_usb.c
+@@ -51,13 +51,15 @@ static const struct {
+ 	const char *name;
+ 	uint32_t    off;
+ } usb_cbcr[] = {
+-	{ "master", 0x0f010 },
+-	{ "sleep", 0x0f014 },
+-	{ "utmi", 0x0f018 },
++	/* bonito (SDM670) CBCRs, from mainline gcc-sdm845.c; sweet (SM7150) had
++	 * master/sleep/utmi at 0x0f010/14/18 and clkref at 0x8c010. */
++	{ "master", 0x0f00c },
++	{ "sleep", 0x0f010 },
++	{ "utmi", 0x0f014 },
+ 	{ "cfg-noc-axi", 0x0502c },
+ 	{ "aggre-axi", 0x8201c },
+ 	{ "ahb2phy", 0x6a004 },
+-	{ "clkref", 0x8c010 },
++	{ "clkref", 0x8c008 },
+ };
+ 
+ #define DWC3_PA                 0x0a600000
