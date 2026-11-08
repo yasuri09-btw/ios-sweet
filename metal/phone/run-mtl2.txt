@@ -1,0 +1,2 @@
+# sweetmtl=2 boots: backboardd renders through SweetMetal2 (log /var/local/mtl2.log); no GPU tests
+# beside it. sweetrun still starts, so run.log shows the job ran.

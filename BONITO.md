@@ -691,3 +691,10 @@ updates) are days, not months.
   (pipeline compiled on the phone, 10 ms) exact: `logs/vktest-0095-MILESTONE.png`.
   Dylib load 1474 ms. Next: metal2vulkan bridge + SweetMetal2 frontend (flame phone/metal2) on CI,
   then sweetmtl=2.
+- 10:56: `ios27-mtl1` (sweetmtl=1, 93 MB image: max-download-size 0x10000000): 12/12 boot files
+  (SweetMetal2.bundle in /System/Library/Extensions, CI metal2 42501707052). **m2vtest: metal2vulkan
+  on Turnip on the A615 works**: compute bad 0/1000, render bad 0/64, import bad 0/4096; QuartzCore
+  metallib blind-translated (no function constants, refusals expected): 141 functions, kernels 3 ok
+  4 failed, pairs 12 ok 9 failed, 49 s. UI speed unchanged (CPU rendering, as expected).
+  Next: `shim/out/bonito-ios28-mtl2.img` (sweetmtl=2, backboardd only, no tests; log
+  /var/local/mtl2.log).
