@@ -670,3 +670,13 @@ updates) are days, not months.
   swizzle 6, UBWC 2, input_bits 32), SweetGPUABI.h = metal/turnip/NativeAdrenoABI.h, config table +
   files.arm64 entries, pmap_sync_page_attributes_phys ptoa fix. Syntax-checked locally.
 - 02:40: 0094 CI 42459830614 success -> `xnu/out-0094`, scan-sha3 0. Images `shim/out/bonito-ios24-{gpu,trip}.img` (sweetgpu=1, no sweetmtl): regression check of the present path pending.
+- 10:2x (11-08): **0095** (28b21b1): boot files + `sweetmtl=1`. Kernel `bsd/dev/sweet_bootfiles.c`
+  writes files from a blob after the kernel (`mkpayload.py --files LIST`, /chosen/memory-map
+  SweetFiles) into the root right before load_init_program ("SWEET FILES: ..." lines); sweetmtl=1
+  publishes IOAcceleratorES without MetalPlugin* properties (user client only, CA stays on CPU).
+  Phone tests (metal/phone: sweetrun, flame vktest/v2test) CI phone.yml 42499400600 ->
+  research/gpu/phone-tests. `tools/bonito-files.sh` stages research/gpu/files (Turnip, tests,
+  run.txt, launchd.plist = cache from ios16-root.img 17:08 = flashed image + job org.sweet.run,
+  output /dev/console; original kept in research/gpu/launchd.plist.orig). Kernel CI 42499410864
+  -> xnu/out-0095, scan-sha3 0 (kernel, Turnip, tests). Image `shim/out/bonito-ios25-mtl1.img`
+  (ios24 cmdline + sweetmtl=1, 36 MB) booted 10:27:22. Result pending.
