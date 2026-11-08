@@ -581,3 +581,4 @@ updates) are days, not months.
   register table; kernel flags `-march=armv8.2-a+crypto`, Apple clang); 0089 has none. Patch
   **0092**: pm4_parity noinline. Rule: scan new kernels for SHA3 instructions before booting.
 - 22:44: 0092 CI 42447461825 success -> `xnu/out-0092`, scan-sha3: 0. Images `shim/out/bonito-ios22-{gpu,trip}.img`.
+- 22:47: 0091 log (`logs/boot-0091-gpu.txt`): **bring-up done, GPU ready in 60 ms** (zap OK, secure mode off, no SCM resumes needed: masking IRQs sufficed); then the EOR3 panic in the first present. Booted ios22-gpu at 22:46:17.
