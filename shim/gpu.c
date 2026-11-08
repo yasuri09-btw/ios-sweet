@@ -888,10 +888,10 @@ static uint32_t pkt4(uint32_t reg, uint32_t cnt)
 #define SRC_PITCH	4608
 #define DST_PITCH	4352
 
-static void gpu_blit_test(int cb)
+static void gpu_blit_test(int cb, int full)
 {
 	/* the source: CPU-drawn pattern (checker + border), mapped with 2 MB blocks */
-	for (uint32_t y = 0; y < SRC_H; y++)
+	for (uint32_t y = full ? SRC_H : 0; y = 0; y < SRC_H; y++)
 		for (uint32_t x = 0; x < SRC_W; x++) {
 			uint32_t c = ((x / 75 + y / 75) & 1) ? 0xff2040ff : 0xffffd020;
 			if (x < 20 || y < 20 || x >= SRC_W - 20 || y >= SRC_H - 20)
@@ -910,8 +910,14 @@ static void gpu_blit_test(int cb)
 	wr32(c + 0x7f0, 0);
 	wait_bit(c + 0x7f4, 1, 0, 10);
 
-	/* destination: scaled to 600 rows high into the band below the log, pitch 4352 */
+	/* destination, pitch 4352: a 600-row band below the log, or the whole panel (fit) */
 	uint32_t dh = 600, dw = SRC_W * dh / SRC_H, dx = 780, dy = 1500;
+	if (full) {
+		dh = FB_H;
+		dw = (SRC_W * FB_H + SRC_H / 2) / SRC_H;
+		dx = (FB_W - dw) / 2;
+		dy = 0;
+	}
 	uint64_t border = GVA_SCRATCH + 0x800, ts = GVA_SCRATCH + 0x900;
 #define EV(e)		do { pkt7(0x46, 1); ring(e); } while (0)
 #define EV_TS(e)	do { pkt7(0x46, 4); ring(e); ring((uint32_t)ts); ring(0); ring(0); } while (0)
@@ -1061,7 +1067,14 @@ static void gpu_run(int gmu_cb)
 	if (rd32(G_TARGET) == 0xcafef00d) {
 		gpu_paint(cb);
 		mdp_dump();
-		gpu_blit_test(cb);
+		gpu_blit_test(cb, 0);
+		/* the panel pipe (VIG0, CTL0) reads 4352-byte rows from now on; ABL's autorefresh picks it up */
+		wr32(MDP_TOP + 0x4000 + 0x24, DST_PITCH);
+		wr32(MDP_TOP + 0x1000 + 0x18, 1);
+		delay_ms(50);
+		gpu_blit_test(cb, 1);
+		con_printf("stride %u (want %u), ctl0 flush %x\n", rd32(MDP_TOP + 0x4000 + 0x24), DST_PITCH,
+			   rd32(MDP_TOP + 0x1000 + 0x18));
 	}
 out:
 	cb_fault("gpu", cb);
