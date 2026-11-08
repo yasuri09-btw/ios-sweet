@@ -648,3 +648,14 @@ updates) are days, not months.
   - **VA windows must fit the A615's 32 bits:** kernel uses 0x10000000-0x2a000000 (pool, fb) and
     0x40000000-0x44000000 (present slots); client windows e.g. 0x50000000-0xf0000000 (2.5 GB):
     backboardd 1 GB, others 256 MB (UniXNU's sizes), or per-process page tables later.
+- 01:50 **Turnip for iOS 16 builds on CI** (run 42459251873, ~20 min): all 9 patches apply to Mesa
+  85fda3b3, meson cross config OK; `libvulkan_freedreno.dylib` 18 MB, platform ios, minos 16.0,
+  sdk 18.5, exports vkGetInstanceProcAddr/vk_icd*, no SHA3 instructions, only libSystem imports
+  (incl. qsort_r, present on iOS 16). Local copy `research/gpu/turnip-ios/` (gitignored).
+- Kernel port in progress (buildtree, uncommitted as a patch yet): sweet_a6xx gained
+  a6_submit_ibs_async (msm-style wrapper), a6_submit_ib_async, a6_fence_done/force, a6_submit_time,
+  a6_timestamp, a6_unmap, a6_recover (+ zap_resume, gpu_cp split into bank + gpu_cp_init(resume)),
+  pt_alloc via env a6_pt_extra (stub 0 for now). Syntax-checked. Next: sweet_gpu.c pool (0xb0000000,
+  1 GB, unmanaged RAM), VA windows < 4 GB, map_at/unmap_at, submit_v2, fence waits; SweetAccelerator.cpp
+  (flame final, scratchpad flame/final/) + SweetGPUABI.h + KernelConfigTables; then a Turnip smoke test
+  (flame phone/turnip/vktest.c) built in metal.yml.
