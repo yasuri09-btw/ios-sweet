@@ -71,6 +71,12 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    so containermanagerd/lsd could create the app containers and the LaunchServices DB (they
    persist on the rw root).
 
+7. 2026-11-07 ~19:20 CST **TOUCH UNLOCK ON THE PIXEL 3A XL.** Swipe-up on the iOS 16 lock screen
+   works (user: laggy, software rendering, but it works). Kernel 0089 (Synaptics RMI4 over GENI
+   I2C, ts_1p8 via PM660 GPIO12, bonito buttons), image `shim/out/bonito-ios13-touch.img`
+   (cpus=1, sweetfb_noconsole=1, SpringBoard/backboardd sampler), booted 19:15:19 (third try;
+   the first two hit the random early boot-task stall).
+
 ## Decisions
 - 2026-11-07: the user is fine with losing postmarketOS: the iOS root goes into `userdata`
   (no GPT changes). Before the first write: back up persist, modemst1/2, fsg, fsc, devinfo,
