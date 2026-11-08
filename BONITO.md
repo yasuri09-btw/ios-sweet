@@ -501,3 +501,9 @@ updates) are days, not months.
   Steps: (1) run shim/out/bonito-gpu-probe1.img (handoff state), (2) firmware: host has
   /lib/firmware/qcom/a630_sqe.fw + a630_gmu.bin (linux-firmware); zap from vendor_a via TWRP, (3) port 0094/0095 with the A615
   differences, `sweetgpu=1`, boot-tested on its own, (4) 0096/0097/0115/0116 + userland.
+- 21:23 **GPU handoff state** (`shim/out/bonito-gpu-probe2.img`, GPU probe only; probe1's lines
+  were pushed off screen by the eMMC probe): GCC gpu_cfg_ahb 0x1 (on), memnoc_gfx 0x80004220
+  (off), snoc_dvm 0x80000001 (enabled, halted); GDSC cx=0x00222001 gx=0x00222001 (SW_COLLAPSE,
+  PWR_ON=0: both off); GPUCC cx_gmu 0x80004220, cxo 0x80000001 (off); GMU RCG cmd 0x80000000
+  (root off) cfg 0; GPUCC PLL1 mode 0. => **ABL leaves the GPU completely off**: bring-up starts
+  from cold, as in mainline a6xx_gmu_resume (and flame's sweet_a6xx.c power-up path).

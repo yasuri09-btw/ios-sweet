@@ -389,8 +389,7 @@ void shim_main(uint64_t dtb)
 	 * ufshc@1d84000, so skip test_ufs() and run the MMU/PSCI/GIC checks. */
 	stage = "emmc";
 	con_clear(BLUE);
-	test_emmc();
-	con_skip();
+	/* GPU probe first on a clean screen (the eMMC lines pushed it off). */
 	test_gpu();
 	con_skip();
 	con_str("HALT", "hold Power+VolDown for fastboot");
