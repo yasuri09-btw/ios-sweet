@@ -436,3 +436,4 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   built `shim/out/bonito-ios18-throttle-all.img` (cpus=1, throttle, sweetsample=*), unused.
   Other option if cores don't help: start mediaremoted at boot (RunAtLoad) so it is up before
   the unlock.
+- 20:56:43: booted `shim/out/bonito-ios19-cpu8-throttle.img`.
