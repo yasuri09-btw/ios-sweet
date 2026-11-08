@@ -629,3 +629,22 @@ updates) are days, not months.
   (bonito low bank 0x80000000-0x100000000 minus carveouts; no PPL -> cacheable physmap aliases),
   chip id 0x06010500, gmem 512K, Mesa highest_bank_bit 14. Also wanted first: bonito USB networking
   (for pushing builds; else reflash userdata ~6 min per try).
+- 2026-11-08 01:35 **Metal step 1 started:** `metal/` (UniXNU's 9 Mesa patches at d07f3c3 as
+  `metal/mesa-patches/NN-*.patch`, flame's `NativeAdrenoABI.h`, README with attribution) and
+  `.github/workflows/metal.yml` (macOS runner: Mesa 85fda3b3 + patches, meson cross arm64-apple-ios16.0,
+  release, artifact `turnip-ios` = libvulkan_freedreno.dylib, ad-hoc signed). Triggered by pushes to
+  bonito touching metal/ or the workflow. First run 42459251873. The Darwin backend derives gpu_id from
+  the kernel's chip_id (0x06010500 -> 615, Mesa GPUId(615)); its CTR_EL0 stub assumes 64-byte lines
+  (A55/A75 too).
+- **Kernel port plan (flame 0096/0097/0105-0109/0113/0115-0122 -> bonito):** flame's final GPU kernel
+  files reconstructed in scratchpad `flame/final/` (git apply --include of their chain; all clean).
+  Core additions needed in our sweet_a6xx: a6_submit_ibs_async (msm-style wrapper: CCU invalidate,
+  fence by CACHE_FLUSH_TS), a6_fence_done/force, a6_unmap, a6_timestamp (CP_ALWAYS_ON), a6_recover,
+  a6_pt_extra. Env (sweet_gpu.c): unmanaged-RAM pool, per-client VA windows, map_at/unmap_at,
+  submit_v2, fence waits (ns), lost-fence ranges. Then SweetAccelerator.cpp (IOAcceleratorES +
+  v1/v2 user clients) + SweetGPUABI.h + KernelConfigTables entry, `sweetmtl=2`.
+  - **GPU pool on bonito:** low bank free 0xa1c11000-0xfc200000 (1445 MB, no reserved-memory);
+    XNU only manages the upper bank -> pool **0xb0000000-0xf0000000 (1 GB)**, PA < 4 GB as well.
+  - **VA windows must fit the A615's 32 bits:** kernel uses 0x10000000-0x2a000000 (pool, fb) and
+    0x40000000-0x44000000 (present slots); client windows e.g. 0x50000000-0xf0000000 (2.5 GB):
+    backboardd 1 GB, others 256 MB (UniXNU's sizes), or per-process page tables later.
