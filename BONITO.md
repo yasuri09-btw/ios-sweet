@@ -437,3 +437,4 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Other option if cores don't help: start mediaremoted at boot (RunAtLoad) so it is up before
   the unlock.
 - 20:56:43: booted `shim/out/bonito-ios19-cpu8-throttle.img`.
+- ~21:00: cpus=8 throttle boot sat in MSUEarlyBootTask[8] for a while, then it finished ("nothing to do") and the boot went on (user report).
