@@ -551,3 +551,16 @@ updates) are days, not months.
     two unscaled blits write even/odd panel rows at pitch 8640 (2 x 4320 = 135 x 64; odd rows via
     base fb+4288 and x offset 8). User: no corruption, full checkerboard. This is the present
     design for XNU (flame instead reprogrammed the panel stride).
+- 22:05 **Patch 0090** (`xnu/patches/0090-bonito-gpu-a615-present.patch`, buildtree commit 0090):
+  `bsd/dev/sweet_a6xx.{c,h}` (A615 core: the shim's proven power-up + flame's ring/map/blit layer,
+  2D blit with A615 magic regs, full scissors, `src_swap`), `bsd/dev/sweet_gpu.c` (XNU env: 16 MB
+  contiguous pool, 2 MB device windows, SMC, firmware from ADT /chosen `gpufw,*`, bring-up thread,
+  surface slots, present = fit blit into pool+0x600000 (4352 pitch) + even/odd panel rows at
+  pitch 8640; **`sweettrip=1` "LSD mode"**: fit blit in 12-row strips on a travelling sine wave
+  (36 px), component swap cycling every 40 frames, trails), SweetFramebuffer `presentGPU` (one
+  full-frame BGRA layer -> GPU, else the CPU crop copy), SweetHID maps touches through
+  `sweet_display_fit_x/w` while the GPU presents, sweet_emmc_init starts `sweet_gpu_init`
+  (boot-arg `sweetgpu=1`). Local syntax check: `tools/xnu-cc.py research/run-0089.log
+  research/buildtree ...` with host clang 22 symlinked as ~/swift/usr/bin/clang{,++}: 0 errors.
+  `tools/mkpayload.py --gpufw research/gpu/fw/bonito` (gitignored copies of linux-firmware
+  a630_gmu.bin/a630_sqe.fw + sargo a615_zap.mdt/.b02) adds the firmware to the ADT.
