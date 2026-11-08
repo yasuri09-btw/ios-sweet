@@ -8,7 +8,7 @@
 #   /var/local/run.txt                         RUN_TXT (default metal/phone/run.txt)
 #   /System/Library/xpc/launchd.plist          research/gpu/launchd.plist.orig (the cache from
 #                                              research/ipsw-x/ios16-root.img = what is flashed)
-#                                              + job org.sweet.run (sweetrun, output /dev/console)
+#                                              + job org.sweet.run (sweetrun; log /var/local/run.log)
 # Everything under research/ stays out of git (Apple data, build artifacts).
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -26,7 +26,7 @@ p['LaunchDaemons']['/System/Library/LaunchDaemons/org.sweet.run.plist'] = {
     'ProgramArguments': ['/var/local/bin/sweetrun'],
     'RunAtLoad': True, 'UserName': 'root', 'LaunchOnlyOnce': True,
     'EnvironmentVariables': {'PATH': '/var/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'},
-    'StandardOutPath': '/dev/console', 'StandardErrorPath': '/dev/console',
+    'StandardOutPath': '/var/local/sweetrun.out', 'StandardErrorPath': '/var/local/sweetrun.out',
 }
 plistlib.dump(p, open(sys.argv[2], 'wb'), fmt=plistlib.FMT_BINARY)
 PY

@@ -16,8 +16,9 @@ The recipe (iOS 16.0 minimum, release, NDEBUG, shader cache off) follows ios-fla
 
 ## Phone test programs (`phone/`, `.github/workflows/phone.yml` → artifact `phone-tests`)
 
-- `sweetrun.c` — launchd job `org.sweet.run`: runs `/var/local/run.txt` once per boot, output to
-  `/dev/console` (the kernel log, lines `SWEETRUN: ...`).
+- `sweetrun.c` — launchd job `org.sweet.run`: runs `/var/local/run.txt` once per boot, everything
+  logged to `/var/local/run.log` (read it from a userdata dump: TWRP `dd` of the first 16 GiB,
+  `mount -t hfsplus -o loop,ro,force`).
 - `vktest.c`, `v2test.cpp`, `shaders/` — ios-flame's Turnip smoke test and raw v2 user-client test
   (MIT, `phone/turnip/`), stdout line-buffered for the console.
 
