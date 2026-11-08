@@ -451,3 +451,4 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   are identical in the successful 19:20 unlock log, so not the cause.
   Next: ask what the screen shows (partly slid? dock? does power still toggle display?), and
   add a periodic frame counter to the FB driver (kernel patch) if needed.
+- 21:06:53: booted `shim/out/bonito-ios19-cpu8-throttle.img` again (user request).
