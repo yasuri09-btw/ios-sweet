@@ -383,3 +383,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   looked like SpringBoard frozen right before unlock. Guess, not verified: that was the previous
   boot's last frame still in the framebuffer at 0x9c000000 (sweetfb_noconsole=1, so the kernel
   draws nothing over it). Retrying the same image.
+- 20:40: user observation: two Apple logos per boot. First is drawn by backboardd (boot UI),
+  second is SpringBoard's own startup logo before the lock screen. Useful as a stage marker:
+  stuck before any logo = early boot-task stall (mount etc.), stuck on logo 1 = before or at
+  SpringBoard launch, stuck on logo 2 = SpringBoard startup.
