@@ -536,3 +536,18 @@ updates) are days, not months.
 - 21:40 probe 2: everything up to the GPU-painted band (milestone 8). Next: move this into
   XNU = port flame 0094/0095 (sweet_a6xx.c/sweet_gpu.c) with the A615 path from shim/gpu.c,
   firmware via ADT /chosen gpufw,*; then GPU present (scaled blit) for the framebuffer.
+- 21:45-21:55 **GPU present path proven in the shim** (`shim/gpu.c`):
+  - up3: MDP dump (read-only): ABL scans out through **VIG0 only** (src 1080x2160, out 1080x2160,
+    addr 0x9c000000), driven by **CTL0** (layer0 ...05, top 0x20020); VIG1/DMA0-2 and CTL1-3 idle.
+    2D-engine scaled blit (flame's turnip r2d IB with the A615 gen1 magic regs from Mesa
+    freedreno_devices.py, RB_CCU_CNTL 0x08000000 for 1 CCU, WFI around CP_BLIT for
+    blit_wfi_quirk) works: centre pixel = the source's blue.
+  - up4/up5: VIG0 stride -> 4352 + CTL0 flush: full-screen blit straight and correct, but the
+    bottom of the panel kept stale content. up6 readback: the GPU wrote every row correctly
+    (rows 2150/2159 = green border), so the display side drops the rows past 4320 x 2160 bytes
+    (guess: ABL's display SMMU mapping covers only that size). Scissors (0x840a/b, 0x80f0/1) were
+    not the cause but are set anyway.
+  - **up7 (commit 11678f2): no stride change.** Scale into a GPU buffer with 4352-byte rows, then
+    two unscaled blits write even/odd panel rows at pitch 8640 (2 x 4320 = 135 x 64; odd rows via
+    base fb+4288 and x offset 8). User: no corruption, full checkerboard. This is the present
+    design for XNU (flame instead reprogrammed the panel stride).
