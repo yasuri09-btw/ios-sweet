@@ -421,3 +421,4 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Note: an in-flight higher-tier I/O still throttles (`throttle_inflight_count`); if needed,
   next kernel step = DKIOCISSOLIDSTATE in sweet_emmc_ioctl, or set lowpri_throttle_enabled=0
   (sysctl debug.lowpri_throttle_enabled, no boot-arg).
+- 20:45:47: booted `shim/out/bonito-ios17-throttle.img`.
