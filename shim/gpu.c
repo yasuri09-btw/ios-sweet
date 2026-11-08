@@ -838,6 +838,122 @@ static void gpu_paint(int cb)
 	flush_wait("paint done");
 }
 
+
+/* ---- stage 6: display pipes (read-only) and the 2D engine ---- */
+
+#define MDP_TOP		0x0ae01000UL	/* dpu "mdp" block; offsets from the sdm845/sdm670 catalog */
+static void mdp_dump(void)
+{
+	static const struct { char n[5]; uint32_t off; } p[] = {
+		{ "vig0", 0x4000 }, { "vig1", 0x6000 }, { "dma0", 0x24000 }, { "dma1", 0x26000 }, { "dma2", 0x28000 },
+	};
+	for (unsigned i = 0; i < sizeof(p) / sizeof(p[0]); i++) {
+		uintptr_t b = MDP_TOP + p[i].off;
+		con_printf("6 %s size %x out %x xy %x addr %x stride %x fmt %x\n", p[i].n, rd32(b + 0x00),
+			   rd32(b + 0x0c), rd32(b + 0x10), rd32(b + 0x14), rd32(b + 0x24), rd32(b + 0x30));
+	}
+	for (int c = 0; c < 4; c++) {
+		uintptr_t b = MDP_TOP + 0x1000 + 0x200UL * c;
+		con_printf("ctl%d layer0 %x top %x flush %x\n", c, rd32(b + 0x00), rd32(b + 0x14), rd32(b + 0x18));
+	}
+}
+
+/* turnip's r2d blit (ios-flame a6_blit_ib, captured on the A640) with the A615 (a6xx gen1) magic
+ * registers from Mesa freedreno_devices.py, one CCU, and blit_wfi_quirk. */
+static const uint32_t blit_init[][2] = {
+	{ 0x9804, 0x1f }, { 0x9805, 0 }, { 0xa0f8, 0 }, { 0xb600, 0x00108000 }, { 0x8600, 0x880 },
+	{ 0xae03, 0x430 }, { 0xae00, 0 }, { 0xbe04, 0x80000 }, { 0x9600, 0 }, { 0x0e12, 1 },
+	{ 0x8e01, 1 }, { 0x8e04, 0x04100000 },
+	{ 0xae04, 0 }, { 0xae0f, 0x3f }, { 0xb605, 0x44 },
+	{ 0xbe00, 0x80 }, { 0xbe01, 0 }, { 0xab20, 0 }, { 0xb182, 0 }, { 0xbb11, 0 }, { 0xa9a8, 0 },
+	{ 0xab00, 5 }, { 0xa009, 3 }, { 0x8811, 0x10 }, { 0x8110, 0 }, { 0x8818, 0 }, { 0x8819, 0 },
+	{ 0x881a, 0 }, { 0x881b, 0 }, { 0x881c, 0 }, { 0x881d, 0 }, { 0x881e, 0 }, { 0x88f0, 0 },
+	{ 0x9236, 0 }, { 0x9300, 0 }, { 0x9306, 1 }, { 0xb183, 0 }, { 0x80af, 0 }, { 0x8099, 0 },
+	{ 0x980a, 0 }, { 0x9210, 0 }, { 0x9211, 0 }, { 0x9602, 0 }, { 0x9e72, 0 }, { 0xb309, 0xa2 },
+	{ 0xb986, 0xfc }, { 0xa007, 0 }, { 0x8864, 0 }, { 0xb800, 0x102 },
+	{ 0x8e07, 0x08000000 },		/* RB_CCU_CNTL: sysmem, color offset for 1 CCU */
+};
+
+static uint32_t pkt4(uint32_t reg, uint32_t cnt)
+{
+	return 0x40000000 | cnt | (pm4_parity(cnt) << 7) | ((reg & 0x3ffff) << 8) | (pm4_parity(reg) << 27);
+}
+
+#define G_SCRATCH	(GMEM + 0x228000)	/* border colours + event timestamps */
+#define GVA_SCRATCH	(GVA_RING + 0x18000)
+#define G_SRC		0x171000000UL		/* 1125x2436 test image, 4608-byte rows (11.2 MB) */
+#define GVA_SRC		0x40000000u
+#define SRC_W		1125
+#define SRC_H		2436
+#define SRC_PITCH	4608
+#define DST_PITCH	4352
+
+static void gpu_blit_test(int cb)
+{
+	/* the source: CPU-drawn pattern (checker + border), mapped with 2 MB blocks */
+	for (uint32_t y = 0; y < SRC_H; y++)
+		for (uint32_t x = 0; x < SRC_W; x++) {
+			uint32_t c = ((x / 75 + y / 75) & 1) ? 0xff2040ff : 0xffffd020;
+			if (x < 20 || y < 20 || x >= SRC_W - 20 || y >= SRC_H - 20)
+				c = 0xff00ff00;
+			wr32(G_SRC + y * SRC_PITCH + 4 * x, c);
+		}
+	uintptr_t l2b = GMEM + 0x103000;		/* L2 for VA 1-2 GB */
+	zero32(l2b, 0x1000);
+	wr64(GT_L1 + 8, l2b | 3);
+	for (int i = 0; i < 6; i++)
+		wr64(l2b + 8 * i, (G_SRC + 0x200000UL * i) | (1u << 10) | (3u << 8) | (1u << 6) | 1u);
+	map_pages(GT_L3, GVA_SCRATCH, G_SCRATCH, 0x1000, 0);
+	zero32(G_SCRATCH, 0x1000);
+	uintptr_t c = SMMU_CB(cb);
+	wr32(c + 0x618, 0);
+	wr32(c + 0x7f0, 0);
+	wait_bit(c + 0x7f4, 1, 0, 10);
+
+	/* destination: scaled to 600 rows high into the band below the log, pitch 4352 */
+	uint32_t dh = 600, dw = SRC_W * dh / SRC_H, dx = 780, dy = 1500;
+	uint64_t border = GVA_SCRATCH + 0x800, ts = GVA_SCRATCH + 0x900;
+#define EV(e)		do { pkt7(0x46, 1); ring(e); } while (0)
+#define EV_TS(e)	do { pkt7(0x46, 4); ring(e); ring((uint32_t)ts); ring(0); ring(0); } while (0)
+#define REG(r, v)	do { ring(pkt4((r), 1)); ring(v); } while (0)
+	EV(0x31);
+	REG(0xbb08, 0xfffff);
+	pkt7(0x26, 0);
+	for (unsigned i = 0; i < sizeof(blit_init) / sizeof(blit_init[0]); i++)
+		REG(blit_init[i][0], blit_init[i][1]);
+	ring(pkt4(0xb302, 2)); ring((uint32_t)border); ring(0);
+	ring(pkt4(0xb180, 2)); ring((uint32_t)border); ring(0);
+	EV_TS(0x1d);
+	EV(0x19);
+	EV(0x31);
+	pkt7(0x26, 0);
+	if (flush_wait("blit init"))
+		return;
+	REG(0x8c01, 0);
+	REG(0x8c00, 0x00f03000);
+	REG(0x8400, 0x00f03000);
+	REG(0xacc0, 0xf180);
+	ring(pkt4(0x8405, 2)); ring(dx | (dy << 16)); ring((dx + dw - 1) | ((dy + dh - 1) << 16));
+	ring(pkt4(0x8401, 4)); ring(0); ring((SRC_W - 1) << 8); ring(0); ring((SRC_H - 1) << 8);
+	ring(pkt4(0xb4c0, 5)); ring(0x00500430 | 0x10000); ring(SRC_W | (SRC_H << 15));
+	ring(GVA_SRC); ring(0); ring(SRC_PITCH << 3);
+	ring(pkt4(0xb4ca, 3)); ring(GVA_SRC); ring(0); ring(0);
+	ring(pkt4(0x8c17, 4)); ring(0x430); ring(GVA_FB); ring(0); ring(DST_PITCH >> 6);
+	ring(pkt4(0x8c20, 3)); ring(GVA_FB); ring(0); ring(0);
+	pkt7(0x26, 0);			/* blit_wfi_quirk */
+	pkt7(0x2c, 1); ring(3);		/* CP_BLIT, BLIT_OP_SCALE */
+	pkt7(0x26, 0);
+	EV_TS(0x1d);
+	EV_TS(0x1c);
+	EV_TS(0x04);
+	flush_wait("blit");
+#undef EV
+#undef EV_TS
+#undef REG
+	uint32_t mid = rd32(FB_PA + (dy + dh / 2) * DST_PITCH + 4 * (dx + dw / 2));
+	con_printf("blit %ux%u at %u,%u: fb mid %x\n", dw, dh, dx, dy, mid);
+}
+
 static void gpu_run(int gmu_cb)
 {
 	int smr = free_smr(), cb = free_cb(gmu_cb);
@@ -942,8 +1058,11 @@ static void gpu_run(int gmu_cb)
 		delay_ms(1);
 	con_printf("target %x %s\n", rd32(G_TARGET),
 		   rd32(G_TARGET) == 0xcafef00d ? "*** GPU RAN OUR COMMANDS ***" : "(unchanged)");
-	if (rd32(G_TARGET) == 0xcafef00d)
+	if (rd32(G_TARGET) == 0xcafef00d) {
 		gpu_paint(cb);
+		mdp_dump();
+		gpu_blit_test(cb);
+	}
 out:
 	cb_fault("gpu", cb);
 }
