@@ -26,3 +26,10 @@ They reach the phone in the boot image: `tools/mkpayload.py --files LIST` (see
 `tools/bonito-files.sh`), written into the root by the kernel before launchd starts
 (`bsd/dev/sweet_bootfiles.c`, patch 0095). Boot-arg `sweetmtl=1` publishes the user client without
 the Metal plugin properties, so Core Animation stays on the CPU while the tests run.
+
+## Metal driver (`metal2/`, `.github/workflows/metal2.yml` → artifact `metal2-ios`)
+
+ios-flame's `phone/metal2` (MIT, dipa-studio): `SweetMetal2.mm` (the bundle Metal.framework loads
+for the IOAcceleratorES service at `sweetmtl=2`), `NativeBridgeMetalFrontend.mm` (UniXNU's Metal
+frontend), `bridge/` (UniXNU's Rust bridge over metal2vulkan, MIT, with its patches for
+steelbrain/metal2vulkan 720ef1ce) and `m2vtest.c` (the bridge's self-test on Turnip).
