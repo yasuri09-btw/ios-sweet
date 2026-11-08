@@ -602,3 +602,4 @@ updates) are days, not months.
   swap them into the archive, relink with ld64.lld; verify against the CI kernel first.
 - 23:03: 0093 CI 42448691421 success -> `xnu/out-0093`, scan-sha3 0; linklibs got libfirehose_kernel.a only (no libcc_kext.a found in SDK/Xcode). Local relink: ld64.lld ignores -image_base/-segaddr/-segment_order/-static (not usable); Apple ld64 via cctools-port needs the user's OK to build. `tools/xnu-relink.py` written. Booted ios23-gpu at 23:03:23.
 - 23:1x: booted `shim/out/bonito-ios23-trip.img` (sweettrip=1, LSD mode).
+- 23:1x: **LSD mode works** (user: Apple logo "going batshit crazy", "LMAO it looks so funny"): strip waves + component swap cycling + trails, all on the 2D engine.
