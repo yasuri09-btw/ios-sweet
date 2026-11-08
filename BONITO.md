@@ -460,3 +460,26 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   `shim/out/bonito-ios19-cpu8-throttle.img`.** Make the throttle settings permanent in the
   kernel later (DKIOCISSOLIDSTATE in sweet_emmc_ioctl, or defaults in a patch) and drop the
   sampler from the daily image.
+
+## GPU acceleration plan (started 2026-11-07 21:15)
+Goal: CoreAnimation (backboardd's render server) on the Adreno 615 instead of the CPU.
+iOS stack: QuartzCore -> Metal (MTLDevice from AGXMetalA11.bundle) -> IOGPUFamily user client
+-> AGX kext -> Apple GPU firmware. None of Apple's GPU pieces can drive an Adreno, so we need
+our own kernel driver and our own Metal driver. Realistic scale: months, in phases with a
+visible result each:
+1. **Kernel bring-up** (XNU, like sweet_emmc): GPUCC/GDSC power (CX), GMU firmware boot +
+   HFI (GX power, clocks via RPMh), SQE microcode, zap shader through TZ (SCM PAS calls,
+   `a615_zap.mbn` from bonito's vendor partition; a630_sqe.fw + a630_gmu.bin are in
+   linux-firmware), GPU SMMU (0x5040000) context bank, ringbuffer. Milestone: CP executes a
+   CP_MEM_WRITE fence from our ring. Reference: Linux drm/msm a6xx_gpu.c / a6xx_gmu.c.
+   - 1a (this commit): shim read-only probe of GCC GPU clocks + GPUCC GDSCs at handoff
+     (`shim/gpu.c`, image `shim/out/bonito-gpu-probe1.img`, diagnostics mode, no XNU).
+2. **2D blit/clear from the kernel**: draw into the framebuffer with the GPU (proves memory,
+   SMMU mappings and command streams). Then IOSurface <-> GPU address mapping.
+3. **Userland Metal driver** (replace the AGXMetalA11 bundle): MTLDevice/queues/buffers/
+   textures/render passes over our user client. Shaders: no general AIR compiler at first;
+   CoreAnimation uses a fixed set of shader functions from QuartzCore's metallib, so map
+   those to precompiled Adreno (ir3) programs, built with Mesa's freedreno compiler offline.
+4. General AIR -> NIR -> ir3 compiler (Mesa) for apps. Long term.
+Alternative kept in mind: CPU render speed-ups (native 1080x2160 presentation, partial
+updates) are days, not months.

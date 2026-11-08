@@ -12,6 +12,7 @@
 #include "loader.h"
 #include "ufs.h"
 #include "emmc.h"
+#include "gpu.h"
 
 #define IMEM_RESTART_REASON	0x146bf65cUL	/* bonito: qcom,msm-imem@146bf000 restart_reason@65c */
 #define RESTART_BOOTLOADER	0x77665500U
@@ -389,6 +390,8 @@ void shim_main(uint64_t dtb)
 	stage = "emmc";
 	con_clear(BLUE);
 	test_emmc();
+	con_skip();
+	test_gpu();
 	con_skip();
 	con_str("HALT", "hold Power+VolDown for fastboot");
 	for (;;)
