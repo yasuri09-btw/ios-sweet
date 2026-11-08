@@ -1,0 +1,302 @@
+diff --git a/bsd/conf/files b/bsd/conf/files
+index dd018be..9e1540a 100644
+--- a/bsd/conf/files
++++ b/bsd/conf/files
+@@ -114,6 +114,7 @@ bsd/dev/sweet_spmi.c			standard
+ bsd/dev/sweet_usb.c			standard
+ bsd/dev/sweet_a6xx.c			standard
+ bsd/dev/sweet_gpu.c			standard
++bsd/dev/sweet_bootfiles.c		standard
+ bsd/dev/mem.c				standard
+ bsd/dev/munge.c 			optional config_requires_u32_munging
+ bsd/dev/unix_startup.c			standard
+diff --git a/bsd/dev/sweet_bootfiles.c b/bsd/dev/sweet_bootfiles.c
+new file mode 100644
+index 0000000..8aea797
+--- /dev/null
++++ b/bsd/dev/sweet_bootfiles.c
+@@ -0,0 +1,184 @@
++/*
++ * Boot files: install files carried by the boot image into the root
++ * filesystem before launchd starts (no USB networking needed).
++ *
++ * tools/mkpayload.py --files LIST appends one blob after the kernel (like
++ * --ramdisk: it lies inside topOfKernelData, never handed to the VM) and sets
++ * /chosen/memory-map "SweetFiles" = <phys, size>. Blob, little endian:
++ *
++ *   char magic[8] = "SWBFILE1"; u32 count; u32 0
++ *   count x { u32 mode; u16 pathlen (with NUL); u16 type (0 file, 1 dir,
++ *             2 symlink: data = target); u64 size; path, pad to 8;
++ *             data, pad to 8 }
++ *
++ * Parent directories are created (0755). Files are written root:wheel with
++ * the given mode, replacing what is there. Runs from bsdinit_task, right
++ * before load_init_program, so launchd sees e.g. a new launchd.plist on the
++ * same boot. Each file is logged as "SWEET FILES: ...".
++ */
++#if defined(ARM64_BOARD_CONFIG_SWEET)
++#include <sys/param.h>
++#include <sys/systm.h>
++#include <sys/errno.h>
++#include <sys/fcntl.h>
++#include <sys/vnode.h>
++#include <sys/vnode_internal.h>
++#include <sys/kauth.h>
++#include <sys/uio.h>
++#include <libkern/libkern.h>
++#include <pexpert/device_tree.h>
++#include <sys/sysproto.h>
++#include <machine/machine_routines.h>
++
++extern int sweet_vfs_mkdir(const char *path, int mode);
++extern int sweet_vfs_symlink(const char *target, const char *link);
++extern int sweet_vfs_unlink(const char *path);
++void sweet_bootfiles_install(void);
++
++#define SBF_CHUNK	(1024 * 1024)
++
++struct sbf_hdr {
++	char     magic[8];
++	uint32_t count, zero;
++};
++
++struct sbf_ent {
++	uint32_t mode;
++	uint16_t pathlen, type;
++	uint64_t size;
++};
++
++static int
++sbf_mkparents(const char *path)
++{
++	char buf[MAXPATHLEN];
++	strlcpy(buf, path, sizeof(buf));
++	for (char *p = buf + 1; *p; p++) {
++		if (*p != '/') {
++			continue;
++		}
++		*p = '\0';
++		int err = sweet_vfs_mkdir(buf, 0755);
++		*p = '/';
++		if (err && err != EEXIST) {
++			return err;
++		}
++	}
++	return 0;
++}
++
++static int
++sbf_setattr(const char *path, uint32_t mode)
++{
++	vfs_context_t ctx = vfs_context_kernel();
++	vnode_t vp = NULLVP;
++	int err = vnode_lookup(path, 0, &vp, ctx);
++	if (err) {
++		return err;
++	}
++	struct vnode_attr va;
++	VATTR_INIT(&va);
++	VATTR_SET(&va, va_mode, mode & 07777);
++	VATTR_SET(&va, va_uid, 0);
++	VATTR_SET(&va, va_gid, 0);
++	err = vnode_setattr(vp, &va, ctx);
++	vnode_put(vp);
++	return err;
++}
++
++static int
++sbf_write(const char *path, uint32_t mode, const uint8_t *data, uint64_t size)
++{
++	vfs_context_t ctx = vfs_context_kernel();
++	vnode_t vp = NULLVP;
++	(void)sweet_vfs_unlink(path);   /* a fresh inode: a running copy keeps the old one */
++	int err = vnode_open(path, O_CREAT | O_TRUNC | FWRITE, mode & 07777, 0, &vp, ctx);
++	if (err) {
++		return err;
++	}
++	for (uint64_t off = 0; off < size && !err;) {
++		int chunk = (int)MIN((uint64_t)SBF_CHUNK, size - off);
++		int resid = 0;
++		err = vn_rdwr(UIO_WRITE, vp, (caddr_t)(uintptr_t)(data + off), chunk, (off_t)off,
++		    UIO_SYSSPACE, IO_UNIT, vfs_context_ucred(ctx), &resid, vfs_context_proc(ctx));
++		if (!err && resid) {
++			err = EIO;
++		}
++		off += (uint64_t)chunk;
++	}
++	int cerr = vnode_close(vp, FWRITE, ctx);
++	err = err ? err : cerr;
++	return err ? err : sbf_setattr(path, mode);
++}
++
++void
++sweet_bootfiles_install(void)
++{
++	DTEntry mmap;
++	void const *prop;
++	unsigned psize;
++	if (SecureDTLookupEntry(NULL, "/chosen/memory-map", &mmap) != kSuccess ||
++	    SecureDTGetProperty(mmap, "SweetFiles", &prop, &psize) != kSuccess || psize < 16) {
++		return;
++	}
++	const uint64_t *r = prop;
++	uint64_t pa = r[0], len = r[1];
++	const uint8_t *base = (const uint8_t *)ml_static_ptovirt((vm_offset_t)pa);
++	const struct sbf_hdr *h = (const struct sbf_hdr *)base;
++	if (len < sizeof(*h) || memcmp(h->magic, "SWBFILE1", 8) != 0) {
++		printf("SWEET FILES: bad blob at 0x%llx (%llu bytes)\n", pa, len);
++		return;
++	}
++	uint64_t off = sizeof(*h);
++	unsigned ok = 0;
++	for (uint32_t i = 0; i < h->count; i++) {
++		if (off + sizeof(struct sbf_ent) > len) {
++			printf("SWEET FILES: truncated at entry %u\n", i);
++			break;
++		}
++		const struct sbf_ent *e = (const struct sbf_ent *)(base + off);
++		off += sizeof(*e);
++		const char *path = (const char *)(base + off);
++		off += (e->pathlen + 7) & ~7ULL;
++		const uint8_t *data = base + off;
++		off += (e->size + 7) & ~7ULL;
++		if (off > len || e->pathlen < 2 || path[e->pathlen - 1] != '\0' || path[0] != '/') {
++			printf("SWEET FILES: bad entry %u\n", i);
++			break;
++		}
++		int err = sbf_mkparents(path);
++		if (!err) {
++			switch (e->type) {
++			case 0:
++				err = sbf_write(path, e->mode, data, e->size);
++				break;
++			case 1:
++				err = sweet_vfs_mkdir(path, (int)(e->mode & 07777));
++				err = err == EEXIST ? 0 : err;
++				if (!err) {
++					err = sbf_setattr(path, e->mode);
++				}
++				break;
++			case 2: {
++				char target[MAXPATHLEN];
++				size_t n = MIN((size_t)e->size, sizeof(target) - 1);
++				memcpy(target, data, n);
++				target[n] = '\0';
++				(void)sweet_vfs_unlink(path);
++				err = sweet_vfs_symlink(target, path);
++				break;
++			}
++			default:
++				err = EINVAL;
++			}
++		}
++		printf("SWEET FILES: %s %llu bytes mode %o: %s (%d)\n", path, e->size, e->mode,
++		    err ? "FAILED" : "ok", err);
++		ok += !err;
++	}
++	printf("SWEET FILES: %u of %u installed\n", ok, h->count);
++	/* Let the journal and data reach the disk even if the boot dies early. */
++	int32_t rv;
++	sync(kernproc, NULL, &rv);
++}
++#endif /* ARM64_BOARD_CONFIG_SWEET */
+diff --git a/bsd/kern/bsd_init.c b/bsd/kern/bsd_init.c
+index bb2a2bf..4969961 100644
+--- a/bsd/kern/bsd_init.c
++++ b/bsd/kern/bsd_init.c
+@@ -1098,6 +1098,10 @@ bsdinit_task(void)
+ 
+ 	bsd_init_kprintf("bsd_do_post - done");
+ 
++#if defined(ARM64_BOARD_CONFIG_SWEET)
++	extern void sweet_bootfiles_install(void);
++	sweet_bootfiles_install();   /* bsd/dev/sweet_bootfiles.c */
++#endif
+ 	load_init_program(p);
+ 	lock_trace = 1;
+ }
+diff --git a/bsd/vfs/vfs_syscalls.c b/bsd/vfs/vfs_syscalls.c
+index 90e68bb..fc2f4c3 100644
+--- a/bsd/vfs/vfs_syscalls.c
++++ b/bsd/vfs/vfs_syscalls.c
+@@ -14579,3 +14579,35 @@ fs_snapshot(__unused proc_t p, struct fs_snapshot_args *uap,
+ 
+ 	return error;
+ }
++
++#if defined(ARM64_BOARD_CONFIG_SWEET)
++/*
++ * Kernel-path wrappers for the SWEET boot files (bsd/dev/sweet_bootfiles.c).
++ * After ios-flame's file server helpers (MIT).
++ */
++int sweet_vfs_mkdir(const char *path, int mode);
++int sweet_vfs_symlink(const char *target, const char *link);
++int sweet_vfs_unlink(const char *path);
++
++int
++sweet_vfs_mkdir(const char *path, int mode)
++{
++	struct vnode_attr va;
++	VATTR_INIT(&va);
++	VATTR_SET(&va, va_mode, mode & ACCESSPERMS);
++	return mkdir1at(vfs_context_kernel(), CAST_USER_ADDR_T(path), &va, AT_FDCWD, UIO_SYSSPACE);
++}
++
++int
++sweet_vfs_symlink(const char *target, const char *link)
++{
++	return symlinkat_internal(vfs_context_kernel(), CAST_USER_ADDR_T(target), AT_FDCWD,
++	           CAST_USER_ADDR_T(link), UIO_SYSSPACE);
++}
++
++int
++sweet_vfs_unlink(const char *path)
++{
++	return unlink1(vfs_context_kernel(), NULLVP, CAST_USER_ADDR_T(path), UIO_SYSSPACE, 0);
++}
++#endif /* ARM64_BOARD_CONFIG_SWEET */
+diff --git a/iokit/Kernel/arm/SweetAccelerator.cpp b/iokit/Kernel/arm/SweetAccelerator.cpp
+index 856edde..ae4639f 100644
+--- a/iokit/Kernel/arm/SweetAccelerator.cpp
++++ b/iokit/Kernel/arm/SweetAccelerator.cpp
+@@ -4,7 +4,8 @@
+  * takes the class named MetalPluginClassName (a subclass of Metal's _MTLDevice) and calls
+  * -initWithAcceleratorPort: with the service. Boot-arg sweetmtl=2 publishes it, pointing Metal at
+  * SweetMetal2.bundle (metal2vulkan + Turnip); without it Metal finds no device and Core Animation
+- * keeps its software renderer.
++ * keeps its software renderer. sweetmtl=1 publishes the service without the Metal plugin properties:
++ * the user client for Turnip smoke tests (vktest, v2test) while Core Animation stays on the CPU.
+  *
+  * User client (IOServiceOpen type 0x4147 or 2): the NativeAdreno ABI v1 (SweetGPUABI.h = metal/turnip/
+  * NativeAdrenoABI.h) that Turnip's Darwin backend speaks: struct methods, either selector = method or
+@@ -78,7 +79,7 @@ SweetAccelerator::probe(IOService *provider, SInt32 *score)
+ {
+ 	uint32_t on = 0;
+ 	PE_parse_boot_argn("sweetmtl", &on, sizeof(on));
+-	return on == 2 ? IOService::probe(provider, score) : NULL;
++	return on == 1 || on == 2 ? IOService::probe(provider, score) : NULL;
+ }
+ 
+ bool
+@@ -87,13 +88,17 @@ SweetAccelerator::start(IOService *provider)
+ 	if (!IOService::start(provider)) {
+ 		return false;
+ 	}
+-	setProperty("MetalPluginName", "SweetMetal2");
+-	setProperty("MetalPluginClassName", "SweetMTL2Device");
+-	setProperty("IOGLBundleName", "SweetMetal2");
++	uint32_t mode = 0;
++	PE_parse_boot_argn("sweetmtl", &mode, sizeof(mode));
++	if (mode == 2) {
++		setProperty("MetalPluginName", "SweetMetal2");
++		setProperty("MetalPluginClassName", "SweetMTL2Device");
++		setProperty("IOGLBundleName", "SweetMetal2");
++	}
+ 	setProperty("model", "Adreno 615");
+ 	setProperty(kIOUserClientClassKey, "SweetAcceleratorUserClient");
+ 	registerService();
+-	IOLog("SWEET MTL: IOAcceleratorES published (MetalPluginName SweetMetal2)\n");
++	IOLog("SWEET MTL: IOAcceleratorES published (%s)\n", mode == 2 ? "MetalPluginName SweetMetal2" : "user client only");
+ 	return true;
+ }
+ 

@@ -1,0 +1,44 @@
+name: phone
+
+# Small arm64 iOS 16 test programs for the phone (metal/phone), built with the runner's iOS SDK,
+# ad-hoc signed. They ride in the boot image (tools/mkpayload.py --files) into /var/local.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [bonito]
+    paths:
+      - "metal/phone/**"
+      - "metal/turnip/NativeAdrenoABI.h"
+      - ".github/workflows/phone.yml"
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deps
+        run: brew install glslang vulkan-headers
+      - name: Build
+        run: |
+          set -e
+          cd metal/phone
+          mkdir -p out gen
+          : > gen/shaders.h
+          for s in fill.comp:fill_comp tri.vert:tri_vert tri.frag:tri_frag; do
+            glslangValidator -V --target-env vulkan1.2 --vn "${s#*:}" -o gen/"${s#*:}".h shaders/"${s%%:*}"
+            cat gen/"${s#*:}".h >> gen/shaders.h
+          done
+          CC="xcrun --sdk iphoneos clang -target arm64-apple-ios16.0 -O2 -Wall"
+          VK=$(brew --prefix vulkan-headers)/include
+          $CC -o out/sweetrun sweetrun.c
+          $CC -I gen -I "$VK" -o out/vktest vktest.c
+          $CC -x c++ -std=c++17 -I ../turnip -o out/v2test v2test.cpp -framework IOKit -lc++
+          for b in out/*; do codesign -f -s - "$b"; done
+          file out/*
+          (cd out && shasum -a 256 * > SHA256SUMS)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phone-tests
+          path: metal/phone/out/

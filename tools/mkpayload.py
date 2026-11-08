@@ -25,6 +25,14 @@ kernel_end past it, so the shim needs no changes: the image lands below the
 ADT and boot_args, inside topOfKernelData (never handed to the VM), and the
 ADT gets /chosen/memory-map "RAMDisk" = <phys, size> for IOFindBSDRoot to
 turn into md0 (boot with rd=md0).
+
+--files LIST appends a file blob the same way and sets /chosen/memory-map
+"SweetFiles"; bsd/dev/sweet_bootfiles.c writes the files into the root
+before launchd starts. LIST lines (paths relative to LIST's directory,
+# comments):
+  file SRC DEST [MODE]      (MODE octal, default 644)
+  dir DEST [MODE]
+  link TARGET DEST          (symlink)
 """
 import argparse, os, struct, sys
 
@@ -132,6 +140,43 @@ def add_ramdisk_to_adt(adt_blob, phys, size):
     return adt.serialize(root)
 
 
+def add_files_to_adt(adt_blob, phys, size):
+    """Return the ADT with /chosen/memory-map SweetFiles = <phys, size>."""
+    root, _ = adt.parse(adt_blob)
+    chosen = next(c for c in root.children if c.name == 'chosen')
+    mmap = next(c for c in chosen.children if c.name == 'memory-map')
+    mmap.props = [p for p in mmap.props if p[0] != 'SweetFiles']
+    mmap.props.append(('SweetFiles', 0, struct.pack('<2Q', phys, size)))
+    return adt.serialize(root)
+
+
+def files_blob(list_path):
+    """Pack LIST (see the module doc) into the SWBFILE1 blob."""
+    base = os.path.dirname(os.path.abspath(list_path))
+    ents = []
+    for ln in open(list_path):
+        w = ln.split('#', 1)[0].split()
+        if not w:
+            continue
+        if w[0] == 'file':
+            src = os.path.join(base, w[1])
+            ents.append((w[2], int(w[3], 8) if len(w) > 3 else 0o644, 0, open(src, 'rb').read()))
+        elif w[0] == 'dir':
+            ents.append((w[1], int(w[2], 8) if len(w) > 2 else 0o755, 1, b''))
+        elif w[0] == 'link':
+            ents.append((w[2], 0o755, 2, w[1].encode()))
+        else:
+            raise ValueError(f'{list_path}: bad line {ln!r}')
+    out = bytearray(b'SWBFILE1' + struct.pack('<II', len(ents), 0))
+    for dest, mode, typ, data in ents:
+        assert dest.startswith('/'), dest
+        path = dest.encode() + b'\0'
+        out += struct.pack('<IHHQ', mode, len(path), typ, len(data))
+        out += path + b'\0' * (-len(path) & 7)
+        out += data + b'\0' * (-len(data) & 7)
+    return bytes(out), len(ents)
+
+
 def adt_dram(adt_blob):
     """Kernel-managed RAM <base, size> from the ADT's /chosen dram-base/dram-size."""
     root, _ = adt.parse(adt_blob)
@@ -153,7 +198,7 @@ def add_gpufw_to_adt(adt_blob, fw_dir):
     return adt.serialize(root)
 
 
-def build(kernel_path, adt_path, cmdline, ramdisk_path=None, gpufw_dir=None):
+def build(kernel_path, adt_path, cmdline, ramdisk_path=None, gpufw_dir=None, files_list=None):
     buf = bytearray(open(kernel_path, 'rb').read())
     m = parse_macho(buf)
     nfix = apply_chained_fixups(buf, m)
@@ -182,6 +227,16 @@ def build(kernel_path, adt_path, cmdline, ramdisk_path=None, gpufw_dir=None):
         pieces.append((rd_va, rd_size, image))
         adt_blob = add_ramdisk_to_adt(adt_blob, rd_pa, rd_size)
         ramdisk = (hex(rd_pa), hex(rd_size))
+    files = None
+    if files_list:
+        blob, n = files_blob(files_list)
+        f_size = (len(blob) + PAGE - 1) & ~(PAGE - 1)
+        f_va = kernel_end
+        kernel_end = f_va + f_size
+        f_pa = f_va - virt_base + PHYS_BASE
+        pieces.append((f_va, f_size, blob))
+        adt_blob = add_files_to_adt(adt_blob, f_pa, len(blob))
+        files = (n, hex(f_pa), len(blob))
 
     hdr_size = SEG_TABLE + 32 * len(pieces)
     out = bytearray(hdr_size)
@@ -203,7 +258,7 @@ def build(kernel_path, adt_path, cmdline, ramdisk_path=None, gpufw_dir=None):
     for i, t in enumerate(seg_table):
         struct.pack_into('<4Q', out, SEG_TABLE + 32 * i, *t)
     info = dict(cputype=hex(m['cputype']), cpusub=m['cpusub'], fixups=nfix, virt_base=hex(virt_base),
-                entry=hex(m['entry']), kernel_end=hex(kernel_end), ramdisk=ramdisk, size=len(out),
+                entry=hex(m['entry']), kernel_end=hex(kernel_end), ramdisk=ramdisk, files=files, size=len(out),
                 segs=[(s['name'], hex(s['vmaddr']), hex(s['vmsize'])) for s in segs])
     return bytes(out), info
 
@@ -214,8 +269,9 @@ if __name__ == '__main__':
     ap.add_argument('--cmdline', default='debug=0xc serial=3 cpus=1 keepsyms=1')
     ap.add_argument('--ramdisk', help='root image for md0 (boot with rd=md0)')
     ap.add_argument('--gpufw', help='Adreno firmware directory for bsd/dev/sweet_gpu.c (/chosen/gpufw,*)')
+    ap.add_argument('--files', help='file list for bsd/dev/sweet_bootfiles.c (/chosen/memory-map SweetFiles)')
     a = ap.parse_args()
-    blob, info = build(a.kernel, a.adt, a.cmdline, a.ramdisk, a.gpufw)
+    blob, info = build(a.kernel, a.adt, a.cmdline, a.ramdisk, a.gpufw, a.files)
     open(a.out, 'wb').write(blob)
     for k, v in info.items():
         if k != 'segs':

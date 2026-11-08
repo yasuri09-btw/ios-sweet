@@ -13,3 +13,15 @@ Built on GitHub's macOS runners (`.github/workflows/metal.yml`), since they carr
 
 The recipe (iOS 16.0 minimum, release, NDEBUG, shader cache off) follows ios-flame's
 `tools/build-turnip-ios.sh`. Output artifact `turnip-ios`: `libvulkan_freedreno.dylib`.
+
+## Phone test programs (`phone/`, `.github/workflows/phone.yml` → artifact `phone-tests`)
+
+- `sweetrun.c` — launchd job `org.sweet.run`: runs `/var/local/run.txt` once per boot, output to
+  `/dev/console` (the kernel log, lines `SWEETRUN: ...`).
+- `vktest.c`, `v2test.cpp`, `shaders/` — ios-flame's Turnip smoke test and raw v2 user-client test
+  (MIT, `phone/turnip/`), stdout line-buffered for the console.
+
+They reach the phone in the boot image: `tools/mkpayload.py --files LIST` (see
+`tools/bonito-files.sh`), written into the root by the kernel before launchd starts
+(`bsd/dev/sweet_bootfiles.c`, patch 0095). Boot-arg `sweetmtl=1` publishes the user client without
+the Metal plugin properties, so Core Animation stays on the CPU while the tests run.

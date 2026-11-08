@@ -1,0 +1,6 @@
+# sweetrun (org.sweet.run) runs these once per boot; output goes to the kernel log.
+# Boot with sweetmtl=1 (user client only) or sweetmtl=2.
+sleep 20
+/var/local/bin/v2test
+env TU_DEBUG=startup
+/var/local/bin/vktest

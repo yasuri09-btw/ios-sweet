@@ -1,0 +1,42 @@
+#!/bin/bash
+# Stage the boot-image file set for Metal-on-Turnip tests and print the list path:
+#   tools/bonito-files.sh [RUN_TXT]    -> research/gpu/files/list   (for mkpayload.py --files)
+#
+# Installs into the phone's root (bsd/dev/sweet_bootfiles.c, before launchd):
+#   /var/local/lib/libvulkan_freedreno.dylib   research/gpu/turnip-ios/   (metal.yml artifact)
+#   /var/local/bin/{sweetrun,vktest,v2test}    research/gpu/phone-tests/  (phone.yml artifact)
+#   /var/local/run.txt                         RUN_TXT (default metal/phone/run.txt)
+#   /System/Library/xpc/launchd.plist          research/gpu/launchd.plist.orig (the cache from
+#                                              research/ipsw-x/ios16-root.img = what is flashed)
+#                                              + job org.sweet.run (sweetrun, output /dev/console)
+# Everything under research/ stays out of git (Apple data, build artifacts).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+run=${1:-metal/phone/run.txt}
+S=research/gpu/files
+rm -rf "$S"; mkdir -p "$S"
+cp research/gpu/turnip-ios/libvulkan_freedreno.dylib "$S/"
+for b in sweetrun vktest v2test; do cp research/gpu/phone-tests/$b "$S/"; done
+cp "$run" "$S/run.txt"
+python3 -I - research/gpu/launchd.plist.orig "$S/launchd.plist" <<'PY'
+import plistlib, sys
+p = plistlib.load(open(sys.argv[1], 'rb'))
+p['LaunchDaemons']['/System/Library/LaunchDaemons/org.sweet.run.plist'] = {
+    'Label': 'org.sweet.run',
+    'ProgramArguments': ['/var/local/bin/sweetrun'],
+    'RunAtLoad': True, 'UserName': 'root', 'LaunchOnlyOnce': True,
+    'EnvironmentVariables': {'PATH': '/var/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'},
+    'StandardOutPath': '/dev/console', 'StandardErrorPath': '/dev/console',
+}
+plistlib.dump(p, open(sys.argv[2], 'wb'), fmt=plistlib.FMT_BINARY)
+PY
+cat > "$S/list" <<'L'
+dir /var/local 755
+file libvulkan_freedreno.dylib /var/local/lib/libvulkan_freedreno.dylib 755
+file sweetrun /var/local/bin/sweetrun 755
+file vktest /var/local/bin/vktest 755
+file v2test /var/local/bin/v2test 755
+file run.txt /var/local/run.txt 644
+file launchd.plist /System/Library/xpc/launchd.plist 644
+L
+echo "$S/list"
