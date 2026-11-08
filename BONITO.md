@@ -438,3 +438,4 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   the unlock.
 - 20:56:43: booted `shim/out/bonito-ios19-cpu8-throttle.img`.
 - ~21:00: cpus=8 throttle boot sat in MSUEarlyBootTask[8] for a while, then it finished ("nothing to do") and the boot went on (user report).
+- ~21:02: **cpus=8 boot reached backboardd (first Apple logo)** with the throttle boot-args; the 19:25 cpus=8 boot without them stalled at `exec mount`.
