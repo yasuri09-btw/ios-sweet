@@ -680,3 +680,14 @@ updates) are days, not months.
   output /dev/console; original kept in research/gpu/launchd.plist.orig). Kernel CI 42499410864
   -> xnu/out-0095, scan-sha3 0 (kernel, Turnip, tests). Image `shim/out/bonito-ios25-mtl1.img`
   (ios24 cmdline + sweetmtl=1, 36 MB) booted 10:27:22. Result pending.
+- 10:3x: 0095 first boot (`ios25`, `logs/boot-0095-mtl1.txt`): 7/7 boot files installed, tests ran,
+  but their stdout to /dev/console was lost after sweetrun's first two lines. sweetrun now logs to
+  /var/local/run.log (job stdout -> /var/local/sweetrun.out). `tools/hfs-get.py` reads files off the
+  HFS+ root over TWRP adb (catalog + extents-overflow walk; verified on ios16-root.img).
+- **~10:50: MILESTONE: Turnip runs on the A615 under iOS** (`ios26-mtl1`, sweetmtl=1, run.log via
+  hfs-get): v2test ALL PASS (WC buffers, GPU CP_MEM_WRITE into WC + imported memory, 0 faults);
+  vktest ALL PASS: "Turnip Adreno (TM) 615, Vulkan 1.3.354", device 65 ms, empty submit 0.29 ms,
+  fill+copy 1 MB, compute shader compiled on the phone (14 ms) 0 wrong, 256x256 triangle draw
+  (pipeline compiled on the phone, 10 ms) exact: `logs/vktest-0095-MILESTONE.png`.
+  Dylib load 1474 ms. Next: metal2vulkan bridge + SweetMetal2 frontend (flame phone/metal2) on CI,
+  then sweetmtl=2.
