@@ -304,3 +304,13 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 18:39: 0087 CI 42429984416 success -> `xnu/out-0087`. Image `shim/out/bonito-ios11-touch.img` =
   0087 + bonito-ios2.adt + cpus=1, sweetfb_noconsole=1, keys+touch on (defaults; touch starts
   45 s after eMMC init), ufslogsecs=2, sampler off. Booted 18:38:59.
+- 18:45: **0087 result** (`logs/boot-0087.txt`): keys work at kernel level (power -> HID 0x30
+  down/up with 1 client, vol-down 0xea; iOS answered with `SWEET FB: display off/on`); screen
+  stayed black only because PosterBoard had just started (17 frames). Volume-up read as held
+  (key=1 down=1, gpio=0) and the first RMI4 I2C write timed out (err 60, only TX watermark,
+  no NACK). Cause of both: **DT PMIC GPIO numbers are 1-based** (pinctrl-spmi-gpio.c
+  `args[0] - PMIC_GPIO_PHYSICAL_OFFSET`). ts_1p8 is PM660 GPIO12 (PPID 0x0cb), vol-up PM660L
+  GPIO7 (PPID 0x2c6, RT 0xc610). 0087 wrongly set **PM660 GPIO13** (0xcc) to output-high
+  (was mode 0x00 out 0x00 en 0x80).
+- Patch **0088**: correct PPIDs; restores GPIO13 to mode 0x00/out 0x00/en 0x80 if it still
+  shows 0087's values; logs SDA/SCL/IRQ levels before and after the RMI probe.

@@ -1,0 +1,134 @@
+diff --git a/bsd/dev/sweet_keys.c b/bsd/dev/sweet_keys.c
+index 931b68d..b96a51c 100644
+--- a/bsd/dev/sweet_keys.c
++++ b/bsd/dev/sweet_keys.c
+@@ -27,7 +27,8 @@ void sweet_keys_init(void);
+ /*
+  * Volume-up PMIC GPIO. sweet: PM6150L (SID 4) GPIO2 = peripheral 0xc1.
+  * bonito (Pixel 3a XL, recognised by the ADT's /sweet-emmc node): PM660L
+- * (SID 2) GPIO8 = peripheral 0xc7 (DT gpio-keys "Volume Up", pm660l_gpio 7).
++ * (SID 2) GPIO7 = peripheral 0xc6 (DT gpio-keys "Volume Up" <&pm660l_gpios 7>;
++ * DT PMIC GPIO numbers are 1-based).
+  * Power and volume-down are PON RT_STS bits 0/1 at SID 0 0x0810 on both.
+  */
+ static uint16_t keys_gpio_ppid = 0x4c1;
+@@ -163,8 +164,8 @@ sweet_keys_init(void)
+ 	}
+ 	DTEntry bonito;
+ 	if (SecureDTLookupEntry(NULL, "/sweet-emmc", &bonito) == kSuccess) {
+-		keys_gpio_ppid = 0x2c7;
+-		keys_gpio_base = 0xc700;
++		keys_gpio_ppid = 0x2c6;
++		keys_gpio_base = 0xc600;
+ 	}
+ 	keys_pon_apid = keys_find_apid(0x008, count);
+ 	keys_gpio_apid = keys_find_apid(keys_gpio_ppid, count);
+diff --git a/bsd/dev/sweet_touch.c b/bsd/dev/sweet_touch.c
+index c7e893e..16fdfa1 100644
+--- a/bsd/dev/sweet_touch.c
++++ b/bsd/dev/sweet_touch.c
+@@ -389,7 +389,9 @@ touch_report(uint32_t mask, const int *x, const int *y)
+  * QUP wrapper 1 SE1, pins GPIO6/7 "qup9"), from the board DT:
+  *   reset GPIO99 (high = run), attention GPIO125, "ts-switch" GPIO135 low
+  *   (routes the touch I2C to the apps processor; WEST tile), and ts_1p8, a
+- *   fixed regulator switched by PM660 (SID 0) GPIO13 = PMIC peripheral 0xcc.
++ *   fixed regulator switched by PM660 (SID 0) GPIO12 = PMIC peripheral 0xcb
++ *   (DT "gpio = <&pm660_gpios 12 ...>": PMIC GPIO numbers in the DT are
++ *   1-based, pinctrl-spmi-gpio.c subtracts PMIC_GPIO_PHYSICAL_OFFSET).
+  * The rail is the only PMIC write: EXT_WRITEL on the apps-owned SPMI channel
+  * (spmi-pmic-arb v5), after checking that 0xcc is a GPIO peripheral.
+  * RMI4 as in Linux drivers/input/rmi4 (rmi_driver.c PDT scan and register
+@@ -402,7 +404,8 @@ touch_report(uint32_t mask, const int *x, const int *y)
+ #define BONITO_SPMI_CHNLS   0x0c600000u
+ #define BONITO_SPMI_OBS     0x0e600000u
+ #define BONITO_SPMI_CNFG    0x0c40a000u
+-#define BONITO_TS_PPID      0x0ccu         /* SID 0, PM660 GPIO13 */
++#define BONITO_TS_PPID      0x0cbu         /* SID 0, PM660 GPIO12 */
++#define BONITO_GPIO13_PPID  0x0ccu         /* 0087 set it high by mistake */
+ #define RMI_ADDR            0x20u
+ #define RMI_MAX_REGS        32u
+ 
+@@ -484,7 +487,36 @@ bonito_pmic_write(vm_offset_t ch, uint8_t reg, uint8_t val)
+ 	return bonito_spmi_cmd(ch, ((uint32_t)reg << 4), NULL); /* EXT_WRITEL, 1 byte */
+ }
+ 
+-/* Switch on ts_1p8 (PM660 GPIO13 as a high digital output). */
++/*
++ * Kernel 0087 drove PM660 GPIO13 (peripheral 0xcc) as a high output instead
++ * of GPIO12. It read mode 0x00, out 0x00, en 0x80 before that: put exactly
++ * those values back if it still looks like 0087 left it (mode 0x01, out 0x80).
++ */
++static void
++bonito_restore_gpio13(void)
++{
++	bool apps = false;
++	uint16_t apid = bonito_apid(BONITO_GPIO13_PPID, &apps);
++	uint8_t type = 0, mode = 0, out = 0, en = 0;
++	if (apid == 0xffffu || !apps || !bonito_pmic_read(apid, 0x04, &type) || type != 0x10u ||
++	    !bonito_pmic_read(apid, 0x40, &mode) || !bonito_pmic_read(apid, 0x44, &out) ||
++	    !bonito_pmic_read(apid, 0x46, &en)) {
++		return;
++	}
++	if (mode != 0x01u || out != 0x80u) {
++		printf("SWEET TOUCH: PM660 GPIO13 mode=%#x out=%#x en=%#x (left as is)\n", mode, out, en);
++		return;
++	}
++	vm_offset_t ch = ml_io_map(BONITO_SPMI_CHNLS + 0x10000u * apid, 0x1000);
++	bool ok = ch && bonito_pmic_write(ch, 0x44, 0x00) && bonito_pmic_write(ch, 0x40, 0x00) &&
++	    bonito_pmic_write(ch, 0x46, 0x80);
++	(void)bonito_pmic_read(apid, 0x40, &mode);
++	(void)bonito_pmic_read(apid, 0x44, &out);
++	(void)bonito_pmic_read(apid, 0x46, &en);
++	printf("SWEET TOUCH: PM660 GPIO13 restored=%d: mode=%#x out=%#x en=%#x\n", ok, mode, out, en);
++}
++
++/* Switch on ts_1p8 (PM660 GPIO12 as a high digital output). */
+ static bool
+ bonito_touch_power(void)
+ {
+@@ -495,23 +527,24 @@ bonito_touch_power(void)
+ 	if (!bt.core || !bt.cnfg || !bt.obs) {
+ 		return false;
+ 	}
++	bonito_restore_gpio13();
+ 	uint16_t apid = bonito_apid(BONITO_TS_PPID, &apps);
+ 	uint8_t type = 0, subtype = 0, mode = 0, out = 0, en = 0;
+ 	if (apid == 0xffffu || !bonito_pmic_read(apid, 0x04, &type) ||
+ 	    !bonito_pmic_read(apid, 0x05, &subtype) || !bonito_pmic_read(apid, 0x40, &mode) ||
+ 	    !bonito_pmic_read(apid, 0x44, &out) || !bonito_pmic_read(apid, 0x46, &en)) {
+-		printf("SWEET TOUCH: ts_1p8 GPIO13 not readable (apid %#x)\n", apid);
++		printf("SWEET TOUCH: ts_1p8 GPIO12 not readable (apid %#x)\n", apid);
+ 		return false;
+ 	}
+ 	bool lvmv = subtype >= 0x10u && subtype <= 0x13u;
+-	printf("SWEET TOUCH: ts_1p8 GPIO13 apid=%u apps=%d type=%#x subtype=%#x mode=%#x out=%#x en=%#x\n",
++	printf("SWEET TOUCH: ts_1p8 GPIO12 apid=%u apps=%d type=%#x subtype=%#x mode=%#x out=%#x en=%#x\n",
+ 	    apid, apps, type, subtype, mode, out, en);
+ 	if (type != 0x10u) {
+-		printf("SWEET TOUCH: peripheral 0xcc is not a GPIO; not touching the PMIC\n");
++		printf("SWEET TOUCH: peripheral 0xcb is not a GPIO; not touching the PMIC\n");
+ 		return false;
+ 	}
+ 	if (!apps) {
+-		printf("SWEET TOUCH: GPIO13 channel not owned by the apps EE; cannot switch ts_1p8\n");
++		printf("SWEET TOUCH: GPIO12 channel not owned by the apps EE; cannot switch ts_1p8\n");
+ 		return false;
+ 	}
+ 	vm_offset_t ch = ml_io_map(BONITO_SPMI_CHNLS + 0x10000u * apid, 0x1000);
+@@ -789,9 +822,16 @@ bonito_touch(void)
+ 	touch_gpio(7, 1, 0, 0, false, false);
+ 	touch_gpio(99, 0, 3, 0, true, true);      /* out of reset */
+ 	touch_wait(400);                          /* DT reset + startup delay, 200 ms each */
++	/* I2C line levels (TLMM IN bit 0) before the first transfer: 1/1 = idle bus. */
++	printf("SWEET TOUCH: before probe sda6=%u scl7=%u irq125=%u\n",
++	    touch_rd(st.gpio, TOUCH_GPIO_IO(6)) & 1u, touch_rd(st.gpio, TOUCH_GPIO_IO(7)) & 1u,
++	    touch_rd(st.gpio, TOUCH_GPIO_IO(125)) & 1u);
+ 	st.probing = true;
+ 	int err = bonito_rmi_probe();
+ 	st.probing = false;
++	printf("SWEET TOUCH: after probe sda6=%u scl7=%u irq125=%u se-status=%#x\n",
++	    touch_rd(st.gpio, TOUCH_GPIO_IO(6)) & 1u, touch_rd(st.gpio, TOUCH_GPIO_IO(7)) & 1u,
++	    touch_rd(st.gpio, TOUCH_GPIO_IO(125)) & 1u, touch_rd(st.se, SE_STATUS));
+ 	if (err) {
+ 		printf("SWEET TOUCH: RMI4 probe failed %d; stopping\n", err);
+ 		return;
