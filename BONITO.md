@@ -354,3 +354,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   lines low (sda/scl 0/0), PDT read timeout. Patch **0089**: PMIC reads must agree twice
   (8 tries), only the LV/MV layout (subtype 0x10-0x13) is written, success requires readback
   mode 0x01 / out 0x80 / en 0x80.
+- 19:11: 0089 CI 42432525454 success -> `xnu/out-0089`; `shim/out/bonito-ios13-touch.img` = 0089 +
+  bonito-ios2.adt + bonito-ios11 cmdline but `sweetsample=SpringBoard,backboardd sweetsamplesecs=60`.
+  Booted 19:11:26. Test: lock screen -> power / swipe up; then pull for SMP + SWEET TOUCH lines.
