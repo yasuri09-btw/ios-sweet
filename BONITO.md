@@ -61,6 +61,16 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    Gentoo's fsck.hfsplus (diskdev_cmds 332.14) segfaults even on a fresh volume: image checked by
    read-only mount instead. Flashing a raw image makes ABL write FILL chunks: use the .simg.
 
+6. 2026-11-07 ~18:25 CST **iOS LOCK SCREEN ON THE PIXEL 3A XL.** SpringBoard + PosterBoard
+   presented the iOS 16 lock screen. Boot `shim/out/bonito-ios9-kstack.img` (kernel 0086, ADT
+   `shim/out/bonito-ios2.adt` with /chosen MAC addresses, cpus=1, ufslogsecs=2, sweetsample=*
+   sweetsamplesecs=60) booted 18:09:43 on the root image with the ByHost migration pref (flashed
+   17:09). What it took after the logo: ByHost `com.apple.migration` LastSystemVersion (no data
+   migration), /chosen mac-address-wifi0/bluetooth0/ethernet0 (MobileGestalt's 5 s wait per app
+   in lsd, found by ios-flame), cpus=1 (fewer/shorter boot-task stalls), and one long first boot
+   so containermanagerd/lsd could create the app containers and the LaunchServices DB (they
+   persist on the rw root).
+
 ## Decisions
 - 2026-11-07: the user is fine with losing postmarketOS: the iOS root goes into `userdata`
   (no GPT changes). Before the first write: back up persist, modemst1/2, fsg, fsc, devinfo,
