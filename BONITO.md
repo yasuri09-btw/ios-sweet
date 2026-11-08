@@ -572,3 +572,4 @@ updates) are days, not months.
   QCOM_SCM_INTERRUPTED: TZ was interrupted (IRQs on in the kernel, off in the shim). Patch
   **0091**: a6_smc resumes like Linux's __scm_smc_do_quirk (x0 = 1, x6 = TZ's session cookie,
   ARM_SMCCC_QUIRK_QCOM_A6) and masks interrupts around each SMC.
+- 22:22: 0091 CI run 42446410261 (29b7358) in_progress.
