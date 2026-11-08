@@ -5,7 +5,7 @@
 #include "console.h"
 #include "font.h"
 
-#define SCALE		3
+static int SCALE = 3;	/* con_scale() */
 #define CH_W		(8 * SCALE)
 #define CH_H		(16 * SCALE)
 #define MARGIN		24
@@ -94,4 +94,91 @@ void con_hex2(const char *label, const char *a, uint32_t va, const char *b, uint
 		put_str(col, buf, WHITE);
 	}
 	row++;
+}
+
+void con_scale(int s)
+{
+	SCALE = s;
+}
+
+/* Minimal printf: %s %c %d %u %x %lx %llx %lu %ld %%, optional 0-pad width for x. */
+static int fmt_num(char *o, uint64_t v, int base, int neg, int width)
+{
+	char t[24];
+	int n = 0, k = 0;
+	do {
+		t[n++] = "0123456789abcdef"[v % base];
+		v /= base;
+	} while (v);
+	while (n < width)
+		t[n++] = '0';
+	if (neg)
+		o[k++] = '-';
+	while (n)
+		o[k++] = t[--n];
+	return k;
+}
+
+void con_vprintf(const char *f, __builtin_va_list ap)
+{
+	char line[96];
+	int n = 0;
+	for (; *f && n < (int)sizeof(line) - 24; f++) {
+		if (*f == '\n') {
+			line[n] = 0;
+			put_str(0, line, WHITE);
+			row++;
+			n = 0;
+			continue;
+		}
+		if (*f != '%') {
+			line[n++] = *f;
+			continue;
+		}
+		f++;
+		int width = 0, lng = 0;
+		while (*f >= '0' && *f <= '9')
+			width = width * 10 + (*f++ - '0');
+		while (*f == 'l') {
+			lng++;
+			f++;
+		}
+		switch (*f) {
+		case 's': {
+			const char *s = __builtin_va_arg(ap, const char *);
+			while (*s && n < (int)sizeof(line) - 24)
+				line[n++] = *s++;
+			break;
+		}
+		case 'c':
+			line[n++] = (char)__builtin_va_arg(ap, int);
+			break;
+		case 'd': {
+			int64_t v = lng ? __builtin_va_arg(ap, int64_t) : __builtin_va_arg(ap, int);
+			n += fmt_num(line + n, v < 0 ? (uint64_t)-v : (uint64_t)v, 10, v < 0, width);
+			break;
+		}
+		case 'u':
+			n += fmt_num(line + n, lng ? __builtin_va_arg(ap, uint64_t) : __builtin_va_arg(ap, unsigned), 10, 0, width);
+			break;
+		case 'x':
+			n += fmt_num(line + n, lng ? __builtin_va_arg(ap, uint64_t) : __builtin_va_arg(ap, unsigned), 16, 0, width);
+			break;
+		default:
+			line[n++] = *f;
+		}
+	}
+	if (n) {
+		line[n] = 0;
+		put_str(0, line, WHITE);
+		row++;
+	}
+}
+
+void con_printf(const char *f, ...)
+{
+	__builtin_va_list ap;
+	__builtin_va_start(ap, f);
+	con_vprintf(f, ap);
+	__builtin_va_end(ap);
 }
