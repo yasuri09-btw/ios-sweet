@@ -387,3 +387,37 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   second is SpringBoard's own startup logo before the lock screen. Useful as a stage marker:
   stuck before any logo = early boot-task stall (mount etc.), stuck on logo 1 = before or at
   SpringBoard launch, stuck on logo 2 = SpringBoard startup.
+- 20:34: second media sampler boot (same image) reached the lock screen; unlock froze with the
+  dock just visible at the bottom (home screen laid out, transition not finished). Pulled
+  `logs/boot-0089-media2.txt` (6 samples, slide 0x3f4ec000).
+- **Unlock freeze diagnosis (sample 5, symbolized):**
+  - SpringBoard t0: `MRAVEndpointCopyLocalizedName -> -[MRAVLocalEndpoint groupLeader] ->
+    audioDiscoverySession -> -[MRAVConcreteRoutingDiscoverySession availableOutputDevices] ->
+    dispatch_sync` (waits for the session queue).
+  - SpringBoard t31 holds that queue: `_onQueue_reloadAvailableOutputDevices ->
+    MRMediaRemoteCopyAirPlayGroupUID -> MRMediaRemoteServiceCopyDeviceInfo ->
+    xpc_connection_send_message_with_reply_sync` to **mediaremoted**.
+  - mediaremoted[31] was exec'd on demand around sample 1, has a single thread, spent samples
+    2-4 (~2+ min) inside dyld (`PrebuiltLoader::applyObjCFixups`), and in sample 2 the kernel
+    stack is `fleh_synchronous -> sleh_synchronous -> handle_user_abort -> vm_fault_internal ->
+    throttle_lowpri_io -> thread_block` (kernel symbols via llvm-nm on xnu/out-0089).
+    In sample 5 it has reached main and waits for logd (`MRLogForCategory -> os_log_create ->
+    firehose_send_get_logging_prefs -> mach_msg`).
+  - => not a deadlock: starvation. mediaremoted runs at a throttled I/O tier, and every page-in
+    sleeps in **XNU low-priority I/O throttling** because normal-tier I/O is almost always
+    recent on our slow, serialized eMMC driver. sweet_emmc also has no DKIOCISSOLIDSTATE, so the
+    HDD periods apply (tier1/2/3 window 25/100/500 ms, period 40/85/200 ms; xnu-8796
+    bsd/miscfs/specfs/spec_vnops.c). Guess, not verified: the random boot-task stalls (0085
+    MSUEarlyBootTask page fault, tzinit 228 s, launchd_cache_loader) are the same thing, since
+    boot tasks also run at low tiers.
+- `tools/dsc-a2s.py` fixed: loads the .dylddata/.dyldlinkedit subcaches (LINKEDIT was missing,
+  so every lookup printed `?`) and local symbols from `dyld_shared_cache_arm64.symbols`. Cache
+  from a read-only loop mount of `research/ipsw-x/ios16-root.img`.
+- 20:45: test image `shim/out/bonito-ios17-throttle.img` = 0089 + bonito-ios2.adt + the
+  bonito-ios16-media cmdline + `io_throttle_window_tier1=0 io_throttle_window_tier2=0
+  io_throttle_window_tier3=0 io_throttle_period_tier1=1 io_throttle_period_tier2=1
+  io_throttle_period_tier3=1` (boot-args read by throttle_init; no kernel rebuild). Not booted
+  yet. Expect: faster boots, no early boot-task stalls, mediaremoted up in seconds, unlock done.
+  Note: an in-flight higher-tier I/O still throttles (`throttle_inflight_count`); if needed,
+  next kernel step = DKIOCISSOLIDSTATE in sweet_emmc_ioctl, or set lowpri_throttle_enabled=0
+  (sysctl debug.lowpri_throttle_enabled, no boot-arg).

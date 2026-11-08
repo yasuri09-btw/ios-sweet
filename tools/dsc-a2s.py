@@ -16,10 +16,11 @@ import mmap, os, struct, sys
 class Cache:
     def __init__(self, d):
         self.maps = []  # (addr, size, mm, fileoff)
+        self.dir = d
         main = os.path.join(d, 'dyld_shared_cache_arm64')
         files = [main] + sorted(os.path.join(d, f) for f in os.listdir(d)
                                 if f.startswith('dyld_shared_cache_arm64.')
-                                and f.split('.')[-1].isdigit())
+                                and f.split('.')[1].isdigit())  # .NN, .NN.dylddata, .NN.dyldlinkedit
         for f in files:
             fd = open(f, 'rb')
             mm = mmap.mmap(fd.fileno(), 0, access=mmap.ACCESS_READ)
@@ -39,6 +40,35 @@ class Cache:
             a, _, _, po = struct.unpack_from('<QQQI', hdr, io + 32 * i)
             path = hdr[po:hdr.find(b'\0', po)].decode()
             self.images.append((a, path))
+
+    def locals_for(self, base):
+        """Local symbols from dyld_shared_cache_arm64.symbols (the in-cache
+        symtab only holds <redacted> stubs for them)."""
+        if not hasattr(self, 'loc'):
+            self.loc = None
+            p = os.path.join(self.dir, 'dyld_shared_cache_arm64.symbols')
+            if os.path.exists(p):
+                fd = open(p, 'rb')
+                sm = mmap.mmap(fd.fileno(), 0, access=mmap.ACCESS_READ)
+                lo = struct.unpack_from('<Q', sm, 0x48)[0]
+                no, nc, so, ss, eo, ec = struct.unpack_from('<6I', sm, lo)
+                ents = {}
+                for i in range(ec):
+                    off, st, cnt = struct.unpack_from('<QII', sm, lo + eo + 16 * i)
+                    ents[off] = (st, cnt)
+                self.loc = (sm, lo + no, lo + so, ents)
+        if not self.loc:
+            return []
+        sm, no, so, ents = self.loc
+        st, cnt = ents.get(base - self.maps[0][0], (0, 0))
+        out = []
+        for k in range(st, st + cnt):
+            sx, ty, _, _, v = struct.unpack_from('<IBBHQ', sm, no + 16 * k)
+            if ty & 0xe0 or not v:
+                continue
+            e = sm.find(b'\0', so + sx)
+            out.append((v, sm[so + sx:e].decode('latin1')))
+        return out
 
     def read(self, addr, n):
         for a, s, mm, fo in self.maps:
@@ -93,7 +123,10 @@ def image_syms(c, base):
             segs[name] = (va, vs, fo)
         i += cs
     le = segs.get('__LINKEDIT')
-    lea = lambda off: le[0] + off - le[2]
+    # Split caches: LINKEDIT load-command offsets are file offsets into the
+    # .dyldlinkedit subcache, so translate through that file's mapping.
+    lm = next(((a, fo) for a, sz, _, fo in c.maps if a <= le[0] < a + sz), (le[0], le[2]))
+    lea = lambda off: lm[0] + off - lm[1]
     for cmd, b in cmds:
         if cmd == 0x80000033 or (cmd == 0x80000022 and struct.unpack_from('<I', b, 44)[0]):
             off, size = struct.unpack_from('<II', b, 8) if cmd == 0x80000033 else struct.unpack_from('<II', b, 40)
@@ -109,6 +142,7 @@ def image_syms(c, base):
                 if ty & 0xe0 or not v or sx >= len(ss):
                     continue
                 syms.append((v, ss[sx:ss.find(b'\0', sx)].decode('latin1')))
+    syms = [x for x in syms if x[1] != '<redacted>'] + c.locals_for(base)
     return segs.get('__TEXT'), sorted(syms)
 
 
