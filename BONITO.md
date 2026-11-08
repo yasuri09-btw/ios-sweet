@@ -301,3 +301,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   - SweetHIDTouch maps by the real panel size (PE_current_console) instead of 1080x2400.
   - Keys: bonito volume-up = PM660L (SID 2) GPIO8, PPID 0x2c7, RT 0xc710 (PON 0x0810 unchanged).
   - sweet_emmc_init starts keys + touch (as sweet_ufs_init). Bonito detection: ADT /sweet-emmc.
+- 18:39: 0087 CI 42429984416 success -> `xnu/out-0087`. Image `shim/out/bonito-ios11-touch.img` =
+  0087 + bonito-ios2.adt + cpus=1, sweetfb_noconsole=1, keys+touch on (defaults; touch starts
+  45 s after eMMC init), ufslogsecs=2, sampler off. Booted 18:38:59.
