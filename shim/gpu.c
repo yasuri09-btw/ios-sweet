@@ -891,7 +891,7 @@ static uint32_t pkt4(uint32_t reg, uint32_t cnt)
 static void gpu_blit_test(int cb, int full)
 {
 	/* the source: CPU-drawn pattern (checker + border), mapped with 2 MB blocks */
-	for (uint32_t y = full ? SRC_H : 0; y = 0; y < SRC_H; y++)
+	for (uint32_t y = full ? SRC_H : 0; y < SRC_H; y++)
 		for (uint32_t x = 0; x < SRC_W; x++) {
 			uint32_t c = ((x / 75 + y / 75) & 1) ? 0xff2040ff : 0xffffd020;
 			if (x < 20 || y < 20 || x >= SRC_W - 20 || y >= SRC_H - 20)
