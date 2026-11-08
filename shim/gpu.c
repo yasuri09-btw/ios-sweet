@@ -935,6 +935,10 @@ static void gpu_blit_test(int cb, int full)
 	pkt7(0x26, 0);
 	if (flush_wait("blit init"))
 		return;
+	REG(0x840a, 0);			/* GRAS_A2D_SCISSOR_TL: no clip (reset value clips on the A615) */
+	REG(0x840b, 0x3fff | (0x3fffu << 16));
+	REG(0x80f0, 0);			/* GRAS_SC_WINDOW_SCISSOR_TL/BR */
+	REG(0x80f1, 0x3fff | (0x3fffu << 16));
 	REG(0x8c01, 0);
 	REG(0x8c00, 0x00f03000);
 	REG(0x8400, 0x00f03000);
