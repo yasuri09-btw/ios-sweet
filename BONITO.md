@@ -289,3 +289,15 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   wait on a user lock (hint 10). containermanagerd t3/t4 are RUNNING (state 0x4, changing
   backtraces): it is busy creating app containers (first boot work; persists on the rw root).
   Next: one long run (30+ min, same image) so lsd/containermanagerd finish.
+- 18:45: Patch **0087** (touch + buttons, written from the live DT + mainline Linux sources):
+  - Touch: Synaptics RMI4 @0x20 on GENI I2C 0xa84000 (same SE address as sweet's touch;
+    GCC RCG 0x18148 / CBCR 0x18144 / vote bit 23 identical to gcc-sdm845.c). Pins: I2C GPIO6/7
+    mux 1 (qup9), reset GPIO99, attention GPIO125 (TLMM NORTH 0x3900000, as sweet), ts-switch
+    GPIO135 low (WEST 0x3500000). Rail ts_1p8 = PM660 (SID 0) GPIO13, PPID 0x0cc: SPMI v5
+    EXT_WRITEL on the apps-owned channel (chnls 0xc600000 + 0x10000*apid), only after
+    type 0x10 check; LV/MV vs old GPIO register layout per pinctrl-spmi-gpio.c.
+    RMI4 ported from drivers/input/rmi4: PDT scan pages 0-3, F01 ctrl0 nosleep+configured,
+    F12 register descriptors (query+1/+4/+7), control8 sensor max, data1 objects polled 10 ms.
+  - SweetHIDTouch maps by the real panel size (PE_current_console) instead of 1080x2400.
+  - Keys: bonito volume-up = PM660L (SID 2) GPIO8, PPID 0x2c7, RT 0xc710 (PON 0x0810 unchanged).
+  - sweet_emmc_init starts keys + touch (as sweet_ufs_init). Bonito detection: ADT /sweet-emmc.
