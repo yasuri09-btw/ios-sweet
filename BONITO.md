@@ -718,3 +718,4 @@ updates) are days, not months.
   previous one; SweetFramebuffer returns true); its own blit timing out also skips; a timeout never
   disables the GPU; hang (no progress 1 s) -> gpu_recover_locked; SMMU FSR bits 10:9 (0x400 =
   format) are not a fault.
+- 11:59: 0097 CI 42506512951 -> xnu/out-0097, scan-sha3 0. `tools/bonito-mkimg.sh` built `shim/out/bonito-ios32-mtl2.img` (sweetmtl=2), booted. Result pending.
