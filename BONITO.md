@@ -659,3 +659,13 @@ updates) are days, not months.
   1 GB, unmanaged RAM), VA windows < 4 GB, map_at/unmap_at, submit_v2, fence waits; SweetAccelerator.cpp
   (flame final, scratchpad flame/final/) + SweetGPUABI.h + KernelConfigTables; then a Turnip smoke test
   (flame phone/turnip/vktest.c) built in metal.yml.
+- 02:20 **Patch 0094** (`xnu/patches/0094-bonito-gpu-turnip-client.patch`): the kernel half of Metal on
+  Turnip. sweet_a6xx: async multi-IB submit (CCU invalidate, CACHE_FLUSH_TS fence, ALWAYS_ON stamps),
+  fence_done/force, timestamp, unmap, recover (soft reset + zap resume), extra page tables, UBWC regs
+  for SDM670 (UBWC 2.0, hbb 14: RB/TPL1/SP_NC_MODE_CNTL 2, UCHE_MODE_CNTL 0x200000). sweet_gpu: 8 MB
+  extra page tables, GPU pool 0xb0000000 + 1 GB (unmanaged RAM, first fit 16 KB), 5 client windows of
+  512 MB from 0x50000000, map_at/unmap_at, submit_v2, wait_fence_ns with progress-based hang reset,
+  lost-fence ranges. `iokit/Kernel/arm/SweetAccelerator.cpp` = flame's v2 client only (sweetmtl=2,
+  plugin SweetMetal2/SweetMTL2Device, GetDeviceInfo: chip 0x06010500, GMEM 512K at 0x100000, hbb 14,
+  swizzle 6, UBWC 2, input_bits 32), SweetGPUABI.h = metal/turnip/NativeAdrenoABI.h, config table +
+  files.arm64 entries, pmap_sync_page_attributes_phys ptoa fix. Syntax-checked locally.
