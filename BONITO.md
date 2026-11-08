@@ -376,3 +376,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   MediaRemote waits on. The first unlock at 19:20 got through, so the hang is intermittent.
 - 20:30: new session. Phone was in fastboot (retry count 0 -> set_active a). Booted
   `shim/out/bonito-ios16-media.img` at 20:30:38 (MediaRemote sampler run, see 19:34).
+- 20:33: media sampler boot result (`logs/boot-0089-media.txt`): **stalled at mount-phase-2
+  (`exec mount`)**, the random early boot-task stall again, cpus=1. Kernel stayed alive: touch
+  driver up (43 HID touch events), keys logged, but HID had 0 clients (backboardd never ran) and
+  the sampler had nothing to sample (it only samples the named processes). The user saw what
+  looked like SpringBoard frozen right before unlock. Guess, not verified: that was the previous
+  boot's last frame still in the framebuffer at 0x9c000000 (sweetfb_noconsole=1, so the kernel
+  draws nothing over it). Retrying the same image.
