@@ -507,3 +507,15 @@ updates) are days, not months.
   PWR_ON=0: both off); GPUCC cx_gmu 0x80004220, cxo 0x80000001 (off); GMU RCG cmd 0x80000000
   (root off) cfg 0; GPUCC PLL1 mode 0. => **ABL leaves the GPU completely off**: bring-up starts
   from cold, as in mainline a6xx_gmu_resume (and flame's sweet_a6xx.c power-up path).
+- 21:30 **GPU firmware in `research/gpu/fw/` (gitignored):** the phone's vendor partitions are no
+  use (vendor_a dump: ext4 with errors, /firmware inode "not a directory"; vendor_b mounts empty;
+  dumps in the session scratchpad only). Taken instead from TheMuppets
+  proprietary_vendor_google_sargo @ c631f0f2 (the source pmOS's firmware-google-sargo uses;
+  bonito = sargo blobs): `a615_zap.mdt/.b00/.b01/.b02/.elf`, vendor `a630_gmu.bin` (32768) +
+  `a630_sqe.fw` (32136). Also `research/gpu/fw/linux-firmware/a630_gmu.bin` (32768, different
+  build, same raw ITCM format) + `a630_sqe.fw` (34188) from the host's linux-firmware: use these
+  first, they are what mainline (and pmOS on this phone) ran. pmOS squashes the zap with
+  pil-squasher into a615_zap.mbn; flame's PAS loader takes mdt + segment files directly.
+- Next: port flame's `shim/gpuprobe.c` (cloned in scratchpad `flame-src/`) to bonito as a shim
+  stage: GCC/GPUCC CX up, GMU (legacy: ITCM raw image, SPTPRAC, gfx rail, HFI v1, PDC 0x30080),
+  zap via PAS, SQE, ring + fence. Output on screen (no shim log on bonito).
