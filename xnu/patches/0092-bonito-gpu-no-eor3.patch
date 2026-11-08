@@ -1,0 +1,19 @@
+diff --git a/bsd/dev/sweet_a6xx.c b/bsd/dev/sweet_a6xx.c
+index 8f4583e..90d4ff4 100644
+--- a/bsd/dev/sweet_a6xx.c
++++ b/bsd/dev/sweet_a6xx.c
+@@ -659,7 +659,13 @@ static int zap_load(struct a6_gpu *g)
+ 
+ /* ---- ring ---- */
+ 
+-static uint32_t pm4_parity(uint32_t v)
++/*
++ * noinline: inlined into loops (a6_blit_init_ib) the compiler vectorized the
++ * xor chain into EOR3, an ARMv8.2 SHA3 instruction the A55/A75 lack (the
++ * kernel is built for armv8.2-a+crypto on an Apple toolchain): undefined
++ * instruction panic in 0091. A call keeps the loops scalar.
++ */
++static uint32_t __attribute__((noinline)) pm4_parity(uint32_t v)
+ {
+ 	return (0x9669 >> (0xf & (v ^ (v >> 4) ^ (v >> 8) ^ (v >> 12) ^ (v >> 16) ^ (v >> 20) ^
+ 				  (v >> 24) ^ (v >> 28)))) & 1;

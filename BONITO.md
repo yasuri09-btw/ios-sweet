@@ -574,3 +574,9 @@ updates) are days, not months.
   ARM_SMCCC_QUIRK_QCOM_A6) and masks interrupts around each SMC.
 - 22:22: 0091 CI run 42446410261 (29b7358) in_progress.
 - 22:29: 0091 CI success -> `xnu/out-0091`; images `shim/out/bonito-ios21-{gpu,trip}.img`. Booted ios21-gpu at 22:30:14.
+- 22:40 **0091 result:** user saw `Undefined kernel instruction: @sleh.c:951 instr=ce1044c6` once
+  frames started (the zap/GPU bring-up got further: present ran for the first time). ce1044c6 =
+  `EOR3 v6.16b, v6.16b, v16.16b, v17.16b` (ARMv8.2 SHA3, not on A55/A75). The only SHA3-class
+  instructions in the 0091 kernel: 3x EOR3 in `a6_blit_init_ib` (PM4 parity vectorized over the
+  register table; kernel flags `-march=armv8.2-a+crypto`, Apple clang); 0089 has none. Patch
+  **0092**: pm4_parity noinline. Rule: scan new kernels for SHA3 instructions before booting.
