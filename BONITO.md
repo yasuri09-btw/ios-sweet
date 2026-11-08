@@ -289,7 +289,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   wait on a user lock (hint 10). containermanagerd t3/t4 are RUNNING (state 0x4, changing
   backtraces): it is busy creating app containers (first boot work; persists on the rw root).
   Next: one long run (30+ min, same image) so lsd/containermanagerd finish.
-- 18:45: Patch **0087** (touch + buttons, written from the live DT + mainline Linux sources):
+- 18:30: Patch **0087** (touch + buttons, written from the live DT + mainline Linux sources):
   - Touch: Synaptics RMI4 @0x20 on GENI I2C 0xa84000 (same SE address as sweet's touch;
     GCC RCG 0x18148 / CBCR 0x18144 / vote bit 23 identical to gcc-sdm845.c). Pins: I2C GPIO6/7
     mux 1 (qup9), reset GPIO99, attention GPIO125 (TLMM NORTH 0x3900000, as sweet), ts-switch
