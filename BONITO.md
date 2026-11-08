@@ -669,3 +669,4 @@ updates) are days, not months.
   plugin SweetMetal2/SweetMTL2Device, GetDeviceInfo: chip 0x06010500, GMEM 512K at 0x100000, hbb 14,
   swizzle 6, UBWC 2, input_bits 32), SweetGPUABI.h = metal/turnip/NativeAdrenoABI.h, config table +
   files.arm64 entries, pmap_sync_page_attributes_phys ptoa fix. Syntax-checked locally.
+- 02:40: 0094 CI 42459830614 success -> `xnu/out-0094`, scan-sha3 0. Images `shim/out/bonito-ios24-{gpu,trip}.img` (sweetgpu=1, no sweetmtl): regression check of the present path pending.
