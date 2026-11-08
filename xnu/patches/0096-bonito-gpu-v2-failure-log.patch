@@ -1,0 +1,56 @@
+diff --git a/iokit/Kernel/arm/SweetAccelerator.cpp b/iokit/Kernel/arm/SweetAccelerator.cpp
+index ae4639f..a45385e 100644
+--- a/iokit/Kernel/arm/SweetAccelerator.cpp
++++ b/iokit/Kernel/arm/SweetAccelerator.cpp
+@@ -23,6 +23,7 @@
+ #include <IOKit/IOKitKeys.h>
+ #include <IOKit/IOBufferMemoryDescriptor.h>
+ #include <pexpert/pexpert.h>
++#include <sys/proc.h>
+ #include "SweetSurface.h"
+ #include "SweetGPUABI.h"
+ 
+@@ -281,6 +282,26 @@ SweetAcceleratorUserClient::externalMethod(uint32_t selector, IOExternalMethodAr
+ 		if (o != NULL) {
+ 			args->structureOutputSize = r == kIOReturnSuccess ? osz : 0;
+ 		}
++		/* Failures, except the routine ones (fence wait timeouts, a full ring): Turnip turns most
++		 * of them into VK_ERROR_DEVICE_LOST, and its own message goes nowhere. First 32 per boot. */
++		uint32_t m = isz >= 8 && w[0] == SWEET_V2_TUNNEL ? w[1] : selector;
++		if (r != kIOReturnSuccess && r != kIOReturnBusy &&
++		    !(r == kIOReturnTimeout && m == NativeAdrenoMethodWaitFence)) {
++			static uint32_t nfail;
++			if (nfail < 32) {
++				nfail++;
++				char name[32];
++				proc_name(proc_pid(current_proc()), name, sizeof(name));
++				IOLog("SWEET MTL: v2 %s method %u (in %u) -> 0x%x\n", name, m, isz, r);
++				if (m == NativeAdrenoMethodSubmit && isz >= 8 + sizeof(NativeAdrenoAbiSubmit)) {
++					const NativeAdrenoAbiSubmit *rq = (const NativeAdrenoAbiSubmit *)(w + 2);
++					IOLog("SWEET MTL:   submit %u buffers, wait fence %llu (%llu ns), window %llx+%llx, "
++					    "first %llx+%llx\n", rq->buffer_count, (unsigned long long)rq->wait_fence,
++					    (unsigned long long)rq->wait_timeout_ns, fWinBase, fWinSize,
++					    (unsigned long long)rq->buffers[0].iova, (unsigned long long)rq->buffers[0].bytes);
++				}
++			}
++		}
+ 		return r;
+ 	}
+ 
+@@ -608,7 +629,15 @@ SweetAcceleratorUserClient::v2Method(uint32_t method, const void *in, uint32_t i
+ 			dw[i] = (uint32_t)(b->bytes / 4);
+ 		}
+ 		if (rq->wait_fence != 0 && sweet_gpu_wait_fence_ns((uint32_t)rq->wait_fence, rq->wait_timeout_ns)) {
+-			return kIOReturnTimeout;
++			/* Busy, not Timeout: Turnip's Darwin backend retries a busy submit (after waiting for its
++			 * oldest fence) but turns any other error, Timeout included, into a lost device. */
++			static uint32_t nwait;
++			if (nwait < 8) {
++				nwait++;
++				IOLog("SWEET MTL: v2 submit: wait for fence %llu timed out after %llu ns -> busy\n",
++				    (unsigned long long)rq->wait_fence, (unsigned long long)rq->wait_timeout_ns);
++			}
++			return kIOReturnBusy;
+ 		}
+ 		bool busy = false;
+ 		uint32_t fence = sweet_gpu_submit_v2(iova, dw, rq->buffer_count, &busy);
