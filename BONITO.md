@@ -347,3 +347,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   `touch 0 down at 611,1405` etc. arrived. Vol-up fixed (reads released). GPIO13 found back at
   mode 0/out 0 (PMIC reset since 0087). That boot stalled at mount_hfs (random stall, before
   backboardd: HID 0 clients). Re-booted 0088.
+- 19:03: second 0088 boot (`logs/boot-0088b.txt`): lock screen shown; ALL keys reach backboardd
+  (power 0x30, vol-up 0xe9 now correct, vol-down 0xea; 1 client) but SpringBoard did not react
+  (no display off/on after PosterBoard; only ~20 frames) -> sample SpringBoard next run.
+  Touch failed: GPIO12 subtype read 0 (was 0x10) -> old-layout write, ts_1p8 stayed off, I2C
+  lines low (sda/scl 0/0), PDT read timeout. Patch **0089**: PMIC reads must agree twice
+  (8 tries), only the LV/MV layout (subtype 0x10-0x13) is written, success requires readback
+  mode 0x01 / out 0x80 / en 0x80.
