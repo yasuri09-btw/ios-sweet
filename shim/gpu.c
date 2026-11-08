@@ -534,14 +534,12 @@ static int gmu_boot(int *cb_out)
 
 	/* a6xx_gmu_fw_start */
 	wr32(GMU_REG(GMU_GENERAL_7), 1);				/* TCM retention */
-	wr32(GMU_REG(GMU_RSCC_REQ), 1u << 1);			/* a6xx_rpmh_start */
-	int rc = wait_bit(GMU_REG(GMU_RSCC_ACK), 1u << 1, 1, 100);
-	int rc2 = wait_bit(RSCC_REG(0x0101), 0xffffffff, 0, 100);
-	wr32(GMU_REG(GMU_RSCC_REQ), 0);
-	con_printf("rsc wake %s seq %s (status0 %x)\n", rc ? "TIMEOUT" : "ok", rc2 ? "BUSY" : "idle",
-		   rd32(RSCC_REG(0x0004)));
-	if (rc || rc2)
-		return -1;
+	/*
+	 * No a6xx_rpmh_start here: Linux only wakes the RSC when resuming from
+	 * its own a6xx_rpmh_stop (GMU_STATUS_PDC_SLEEP); a cold boot skips it.
+	 * (Probe 1 on bonito: the wake request was never acked.)
+	 */
+	con_printf("rscc status0 %x seq busy %x\n", rd32(RSCC_REG(0x0004)), rd32(RSCC_REG(0x0101)));
 
 	/* legacy firmware: raw ITCM image */
 	uint32_t flen = (uint32_t)(gmu_fw_end - gmu_fw);
@@ -597,7 +595,7 @@ static int gmu_boot(int *cb_out)
 	if (oob("boot_slumber", 22, 30))
 		return -1;
 	wr32(GMU_REG(GMU_GX_SPTPRAC_PWR), 0x778000);
-	rc = -1;
+	int rc = -1;
 	for (int i = 0; i < 100 && rc; i++) {	/* a6xx_sptprac_enable: (status & 0x38) == 0x28 */
 		if ((rd32(GMU_REG(GMU_SPTPRAC_STATUS)) & 0x38) == 0x28)
 			rc = 0;
