@@ -22,3 +22,5 @@ void con_hex(const char *label, uint64_t v);
 void con_hex2(const char *label, const char *a, uint32_t va, const char *b, uint32_t vb);
 void con_scale(int s);		/* glyph scale (default 3; 2 = 64 cols x 66 rows) */
 void con_printf(const char *fmt, ...);	/* one screen line per '\n' */
+void con_set_stride(uint32_t bytes);	/* panel row pitch after a stride change */
+void con_home(void);			/* next line at the top, no clear */

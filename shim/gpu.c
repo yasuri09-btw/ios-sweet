@@ -1076,9 +1076,17 @@ static void gpu_run(int gmu_cb)
 		wr32(MDP_TOP + 0x4000 + 0x24, DST_PITCH);
 		wr32(MDP_TOP + 0x1000 + 0x18, 1);
 		delay_ms(50);
+		for (uint32_t o = 0; o < FB_H * DST_PITCH; o += 4)	/* black, so unwritten rows show */
+			wr32(FB_PA + o, 0xff000000);
 		gpu_blit_test(cb, 1);
-		con_printf("stride %u (want %u), ctl0 flush %x\n", rd32(MDP_TOP + 0x4000 + 0x24), DST_PITCH,
-			   rd32(MDP_TOP + 0x1000 + 0x18));
+		con_set_stride(DST_PITCH);
+		con_home();
+		con_printf("stride %u ctl0 flush %x\n", rd32(MDP_TOP + 0x4000 + 0x24), rd32(MDP_TOP + 0x1000 + 0x18));
+		static const uint32_t rows[] = { 100, 1000, 2000, 2040, 2050, 2100, 2150, 2159 };
+		for (unsigned i = 0; i < sizeof(rows) / sizeof(rows[0]); i++)
+			con_printf("row %u: x100 %x x540 %x x900 %x\n", rows[i],
+				   rd32(FB_PA + rows[i] * DST_PITCH + 4 * 100), rd32(FB_PA + rows[i] * DST_PITCH + 4 * 540),
+				   rd32(FB_PA + rows[i] * DST_PITCH + 4 * 900));
 	}
 out:
 	cb_fault("gpu", cb);
