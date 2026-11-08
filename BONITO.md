@@ -368,3 +368,9 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 19:25: cpus=8 (`bonito-ios14-cpu8.img`) stalled at `exec mount` (multi-core stall). User chose
   to go back to the 1-core touch image (`bonito-ios13-touch.img`). Diagnosis plan for later:
   cpus=8 + `sweetsample=* sweetsamplesecs=30` (0086 kernel stacks), let it sit stuck ~2 min, pull.
+- 19:34: **unlock freeze** (`logs/boot-0089-freeze.txt`, cpus=1): touch works (17 events), but
+  SpringBoard's main thread hangs during the unlock in a dispatch_sync into **MediaRemote**
+  (samples 3+4, kernel hint 16 = workloop sync wait). mediaremoted + mediaserverd run, no crash
+  (bonito has no audio driver). Next: `shim/out/bonito-ios16-media.img` (0089, cpus=1,
+  `sweetsample=SpringBoard,mediaremoted,mediaserverd,backboardd sweetsamplesecs=45`) to see who
+  MediaRemote waits on. The first unlock at 19:20 got through, so the hang is intermittent.

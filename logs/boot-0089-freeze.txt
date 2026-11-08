@@ -1,0 +1,2079 @@
+Darwin Kernel Version 22.6.0: Mon Aug 14 05:06:07 UTC 2023; runner:xnu-8796.141.3
+pmap_startup() init/release time: 13719 microsec
+pmap_startup() delayed init/release of 0 pages
+vm_page_bootstrap: 126263 free pages, 2873 wired pages, (up to 0 of which are delayed free)
+VM boostrap: 97 maps, 204 entries and 512 holes available
+Maximum number of VM swap files: 100
+bufferhdr               : 0xfffffe100057c000 - 0xfffffe10006ec000 (1472K)
+gIOKitPageableFixed2    : 0xfffffe10006ec000 - 0xfffffe10066ec000 (96M)
+zones                   : 0xfffffe10066ec000 - 0xfffffe30066ec000 (128G)
+gIOKitPageableFixed3    : 0xfffffe30066ec000 - 0xfffffe300c6ec000 (96M)
+kmem_data_range         : 0xfffffe300c6ec000 - 0xfffffe71c40ac000 (262G)
+ipc_kernel_copy_map     : 0xfffffe71c40ac000 - 0xfffffe71c48ac000 (8M)
+kmem_ptr_range_meta     : 0xfffffe71c48ac000 - 0xfffffe71c50ec000 (8M)
+compressor              : 0xfffffe71c50ec000 - 0xfffffe79a7020000 (31G)
+bsd_pageable            : 0xfffffe79a7020000 - 0xfffffe79a9228000 (34M)
+mb                      : 0xfffffe79a9228000 - 0xfffffe79ad228000 (64M)
+io_submap               : 0xfffffe79ad228000 - 0xfffffe79ada28000 (8M)
+gIOKitPageableFixed1    : 0xfffffe79ada28000 - 0xfffffe79b3a28000 (96M)
+kmem_ptr_range          : 0xfffffe79b3a28000 - 0xfffffe8faf9a8000 (87G)
+kmem_sprayqtn_range     : 0xfffffe8faf9a8000 - 0xfffffe8fed80c000 (990M)
+zone_meta               : 0xfffffe8fed80c000 - 0xfffffe8ff5dfc000 (133M)
+ipc_kernel_map          : 0xfffffe8ff5dfc000 - 0xfffffe8ff9dfc000 (64M)
+gIOKitPageableFixed0    : 0xfffffe8ff9dfc000 - 0xfffffe8fffdfc000 (96M)
+kmem_large_ranges[1]    : 0 - 0 (0B)
+kmem_large_ranges[2]    : 0 - 0 (0B)
+kmem_large_ranges[3]    : 0 - 0 (0B)
+kmem_large_ranges[4]    : 0xfffffe8fb7574800 - 0xfffffe8fed80c000 (866M)
+kmem_large_ranges[5]    : 0xfffffe3843624000 - 0xfffffe71c40ac000 (230G)
+"vm_compressor_mode" is 4
+zone_init: pgzalloc  0xfffffe10066ec000:0xfffffe1007668000 (15M) [495 slots]
+zone_init: map VM    0xfffffe1007668000:0xfffffe14d40e0000 (19G)
+zone_init: map RO    0xfffffe14d40e0000:0xfffffe166d9b0000 (6G)
+zone_init: map GEN0  0xfffffe166d9b0000:0xfffffe1b3a428000 (19G)
+zone_init: map GEN1  0xfffffe1b3a428000:0xfffffe2006ea4000 (19G)
+zone_init: map GEN2  0xfffffe2006ea4000:0xfffffe24d3920000 (19G)
+zone_init: map GEN3  0xfffffe24d3920000:0xfffffe29a039c000 (19G)
+zone_init: map DATA  0xfffffe29a039c000:0xfffffe30066ec000 (25G)
+zone_init: metadata  0xfffffe8fed81c000:0xfffffe8ff581c000 (128M)
+zone_init: metabits  0xfffffe8ff581c000:0xfffffe8ff5dec000 (5M)
+zone_init: extra     0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 502 holes left
+Long logs support configured: size: 16384
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+Log queues configured: slot count: 8, per-slot size: 32768, total size: 262144
+Firehose configured: 16 chunks, 8 io pages
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+kdp_core zlib memory 0x8000
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+iBoot version: sweet-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+SWEET FB: AppleCLCD 1080x2160 stride 4320 at 0x9c000000, default surface 1, presented as 1125x2436
+SWEET CPU: requested=1 selected=1 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+	The Regents of the University of California. All rights reserved.
+
+MAC Framework successfully initialized
+using 2535 buffer headers and 2535 cluster IO buffer headers
+SWEET CPU: 1/1 CPUs initialized, SGI1 verified
+ktriage_register_subsystem_strings: set subsystem 8 strings
+calling mpo_policy_init for SWEET AMFI
+Security policy loaded: SWEET built-in Mobile File Integrity (SWEET AMFI)
+SWEET AMFI: platform binary policy registered (0)
+calling mpo_policy_init for Sandbox
+Security policy loaded: SWEET permissive sandbox stand-in (Sandbox)
+SWEET Sandbox: permissive policy registered (0)
+SWEET HFS: hfs-627.100.6 registered
+mcache: 1 CPU(s), 64 bytes CPU cache line size
+mbinit: done [64 MB total pool size, (42/21) split]
+dlil_init: Waiting for all the create dlil kernel threads to get scheduled at least once.
+dlil_init: All the created dlil kernel threads have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface lo0 have been scheduled at least once. Proceeding.
+ifnet_attach: Waiting for all kernel threads created for interface gif0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface gif0 have been scheduled at least once. Proceeding.
+skip attaching fsw to lo0 using legacy TX modelifnet_attach: Waiting for all kernel threads created for interface stf0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface stf0 have been scheduled at least once. Proceeding.
+SWEET EMMC: card ready, rca 1, 8-bit high speed (pwr 0x2/0x4)
+SWEET EMMC: "userdata": first sector 0x108e400, 51163 MiB, read-write, DMA at 0xe0000000
+SWEET KEYS: arb=0x50000000 apids=512 pon-apid=7 gpio4-apid=146 pon=0/1 gpio=0x1/1 mode=0/1 en=0x80/1 subtype=0x11/1
+BSD root: emmcroot0, major 1, minor 0
+jnl: b(1, 0): replay_journal: from: 7192064 to: 7307264 (joffset 0x82000)
+SWEET LOG: console log to the last 4100 KiB of the eMMC partition (sector 0x7479fd0)
+jnl: b(1, 0): journal replay done.
+hfs: mounted iOSRoot on device b(1, 0)
+SWEET: root volume is not authenticated (error 25); continuing unsealed
+SWEET TOUCH: starting in 45 s
+VM Swap Subsystem is ON
+No POST boot-arg set.
+load_init_program: attempting to load /usr/appleinternal/sbin/launchd.development
+load_init_program: attempting to load /sbin/launchd
+exec launchd
+shared_region: 0x43703213001d09fb [1(launchd)] check_np(0x16fc5fbc0) vm_shared_region_start_address() failed
+SWEET Sandbox: launchd op 2
+Darwin Ignition Sequence Version 1.0.0: Tue Jul  2 20:41:23 PDT 2024; root:libignition-51~1974/libignition_core/RELEASE_ARM64
+libignition: 1: arguments           :
+libignition: 1:   ignition level    : 0x1
+libignition: 1:   force dylib root  : 0x0
+libignition: 1:   halt after stage  : n/a
+libignition: 1: ignition blob not available
+libignition: 1: configuration         :
+libignition: 1:   program             : launchd
+libignition: 1:   os environment      : n/a
+libignition: 1:   rd                  : emmcroot0
+libignition: 1:   arp0                : n/a
+libignition: 1:   rp                  : n/a
+libignition: 1:   pivot src           : n/a
+libignition: 1:   root ramdisk        : 0x0
+libignition: 1:   restore             : 0x0
+libignition: 1:   root device info    : 0x0
+libignition: 1:   can haz debugger    : 0x1
+libignition: 1:   rootfs mount flags  : 0x480d000
+libignition: 1:   ecid                : 0x0
+libignition: 1:   hardware target     : d22ap
+libignition: 1:   initproc            : 0x1
+libignition: 1:   single user         : 0x0
+libignition: 1:   userspace reboot    : 0x0
+libignition: 1:   secure boot level   : 0x0
+libignition: 1:   os version          : n/a
+libignition: 1: parameters          :
+libignition: 1:   version           : 0x1
+libignition: 1:   argc              : 0x1
+libignition: 1:   log fd            : 0xffffffffffffffff
+libignition: 1:   platform          : 0x2
+libignition: 1: boot spec           :
+libignition: 1:   name              : local
+libignition: 1:   stage count       : 0x7
+libignition: 1:        hello: commence primary ignition
+libignition: 1:        hello: hello from launchd.1
+libignition: 1:      preboot: ignition level insufficient: actual = 1, required >= 2
+libignition: 1: cryptex1 sniff: ignition level insufficient: actual = 1, required >= 2
+libignition: 1:        graft: ignition level insufficient: actual = 1, required >= 3
+libignition: 1: select os cryptex path: ignition level insufficient: actual = 1, required >= 3
+libignition: 1:  dylib_cache: discovering shared library cache
+libignition: 1:  dylib_cache: finding shared cache on system volume: ignition level = 1, search root fd = 4, subpath = System/Library/Caches/com.apple.dyld/
+libignition: 1:  dylib_cache: opened shared cache directory: /System/Library/Caches/com.apple.dyld
+libignition: 1:      goodbye: ignition sequence complete
+shared_region: 0x43703213001d09fb [1(launchd)] check_np(0x16fc5f150) vm_shared_region_start_address() failed
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72de2b:'dyld_shared_cache_arm64'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc731cdb:'dyld_shared_cache_arm64.01'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc731abb:'dyld_shared_cache_arm64.02'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc7319ab:'dyld_shared_cache_arm64.03'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73189b:'dyld_shared_cache_arm64.04'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72ebfb:'dyld_shared_cache_arm64.05'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72eaeb:'dyld_shared_cache_arm64.06'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e9db:'dyld_shared_cache_arm64.07'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e8cb:'dyld_shared_cache_arm64.08'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e6ab:'dyld_shared_cache_arm64.09'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e59b:'dyld_shared_cache_arm64.10'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e48b:'dyld_shared_cache_arm64.11'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72e26b:'dyld_shared_cache_arm64.12'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f58b:'dyld_shared_cache_arm64.13'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f47b:'dyld_shared_cache_arm64.14'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f36b:'dyld_shared_cache_arm64.15'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f25b:'dyld_shared_cache_arm64.16'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f14b:'dyld_shared_cache_arm64.17'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f03b:'dyld_shared_cache_arm64.18'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72ef2b:'dyld_shared_cache_arm64.19'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72ed0b:'dyld_shared_cache_arm64.20'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72fe0b:'dyld_shared_cache_arm64.21'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72fcfb:'dyld_shared_cache_arm64.22'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72fbeb:'dyld_shared_cache_arm64.23'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72fadb:'dyld_shared_cache_arm64.24'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f9cb:'dyld_shared_cache_arm64.25'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f8bb:'dyld_shared_cache_arm64.26'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f7ab:'dyld_shared_cache_arm64.27.dylddata'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72f69b:'dyld_shared_cache_arm64.28.dyldlinkedit'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73068b:'dyld_shared_cache_arm64.29'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73057b:'dyld_shared_cache_arm64.30'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73046b:'dyld_shared_cache_arm64.31'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73035b:'dyld_shared_cache_arm64.32'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73024b:'dyld_shared_cache_arm64.33'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73013b:'dyld_shared_cache_arm64.34'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73002b:'dyld_shared_cache_arm64.35'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72ff1b:'dyld_shared_cache_arm64.36'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc7309bb:'dyld_shared_cache_arm64.37'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc7308ab:'dyld_shared_cache_arm64.38'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc73079b:'dyld_shared_cache_arm64.39'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc724acb:'dyld_shared_cache_arm64.40'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72534b:'dyld_shared_cache_arm64.41.dylddata'): not in trust cache
+shared_region: 0x43703213001d09fb [1(launchd)] map(0x43703217cc72523b:'dyld_shared_cache_arm64.42.dyldlinkedit'): not in trust cache
+SWEET Sandbox: launchd op 4
+SWEET NET: launchd lo0 add address 127.0.0.1
+skip attaching fsw to lo0 using legacy TX modelcom.apple.xpc.launchd|1969-12-31 16:01:03.182474 <Notice>: hello
+com.apple.xpc.launchd|1969-12-31 16:01:03.191497 <Error>: Could not opt into 50 MB Jetsam high watermark: 22: Invalid argument
+com.apple.xpc.launchd|1969-12-31 16:01:03.191983 <Notice>: Darwin Bootstrapper Version 7.0.0: Thu Feb  1 20:33:09 PST 2024; root:libxpc_executables-2462.140.4.702.1~1/launchd/RELEASE_ARM64
+com.apple.xpc.launchd|1969-12-31 16:01:03.192143 <Notice>: boot-args = debug=0xc serial=3 cpus=1 keepsyms=1 -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 sweetfb_noconsole=1 sweetusb=0 ufslogsecs=2 sweetsample=SpringBoard,backboardd sweetsamplesecs=60
+com.apple.xpc.launchd|1969-12-31 16:01:03.208313 (system) <Notice>: entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:01:03.210261 (system) <Notice>: created
+com.apple.xpc.launchd|1969-12-31 16:01:03.215098 (mount-phase-1) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xfffffe24d371bde0 is in state of change (start)
+vnode_create_internal: alias vnode 0xfffffe24d371bde0 is in state of change (end)
+exec mount_hfs
+GetMasterBlock: Error 16 opening /dev/emmcroot0
+/dev/emmcroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:01:03.920953 (data-protection) <Notice>: Doing boot task
+exec seputil
+SWEET KEYS: key=2 down=1 pon=0x2 gpio4:c110=0x1
+SWEET HID: key 0xea down (0 clients)
+SWEET KEYS: key=2 down=0 pon=0 gpio4:c110=0x1
+SWEET HID: key 0xea up (0 clients)
+SWEET KEYS: key=2 down=1 pon=0x2 gpio4:c110=0x1
+SWEET HID: key 0xea down (0 clients)
+SWEET KEYS: key=0 down=1 pon=0x3 gpio4:c110=0x1
+SWEET HID: key 0x30 down (0 clients)
+init_data_protection: No SEP present on this device
+com.apple.xpc.launchd|1969-12-31 16:01:32.617315 (finish-obliteration) <Notice>: Doing boot task
+exec mobile_obliterator
+Obliterator: In INIT check
+Wed Dec 31 16:01:32 1969: checkOblitNVRAMkey: IORegistryEntryFromPath failed [gF: 0x0000000000000000]
+Obliterator: No obliteration needed, continue booting, returning 0
+com.apple.xpc.launchd|1969-12-31 16:01:32.988111 (detect-installed-roots) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:32.989716 <Notice>: No cookie from system volume
+com.apple.xpc.launchd|1969-12-31 16:01:32.989953 <Notice>: No cookie: /private/preboot/5CBE36011D7D831515CDF1122A93FFCAD48B05E9194388AD12E9752A1AE4A5A0B934008B37985301041D7E086FFF5205/.roots-installed
+com.apple.xpc.launchd|1969-12-31 16:01:32.990004 (commit-boot-mode) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:32.990038 <Notice>: boot-mode committed: (null)
+com.apple.xpc.launchd|1969-12-31 16:01:32.990072 (restore-datapartition) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:32.993027 (restore-datapartition) <Notice>: optional boot task not present
+com.apple.xpc.launchd|1969-12-31 16:01:32.993146 (mount-phase-2) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/Pearl/System/Library/Pearl/ReferenceFrames failed error: 2
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/FactoryData/System/Library/Caches/com.apple.factorydata failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:01:33.020244 (init-with-data-volume) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:33.049786 (MSUEarlyBootTask) <Notice>: Doing boot task
+exec MSUEarlyBootTask
+MSUEarlyBootTask: MSUEarlyBootTask running
+main: Content from the ramdisk will be present at /private/var/MobileSoftwareUpdate//5cbe36011d7d831515cdf1122a93ffcad48b05e9194388ad12e9752a1ae4a5a0b934008b37985301041d7e086fff5205-MSUData if it exists
+MSUEarlyBootTask: I have nothing to do. Goodbye!!
+com.apple.xpc.launchd|1969-12-31 16:01:33.445334 (fips) <Notice>: Doing boot task
+exec cc_fips_test
+About to call the FIPS_POST function in the corecrypto.dylib
+Tracing: disabled
+FIPSPOST_USER [1795143237] fipspost_post:152: [FIPSPOST][Module-ID] Apple corecrypto Module v13.0 [Apple ARM, User, Software, SL1]
+FIPSPOST_USER [1795179096] fipspost_post:160: PASSED: (1 ms) - fipspost_post_hmac
+FIPSPOST_USER [1795235533] fipspost_post:164: PASSED: (2 ms) - fipspost_post_integrity
+FIPSPOST_USER [1795244734] fipspost_post:168: PASSED: (0 ms) - fipspost_post_indicator
+FIPSPOST_USER [1795249618] fipspost_post:169: PASSED: (0 ms) - fipspost_post_aes_ecb
+FIPSPOST_USER [1795254384] fipspost_post:170: PASSED: (0 ms) - fipspost_post_aes_cbc
+FIPSPOST_USER [1795532517] fipspost_post:171: PASSED: (14 ms) - fipspost_post_rsa_sig
+FIPSPOST_USER [1796027871] fipspost_post:172: PASSED: (25 ms) - fipspost_post_ecdsa
+FIPSPOST_USER [1796050738] fipspost_post:173: PASSED: (0 ms) - fipspost_post_ecdh
+FIPSPOST_USER [1796055621] fipspost_post:174: PASSED: (0 ms) - fipspost_post_aes_ccm
+FIPSPOST_USER [1796060707] fipspost_post:175: PASSED: (0 ms) - fipspost_post_aes_cmac
+FIPSPOST_USER [1796067456] fipspost_post:176: PASSED: (0 ms) - fipspost_post_hkdf
+FIPSPOST_USER [1796739085] fipspost_post:177: PASSED: (34 ms) - fipspost_post_pbkdf
+FIPSPOST_USER [1796745328] fipspost_post:178: PASSED: (0 ms) - fipspost_post_drbg_hmac
+FIPSPOST_USER [1796751208] fipspost_post:180: PASSED: (0 ms) - fipspost_post_kdf_ctr
+FIPSPOST_USER [1796756131] fipspost_post:181: PASSED: (0 ms) - fipspost_post_aes_gcm
+FIPSPOST_USER [1796760912] fipspost_post:182: PASSED: (0 ms) - fipspost_post_aes_xts
+FIPSPOST_USER [1796766914] fipspost_post:183: PASSED: (0 ms) - fipspost_post_tdes_ecb
+FIPSPOST_USER [1796772047] fipspost_post:184: PASSED: (0 ms) - fipspost_post_drbg_ctr
+FIPSPOST_USER [1797764527] fipspost_post:186: PASSED: (51 ms) - fipspost_post_ffdh
+FIPSPOST_USER [1798321756] fipspost_post:187: PASSED: (28 ms) - fipspost_post_rsa_enc_dec
+FIPSPOST_USER [1798326634] fipspost_post:206: all tests PASSED (165 ms)
+Returned from calling the FIPS_POST function in the corecrypto.dylib: result = true
+com.apple.xpc.launchd|1969-12-31 16:01:33.664809 (keybag) <Notice>: Doing boot task
+exec keybagd
+****** IN MKB_INIT ****
+SWEET AKS: keybagd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+MKB_INIT: mount is with NO CPROTECT:0x1480d000 on  (/private/var/)
+MKB_INIT: mount point (/private/var/) does not support Data Protection
+MKB_INIT: System Keybag loaded
+MKB_INIT: Could not get options entry from the device tree
+Unable to set /private/var//tmp to class D!****** DONE MKB_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:01:33.828177 (usermanagerd) <Notice>: Doing boot task
+exec usermanagerd
+****** IN UMD_INIT ****
+****** STARTING EARLYBOOT SETUP ****
+UMD_INIT: STARTING EARLYBOOT SETUP
+UMD_INIT: LOADING USER SESSIONS
+UMD_INIT: Device Configuration Type:0
+UMD_INIT: BOOTEDUSER is:501
+UMD_INIT: diskLoadUserSessions, APNSID:, set to 18446744073709551615
+UMD_INIT: Reloaded _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "DD1EE112-D395-4943-B2FC-24B0EA060D0F";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: FOUND NO SYNC BUBBLE UIDS:0
+UMD_INIT: FOUND NO LRU TABLE UIDS:0
+UMD_INIT: FOUND NO VOLUMETYPE, setting up volume type
+UMD_INIT: Set the new volume type to APFSNativeDevice
+UMD_INIT: SAVING SESSION TODISK
+UMD_INIT: SESSION TABLE TO BLOB
+UMD_INIT: NOTHING TO SAVE IN LRU UID LIST
+UMD_INIT: diskSaveUserSessions Success
+UMD_INIT: Read user sessions in _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:07:07 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "DD1EE112-D395-4943-B2FC-24B0EA060D0F";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: LOADED USER SESSIONS
+UMD_INIT: failed to read nextsession dict
+UMD_INIT: Unable to Obtained foreground, curFG:502, nextID:-1
+UMD_INIT: Failed to get next session, booting with default id to be Loginwindow UID
+UMD_INIT: BootedUser is:501
+UMD_INIT: Regular mode Setup for user:501: Num Sessions:1, CurrentsessionID:-1
+UMD_INIT: FAILED to Set Foreground ID + multiuser in commpage successfully
+UMD_INIT: LOADING PERSONA..
+UMD_INIT: Manifest version: 1
+UMD_INIT: Loaded Persona Generation ID from manifest:1
+UMD_INIT: Adding 1000 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 100 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 0 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 200 entry to persona Table for user:DD1EE112-D395-4943-B2FC-24B0EA060D0F
+UMD_INIT: Adding 199 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Adding 99 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Loaded persona manifest
+UMD_INIT: Failed to retrieve info for kernel persona 199: No such process
+UMD_INIT: PersonaID:199 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 199, Type: 6, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 99: No such process
+UMD_INIT: PersonaID:99 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 99, Type: 4, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 1000: No such process
+UMD_INIT: PersonaID:1000 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 1000, Type: 5, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 100: No such process
+UMD_INIT: PersonaID:100 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 100, Type: 4, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 200: No such process
+UMD_INIT: PersonaID:200 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 200, Type: 6, UID: 501
+UMD_INIT: setup kernel personas
+UMD_INIT: Failed to notify_register_check com.apple.mobile.usermanagerd.personageneration_changed: 8
+UMD_INIT: Failed to notify generation changed: Failed to register for darwin notification token
+UMD_INIT: DONE EARLYBOOT SETUP
+****** DONE EARLYBOOT SETUP ****
+****** DONE UMD_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:01:34.389921 (dirs_cleaner) <Notice>: Doing boot task
+exec dirs_cleaner
+dc_reset: /tmp: Invalid argument
+dc_reset: /var/run: Invalid argument
+exec xpcroleaccountd
+exec init_featureflags
+[System Event] [1814417581] [INFO] [Subsystem: launchd] [Event: mount-phase-1] Doing boot task
+[System Event] [1814424684] [INFO] [Subsystem: launchd] [Event: data-protection] Doing boot task
+[System Event] [1814430801] [INFO] [Subsystem: launchd] [Event: finish-obliteration] Doing boot task
+[System Event] [1814436905] [INFO] [Subsystem: launchd] [Event: detect-installed-roots] Doing boot task
+SWEET KEYS: key=0 down=0 pon=0x2 gpio4:c110=0x1
+SWEET HID: key 0x30 up (0 clients)
+SWEET KEYS: key=2 down=0 pon=0 gpio4:c110=0x1
+SWEET HID: key 0xea up (0 clients)
+[System Event] [1824295100] [INFO] [Subsystem: launchd] [Event: commit-boot-mode] Doing boot task
+[System Event] [1824303485] [INFO] [Subsystem: launchd] [Event: restore-datapartition] Doing boot task
+[System Event] [1824504877] [INFO] [Subsystem: launchd] [Event: restore-datapartition] optional boot task not present
+[System Event] [1824511828] [INFO] [Subsystem: launchd] [Event: mount-phase-2] Doing boot task
+[System Event] [1824714034] [INFO] [Subsystem: launchd] [Event: init-with-data-volume] Doing boot task
+[System Event] [1824720455] [INFO] [Subsystem: launchd] [Event: MSUEarlyBootTask] Doing boot task
+[System Event] [1824726395] [INFO] [Subsystem: launchd] [Event: fips] Doing boot task
+[System Event] [1824732085] [INFO] [Subsystem: launchd] [Event: keybag] Doing boot task
+[System Event] [1824737781] [INFO] [Subsystem: launchd] [Event: usermanagerd] Doing boot task
+[System Event] [1824743607] [INFO] [Subsystem: launchd] [Event: dirs_cleaner] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:34.419062 <Notice>: launchd logging initialized. name: com.apple.xpc.launchd pid: 1
+com.apple.xpc.launchd|1969-12-31 16:01:34.419088 (xpcroleaccountd) <Notice>: Doing boot task
+[System Event] [1824761568] [INFO] [Subsystem: launchd] [Event: xpcroleaccountd] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:34.455861 (init_featureflags) <Notice>: Doing boot task
+[System Event] [1824972772] [INFO] [Subsystem: launchd] [Event: init_featureflags] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:35.091343 (auearlyboot) <Notice>: Doing boot task
+[System Event] [1825778812] [INFO] [Subsystem: launchd] [Event: auearlyboot] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:35.096756 (auearlyboot) <Notice>: optional boot task not present
+[System Event] [1825882187] [INFO] [Subsystem: launchd] [Event: auearlyboot] optional boot task not present
+exec tzinit
+com.apple.xpc.launchd|1969-12-31 16:01:35.096820 (tzinit) <Notice>: Doing boot task
+[System Event] [1826338097] [INFO] [Subsystem: launchd] [Event: tzinit] Doing boot task
+exec FinishRestoreFromBackup
+com.apple.xpc.launchd|1969-12-31 16:01:35.120681 (finish-restore) <Notice>: Doing boot task
+[System Event] [1826673509] [INFO] [Subsystem: launchd] [Event: finish-restore] Doing boot task
+exec finish_demo_restore
+com.apple.xpc.launchd|1969-12-31 16:01:35.138313 (finish-demo-restore) <Notice>: Doing boot task
+[System Event] [1827554071] [INFO] [Subsystem: launchd] [Event: finish-demo-restore] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:35.184153 (sysstatuscheck) <Notice>: Doing boot task
+[System Event] [1827580996] [INFO] [Subsystem: launchd] [Event: sysstatuscheck] Doing boot task
+exec sysstatuscheck
+com.apple.xpc.launchd|1969-12-31 16:01:35.214882 (prng_seedctl) <Notice>: Doing boot task
+[System Event] [1828149507] [INFO] [Subsystem: launchd] [Event: prng_seedctl] Doing boot task
+exec prng_seedctl
+kern.prng.user_reseed_count: (-1) (2) No such file or directory
+failed to load virtual random: (-147) (-536870212)
+com.apple.xpc.launchd|1969-12-31 16:01:35.246869 (launchd_cache_loader) <Notice>: Doing boot task
+[System Event] [1828760346] [INFO] [Subsystem: launchd] [Event: launchd_cache_loader] Doing boot task
+exec launchd_cache_loader
+0 Found valid port: 7683 Valid: 1
+1 Found valid port: 0 Valid: 0
+2 Found valid port: 0 Valid: 0
+Using default cache paths
+Code: /System/Library/xpc/launchd.plist Sig: /System/Library/xpc/launchd.plist.sig
+Using unsecure cache: /System/Library/xpc/launchd.plist
+Trying to send bytes to launchd: 7683 16384
+Sending validated cache to launchd
+Cache sent to launchd successfully
+exec xpcproxy
+com.apple.xpc.launchd|1969-12-31 16:01:36.113971 <Notice>: launchd UUID: 5C15DB07-B3BC-3DF3-B62F-3E498B993B8E
+com.apple.xpc.launchd|1969-12-31 16:01:36.114103 (boot) <Notice>: Early boot complete. Continuing system boot.
+[System Event] [1850791244] [INFO] [Subsystem: launchd] [Event: boot] Early boot complete. Continuing system boot.
+exec xpcproxy
+exec xpcproxy
+exec SpringBoard
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET TOUCH: mapping GCC/TLMM/SE7
+SWEET TOUCH: gcc vote=0x45be63c0 rcg=0 cfg=0x100000 dfs=0x21
+SWEET TOUCH: se7 fw=0x300 proto=3 status=0 tx=0x20102864 rx=0x20104900 ios=0
+SWEET TOUCH: packing tx=0x7f8fe/0xffefe rx=0x7f8fe/0xffefe gran=0
+SWEET TOUCH: bonito TLMM reset99=0x1/0 irq125=0x1/0 i2c6=0x1 i2c7=0x1 switch135=0x1
+SWEET TOUCH: PM660 GPIO13 mode=0 out=0 en=0x80 (left as is)
+SWEET TOUCH: ts_1p8 GPIO12 apid=76 apps=1 type=0x10 subtype=0x10 mode=0 out=0 en=0x80
+SWEET TOUCH: ts_1p8 on=1: mode=0x1 out=0x80 en=0x80
+SWEET TOUCH: before probe sda6=1 scl7=1 irq125=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F34 page 0 query 0x24 cmd 0 ctrl 0xc data 0 irqs 1 v2
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F01 page 0 query 0x2c cmd 0x23 ctrl 0xd data 0x6 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F12 page 0 query 0x4b cmd 0 ctrl 0x13 data 0x8 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F54 page 1 query 0x42 cmd 0x41 ctrl 0xe data 0 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=3 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=3 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=38 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=38 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=11 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=11 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=37 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=37 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=5 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=5 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=9 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=9 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=15 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=15 status=0
+SWEET TOUCH: F12 max 1079x2159, data1 0x8 10 fingers (80 bytes), irq bytes 1, panel 1080x2160
+SWEET TOUCH: after probe sda6=1 scl7=1 irq125=0 se-status=0
+SWEET TOUCH: Synaptics RMI4 running, poll=10ms
+exec notifyd
+exec backboardd
+exec identityservicesd
+exec thermalmonitord
+exec configd
+exec keybagd
+exec DumpPanic
+exec nfcd
+exec amfid
+exec logd
+SWEET Sandbox: logd privilege 1002 denied
+exec xpcproxy
+exec cfprefsd
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+exec xpcproxy
+exec runningboardd
+exec sharingd
+exec mobiletimerd
+exec usermanagerd
+exec xpcproxy
+IOK backboardd: path IODeviceTree:/arm-io/pearl-sep -> none
+exec xpcproxy
+exec MobileGestaltHelper
+exec mediaserverd
+exec containermanagerd
+SWEET AKS: keybagd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">ApplePearlSEPDriver</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: path IOService:/IOResources/AppleKeyStore -> AppleKeyStore
+IOK backboardd: open AppleKeyStore type 0 -> 0x0
+SWEET AKS: backboardd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: backboardd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+IOK backboardd: IOServiceFirstMatch <dict ID="0"><key>IOProviderClass</key><string ID="1">IOHIDDevice</string><key>DeviceUsagePairs</key><array ID="2"><dict ID="3"><key>DeviceUsage</key><integer size="32" ID="4">0x2</integer><key>DeviceUsagePage</key><intIOK backboardd: IOServiceFirstMatch <dict ID="0"><key>IOProviderClass</key><string ID="1">IOService</string><key>IOPropertyMatch</key><dict ID="2"><key>HIDServiceSupport</key><true/></dict><key>IOServiceNotificationUser</key><true/></dict> -> notify
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee20) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDServicePlugin.|backboardd| ck4HIDServicePlugin (0x102a62bc0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee70) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDServicePlugin.p|backboardd| k4HIDServicePlugin (0x102a62c10). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3eec0) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDSer|backboardd| gin/DualShock4HIDServicePlugin (0x102a62cb0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3eec0) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHI|backboardd| .plugin/GenericGamepadHIDServicePlugin (0x102a86a88). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee70) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHIDServicePlug|backboardd| ricGamepadHIDServicePlugin (0x102a86ad8). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee20) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHIDServicePlu|backboardd| ericGamepadHIDServicePlugin (0x102a86b78). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3eec0) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDService|backboardd| JoyConHIDServicePlugin (0x102ae6ba0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee70) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDServicePlugin.plugi|backboardd| vicePlugin (0x102ae6bf0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee20) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDServicePlugin.plug|backboardd| rvicePlugin (0x102ae6c40). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee20) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePlugin.plugin|backboardd| ePlugin (0x102aa2628). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee70) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePlugin.plugin/|backboardd| Plugin (0x102aa2678). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3eec0) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePl|backboardd| naHIDServicePlugin (0x102aa2718). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee20) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServicePlugin.plu|backboardd| ServicePlugin (0x102b06780). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3ee70) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServicePlugin.plug|backboardd| ervicePlugin (0x102b067d0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x102a3eec0) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServic|backboardd| /XboxOneHIDServicePlugin (0x102b06870). One of the two will be used. Which one is undefined.
+IOK backboardd: open SweetHIDTouch type 1702065507 -> 0x0
+SWEET HID: SweetHIDTouch open by IOHIDEventServiceUserClient -> 1
+exec xpcproxy
+IOK backboardd: open SweetHIDButtons type 1702065507 -> 0x0
+SWEET HID: SweetHIDButtons open by IOHIDEventServiceUserClient -> 1
+IOK backboardd: matching1 <dict ID="0"><key>IONameMatch</key><string ID="1">marconi-bt</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IONameMatch</key><string ID="1">bluetooth</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: IOServiceFirstPublish <dict ID="0"><key>IONameMatch</key><string ID="1">usb-drd,t8027</string><key>IOServiceNotificationUser</key><true/></dict> -> notify
+SWEET Sandbox: containermanager op 16
+SWEET Sandbox: containermanager op 15
+exec lsd
+SWEET AKS: containermanagerd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: containermanagerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+SWEET FB: MobileGestaltHelper sel 8 in 0/0 out 2/0 -> 0x0
+SWEET FB: MobileGestaltHelper sel 28 in 0/0 out 1/0 -> 0x0
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: children of arm-io in IODeviceTree
+IOK backboardd: IOServiceFirstMatch <dict ID="0"><key>IOProviderClass</key><string ID="1">IOMobileFramebuffer</string><key>IOServiceNotificationUser</key><true/></dict> -> notify
+SMP --- sample 0
+SMP backboardd[56] slide 0x473c4000 mh 0x10265c000
+SMP backboardd t0 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t0 pc 0x1cf7004e0 lr 0x1cf770d10 sp 0x16d7a2090 bt 0x1cf772f08 0x1cf772e54 0x1cf8a71a8 0x1cf8af7e8 0x1d4f5c780 0x1d4f2cddc 0x1cf8af734 0x102679930 0x1d4f5c780 0x1d4f2cddc 0x102665334 0x102665a00 0x1eb9e8344 0x0
+SMP backboardd t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t1 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d82afc0 bt 0x218f5e720
+SMP backboardd t2 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d8b6b30 bt 0x218f5e720
+SMP backboardd t3 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t3 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d942b40 bt 0x218f5e720
+SMP backboardd t4 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t4 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d9ceb40 bt 0x218f5e720
+SMP backboardd t5 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t5 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16da59eb0 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d5966f70 0x218f600ec 0x218f5e72c
+SMP backboardd t6 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t6 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dae6a80 bt 0x218f5e720
+SMP backboardd t7 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP backboardd t7 pc 0x2099d4fc4 lr 0x1d4f2bd9c sp 0x16db72f30 bt 0x1d4f2c328 0x1d4f40a80 0x218f600ec 0x218f5e72c
+SMP backboardd t8 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t8 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dc7a9b0 bt 0x2099e6db8 0x2099d5524 0x1cf690884 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t9 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t9 pc 0x2099d5b48 lr 0x218f653d4 sp 0x16dd0ae80 bt 0x1f65efc74 0x1f65e8194 0x1f65ede50 0x218f600ec 0x218f5e72c
+IOK backboardd: open AppleCLCD type 0 -> 0x0
+SWEET FB: backboardd sel 57 in 0/0 out 1/0 -> 0x0
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+SWEET FB: backboardd sel 15 in 2/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 22 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 29 in 0/0 out 0/8 -> 0x0
+SWEET FB: backboardd sel 33 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 79 in 2/0 out 0/1580 -> 0x0
+IOK backboardd: path IODeviceTree:/chosen -> IOService
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">AppleM2ScalerCSCDriver</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOPropertyMatch</key><dict ID="1"><key>backlight-control</key><true/></dict><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: path IODeviceTree:/arm-io/disp0 -> IOPlatformDevice
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">AppleCLCD</string><key>IOServiceNotificationUser</key><true/></dict> -> AppleCLCD
+SWEET FB: backboardd sel 74 in 1/0 out 1/64 -> 0x0
+IOK backboardd: path IODeviceTree:/backlight -> none
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec powerd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec watchdogd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec driverkitd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SMP SpringBoard[26] slide 0x473c4000 mh 0x10048c000
+SMP SpringBoard t0 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t0 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16f972b80 bt 0x2099e6db8 0x2099d5524 0x1d508bad4 0x1d508e590 0x1d508f374 0x1d50bd040 0x1d50bc37c 0x1e9a3ba4c 0x1e9a3bdb8 0x1d4f5c780 0x1d4f2cddc 0x1e9a3bd8c 0x1e9a60190 0x20cc295c8 0x1eb9e8344 0x0
+SMP SpringBoard t1 K state 0x1 hint 15 ev 0xfffffe20074a1fe8 cont 0xfffffe000776af40
+SMP SpringBoard t1 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16f9fab30 bt 0x218f5e720
+SMP SpringBoard t2 K state 0x1 hint 15 ev 0xfffffe2007448bf8 cont 0xfffffe000776af40
+SMP SpringBoard t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fa86ac0 bt 0x218f5e720
+SMP SpringBoard t3 K state 0x1 hint 15 ev 0xfffffe2007501fe8 cont 0xfffffe000776af40
+SMP SpringBoard t3 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb12b30 bt 0x218f5e720
+SMP SpringBoard t4 K state 0x1 hint 15 ev 0xfffffe20074ff3d8 cont 0xfffffe000776af40
+SMP SpringBoard t4 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb9eb30 bt 0x218f5e720
+SMP SpringBoard t5 K state 0x1 hint 15 ev 0xfffffe20074fcbf8 cont 0xfffffe000776af40
+SMP SpringBoard t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fc2ab30 bt 0x218f5e720
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET Sandbox: cfprefsd op 12
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec sleepd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec remoted
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: powerd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: powerd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec com.apple.datamigrator
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec mtmergeprops
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec biomed
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+hfs: set hardlink bit on vol=iOSRoot cnid=321331 inoid=20502961
+exec distnoted
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec imagent
+exec fseventsd
+exec AppleCredentialManagerDaemon
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec lockdownd
+exec chronod
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec ptpd
+exec IOMFB_FDR_Loader
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec rapportd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec timed
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec locationd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec passd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+exec mobileassetd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+CRASH driverkitd[66] sig 9 code 0x0 sub 0x0 slide 0x473c4000 mh 0x100350000
+CRASH driverkitd pc 0x2099d5d98 lr 0x1c85683a4 sp 0x16faad1f0 fp 0x16faad260 far 0x1005b4000
+CRASH driverkitd bt 0x1c855d12c 0x1c854e514 0x1003ee6b4 0x10043937c 0x10043a81c 0x10037831c 0x1003c900c 0x1003e097c 0x1003f6cf8 0x1003f24a8
+CRASH driverkitd reason ns 1 code 0x7: (none)
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec ReportCrash
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec contextstored
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec dasd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec PowerUIAgent
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec UserEventAgent
+exec apfs_iosd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET WDT: watchdogd sel 0 in 0/0 out 1/0 -> ok
+SWEET Sandbox: distnoted op 28
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: ReportCrash sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: ReportCrash sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: ReportCrash sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec nehelper
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: mobileassetd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: mobileassetd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec nsurlsessiond
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec aggregated
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+exec analyticsd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec apsd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+exec securityd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: securityd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec mobileactivationd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec audioclocksyncd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec xpcproxy
+exec coreduetd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: coreduetd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec findmydeviced
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAccessoryManager</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec ACCHWComponentAuthService
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+SWEET AKS: mediaserverd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: mediaserverd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+SWEET AKS: mediaserverd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: mediaserverd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+IOK backboardd: matching <dict ID="0"><key>IOPropertyMatch</key><dict ID="1"><key>backlight-control</key><true/></dict><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: IOServiceFirstMatch <dict ID="0"><key>IOProviderClass</key><string ID="1">IOHIDDevice</string><key>PrimaryUsage</key><integer size="32" ID="2">0xf</integer><key>PrimaryUsagePage</key><integer size="32" ID="3">0xff00</integer><key>IOServiceIOK backboardd: IOServiceFirstMatch <dict ID="0"><key>IOProviderClass</key><string ID="1">IOHIDDevice</string><key>DeviceUsagePairs</key><array ID="2"><dict ID="3"><key>DeviceUsage</key><integer size="32" ID="4">0xf</integer><key>DeviceUsagePage</key><intIOK backboardd: path IOPower:/IOPowerConnection/IOPMrootDomain -> IOPMrootDomain
+IOK backboardd: open IOPMrootDomain type 0 -> 0x0
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/chosen -> IOService
+IOK backboardd: path IODeviceTree:/chosen -> IOService
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/arm-io -> IOPlatformDevice
+SWEET FB: display on
+SWEET FB: backboardd sel 12 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 79 in 2/0 out 0/40 -> 0x0
+SWEET FB: backboardd sel 6 in 3/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 27 in 0/0 out 0/3084 -> 0x0
+SWEET FB: backboardd sel 17 in 0/3084 out 0/0 -> 0x0
+SWEET FB: backboardd sel 84 in 0/4 out 0/0 -> 0x0
+SWEET FB: backboardd sel 50 in 2/0 out 0/0 -> 0x0
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">AGXAccelerator</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IONameMatch</key><string ID="1">IOCoreSurfaceRoot</string><key>IOServiceNotificationUser</key><true/></dict> -> IOCoreSurfaceRoot
+IOK backboardd: open IOCoreSurfaceRoot type 0 -> 0x0
+SWEET SURF: backboardd sel 13
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">AGXAccelerator</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: path IODeviceTree:/product -> IOPlatformDevice
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+IOK backboardd: matching1 <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorESLegacy</string><key>IOServiceNotificationUser</key><true/></dict> -> none
+SWEET FB: backboardd sel 68 in 1/8 out 0/0 -> 0x0
+SWEET SURF: backboardd create id 2 1125x2436 fmt 0x42475241 bpe 4 bpr 4608 planes 0 size 11239424 keys 11 -> 0x0
+SWEET SURF: backboardd sel 9
+SWEET SURF: backboardd sel 27
+SWEET SURF: backboardd sel 5
+SWEET SURF: backboardd trap 2
+SWEET SURF: backboardd trap 3
+SWEET FB: backboardd sel 4 in 0/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 68 in 1/8 out 0/0 -> 0x0
+SWEET FB: backboardd sel 5 in 0/1132 out 0/0 -> 0x0
+SWEET FB: backboardd sel 3 in 2/0 out 1/0 -> 0x0
+SWEET SURF: backboardd sel 34
+SWEET FB: backboardd sel 55 in 1/72 out 0/0 -> 0x0
+SWEET FB: swap 2 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+exec xpcproxy
+SWEET SURF: backboardd create id 3 1125x2436 fmt 0x42475241 bpe 4 bpr 4608 planes 0 size 11239424 keys 11 -> 0x0
+SWEET FB: swap 3 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 4 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: SpringBoard sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: SpringBoard sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET NET: configd lo0 add address 127.0.0.1
+SWEET AKS: contextstored sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: contextstored sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET NET: configd route add 127.0.0.0 gw 127.0.0.1 ifindex 0 flags 0x901
+exec dmd
+SWEET Sandbox: SpringBoard privilege 1007 denied
+SWEET FB: display off
+exec xpcproxy
+exec xpcproxy
+exec profiled
+SWEET AKS: chronod sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: chronod sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: chronod sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec misagent
+exec nanoregistryd
+SWEET FB: thermalmonitord sel 78 in 2/1788 out 0/0 -> 0x0
+SWEET AKS: profiled sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec corespeechd
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+SWEET AKS: profiled sel 31 arg0 0 in 1/0 out 0/32768 -> 0xe00002c7
+exec tccd
+SWEET Sandbox: tccd op 22
+SWEET Sandbox: tccd op 1
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+exec donotdisturbd
+SWEET AKS: donotdisturbd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: donotdisturbd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SMP --- sample 1
+SMP backboardd[56] slide 0x473c4000 mh 0x10265c000
+SMP backboardd t0 K state 0x1 hint 10 ev 0xfffffe166deaac20 cont 0xfffffe000783ab2c
+SMP backboardd t0 pc 0x2099d5ad0 lr 0x218ecc140 sp 0x16d7a30c0 bt 0x1c85976b4 0x1d8d4f1d8 0x1d8d4f930 0x106989a44 0x1d4f5c780 0x1d4f3ea50 0x106989698 0x1d4f5c780 0x1d4f2cddc 0x106989618 0x1c748f598 0x1c74858fc 0x1c749b9a4 0x1c748369c 0x1c747e800 0x1c855e9SMP backboardd t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t1 pc 0x2099d56a4 lr 0x1d4f49294 sp 0x16d82a2c0 bt 0x1d4f48e78 0x1d4f48848 0x10287eb94 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t2 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d942b40 bt 0x218f5e720
+SMP backboardd t3 K state 0x41 hint 10 ev 0xfffffe166dea9a20 cont 0xfffffe000783ab2c
+SMP backboardd t3 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x16d9ce860 bt 0x1d4f2c4a0 0x102674a78 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t4 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16da59eb0 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d5966f70 0x218f600ec 0x218f5e72c
+SMP backboardd t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dae6b40 bt 0x218f5e720
+SMP backboardd t6 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t6 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dc7a9b0 bt 0x2099e6db8 0x2099d5524 0x1cf690884 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t7 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t7 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16de15d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t8 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t8 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16db72b30 bt 0x218f5e720
+SMP backboardd t9 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t9 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dd0ab40 bt 0x218f5e720
+SMP backboardd t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t10 pc 0x2099d788c lr 0x218f619a0 sp 0x16de9ff10 bt 0x0
+SMP backboardd t11 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t11 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dfadd90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t12 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t12 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e0b9d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t13 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t13 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e1c5d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t14 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t14 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16d8b5e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP backboardd t15 K state 0x1 hint 15 ev 0xfffffe2007668bf8 cont 0xfffffe000776af40
+SMP backboardd t15 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dea2b30 bt 0x218f5e720
+SMP backboardd t16 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t16 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t17 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t17 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt
+SMP backboardd t18 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e36aac0 bt 0x218f5e720
+SMP backboardd t19 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t19 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e3f6b40 bt 0x218f5e720
+SMP backboardd t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t20 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e47dd50 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1ce31e274 0x1ce3364f0 0x1ce31e228 0x1ce31e1b0 0x1ce31db44 0x1ce1fbe04 0x1ce1fb804 0x1ce23fd2c 0x1ce22ce34 0x1ce229bb8 0x1ce1d5SMP backboardd t21 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP backboardd t21 pc 0x2099d4fc4 lr 0x1d4f2bd9c sp 0x16e252f30 bt 0x1d4f2c328 0x1d4f40a80 0x218f600ec 0x218f5e72c
+SMP SpringBoard[26] slide 0x473c4000 mh 0x10048c000
+SMP SpringBoard t0 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t0 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16f96d430 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1ce1ca640 0x1ce22c8fc 0x1e63a8eac 0x1e63d98d4 0x1e63d9a50 0x1eaec344c 0x1eaec23f0 0x20ce69a10 0x1d4f5cSMP SpringBoard t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t1 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16fb12210 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e9a32ee4 0x1e9a56d70 0x1e9a56a28 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t2 K state 0x41 hint 16 ev 0xfffffe24d32c8b00 cont 0xfffffe00077e290c
+SMP SpringBoard t2 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16fb9e490 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e9a32ee4 0x1e9a26a00 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t3 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t3 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16f9f63c0 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x2193b09ac 0x1e2d2b390 0x1e2d168ec 0x1e2d163a8 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5eSMP SpringBoard t4 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fa81f60 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1e30701e4 0x1e305cf0c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5eSMP SpringBoard t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fc2ab30 bt 0x218f5e720
+SMP SpringBoard t6 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t6 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fcb6fc0 bt 0x218f5e720
+SMP SpringBoard t7 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t7 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fd3e3a0 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e6147f58 0x1e6147c50 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t8 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t8 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fdcdc70 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574df4 0x1d05da818 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t9 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t9 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fe59e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP SpringBoard t10 K state 0x1 hint 15 ev 0xfffffe2007719fe8 cont 0xfffffe000776af40
+SMP SpringBoard t10 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fee6b30 bt 0x218f5e720
+SMP SpringBoard t11 K state 0x1 hint 15 ev 0xfffffe2007751fe8 cont 0xfffffe000776af40
+SMP SpringBoard t11 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16ff72b30 bt 0x218f5e720
+SMP SpringBoard t12 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t12 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16fff63f0 bt 0x1d4f48e18 0x1d4f48cf8 0x1d4f39250 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t13 K state 0x1 hint 15 ev 0xfffffe2007750bf8 cont 0xfffffe000776af40
+SMP SpringBoard t13 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x17008ab30 bt 0x218f5e720
+SMP SpringBoard t14 K state 0x1 hint 15 ev 0xfffffe2007749fe8 cont 0xfffffe000776af40
+SMP SpringBoard t14 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170116b30 bt 0x218f5e720
+SMP SpringBoard t15 K state 0x1 hint 15 ev 0xfffffe20076b73d8 cont 0xfffffe000776af40
+SMP SpringBoard t15 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1701a2b40 bt 0x218f5e720
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+SWEET SURF: SpringBoard sel 40
+SWEET Sandbox: tccd op 5
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec deleted
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+exec liveactivitiesd
+SWEET AKS: liveactivitiesd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: liveactivitiesd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: passd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: passd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: passd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec PosterBoard
+SWEET AKS: passd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec CAReportingService
+exec navd
+exec carkitd
+exec callservicesd
+exec misd
+exec itunescloudd
+exec xpcproxy
+exec pfd
+SWEET AKS: callservicesd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: callservicesd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec watchlistd
+exec xpcproxy
+exec CommCenterMobileHelper
+exec appstored
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec fmflocatord
+exec coreidvd
+exec languageassetd
+exec amsaccountsd
+exec matd
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec askpermissiond
+exec safetyalertsd
+exec nanoprefsyncd
+exec healthd
+exec amsengagementd
+exec siriknowledged
+exec xpcproxy
+exec xpcproxy
+exec symptomsd-diag
+exec CallHistorySyncHelper
+exec ManagedSettingsAgent
+exec assistantd
+exec xpcproxy
+exec cloudpaird
+exec peakpowermanagerd
+exec CloudKeychainProxy
+exec xpcproxy
+exec accessoryupdaterd
+exec peopled
+exec familycircled
+exec searchpartyd
+exec atc
+exec familynotificationd
+exec appleaccountd
+exec remindd
+exec symptomsd
+exec wcd
+exec triald
+exec adprivacyd
+SWEET AKS: biomed sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: biomed sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec WirelessRadioManagerd
+exec mediaremoted
+exec fmfd
+SWEET AKS: aggregated sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: aggregated sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: aggregated sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec syncdefaultsd
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec routined
+exec xpcproxy
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec softwareupdated
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec sociallayerd
+exec akd
+exec suggestd
+exec transparencyd
+ifnet_attach: Waiting for all kernel threads created for interface utun0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface utun0 have been scheduled at least once. Proceeding.
+exec xpcproxy
+exec accountsd
+exec xpcproxy
+exec pkd
+exec seld
+exec cloudd
+SWEET AKS: sleepd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: sleepd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: sleepd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: sleepd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET NET: configd route add 224.0.0.0 gw 0.0.0.0 ifindex 0 flags 0x901
+exec xpcproxy
+exec seserviced
+SWEET AKS: identityservicesd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: identityservicesd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: identityservicesd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: identityservicesd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec bluetoothuserd
+SWEET AKS: biomed sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: biomed sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+_dlil_attach_flowswitch_nexus: not attaching flowswitch to utun0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: donotdisturbd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: donotdisturbd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: nanoregistryd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: nanoregistryd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+exec xpcproxy
+exec coreauthd
+exec localizationswitcherd
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SMP --- sample 2
+SMP backboardd[56] slide 0x473c4000 mh 0x10265c000
+SMP backboardd t0 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t0 pc 0x2099d5704 lr 0x218f5eec8 sp 0x16d7a3880 bt 0x102665ce0 0x1eb9e8344 0x0
+SMP backboardd t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t1 pc 0x218f5eab4 lr 0x218f5e720 sp 0x16d82ab60 bt
+SMP backboardd t2 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d942b40 bt 0x218f5e720
+SMP backboardd t3 K state 0x41 hint 10 ev 0xfffffe166dea9a20 cont 0xfffffe000783ab2c
+SMP backboardd t3 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x16d9ce860 bt 0x1d4f2c4a0 0x102674a78 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t4 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16da59eb0 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d5966f70 0x218f600ec 0x218f5e72c
+SMP backboardd t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dae6b40 bt 0x218f5e720
+SMP backboardd t6 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t6 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dc7a9b0 bt 0x2099e6db8 0x2099d5524 0x1cf690884 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t7 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t7 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16de15d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t8 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t8 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16db71ef0 bt 0x1d4f48e78 0x1d4f483ac 0x1d4f2ff50 0x1d4f36e70 0x218fb3268 0x218fb1cbc 0x218fb1d8c 0x218fb3e18 0x1d4f5c834 0x1d4f2f65c 0x1d4f375d4 0x1d4f301f8 0x1d4f375d4 0x1d4f381e4 0x1d4f41f14 0x218f5ebSMP backboardd t9 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t9 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dd0aac0 bt 0x218f5e720
+SMP backboardd t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t10 pc 0x2099d788c lr 0x218f619a0 sp 0x16de9ff10 bt 0x0
+SMP backboardd t11 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t11 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dfadd90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t12 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t12 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e0b9d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t13 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t13 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e1c5d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t14 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t14 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16d8b5e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP backboardd t15 K state 0x1 hint 15 ev 0xfffffe2007668bf8 cont 0xfffffe000776af40
+SMP backboardd t15 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dea2ad0 bt 0x218f5e720
+SMP backboardd t16 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t16 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt
+SMP backboardd t17 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t17 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt 0x0
+SMP backboardd t18 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e36aac0 bt 0x218f5e720
+SMP backboardd t19 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t19 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e3f6ae0 bt 0x218f5e720
+SMP backboardd t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t20 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e482b40 bt 0x218f5e720
+SMP backboardd t21 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t21 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt
+SMP backboardd t22 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP backboardd t22 pc 0x2099d4fc4 lr 0x1d4f2bd9c sp 0x16e2def30 bt 0x1d4f2c328 0x1d4f40a80 0x218f600ec 0x218f5e72c
+SMP SpringBoard[26] slide 0x473c4000 mh 0x10048c000
+SMP SpringBoard t0 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t0 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16f96b7d0 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1d94f6840 0x1d4f5c780 0x1d4f3ee24 0x1d4f3e918 0x1d94f674c 0x1d94e90c4 0x1d94e861c 0x1d94e8SMP SpringBoard t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t1 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb12b30 bt 0x218f5e720
+SMP SpringBoard t2 K state 0x1 hint 15 ev 0xfffffe20074ff3d8 cont 0xfffffe000776af40
+SMP SpringBoard t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb9eb40 bt 0x218f5e720
+SMP SpringBoard t3 K state 0x1 hint 15 ev 0xfffffe20076ab3d8 cont 0xfffffe000776af40
+SMP SpringBoard t3 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16f9fab40 bt 0x218f5e720
+SMP SpringBoard t4 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fa81f60 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1e30701e4 0x1e305cf0c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5eSMP SpringBoard t5 K state 0x41 hint 10 ev 0xfffffe166deabb20 cont 0xfffffe000783ab2c
+SMP SpringBoard t5 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x16fc2a9d0 bt 0x1d4f2bf10 0x1d4f3ecfc 0x1d4f3e8fc 0x23c2e93ec 0x23c2e90ac 0x23c2de198 0x1d4f5c780 0x1d4f3ea50 0x23c2dd86c 0x23c2e8f38 0x1d4f5c780 0x1d4f2cddc 0x23c2e8ee8 0x20d072008 0x1d4f5b7a8 0x1d4f5cSMP SpringBoard t6 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t6 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fcb6fc0 bt 0x218f5e720
+SMP SpringBoard t7 K state 0x1 hint 15 ev 0xfffffe200769dfe8 cont 0xfffffe000776af40
+SMP SpringBoard t7 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fd42b30 bt 0x218f5e720
+SMP SpringBoard t8 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t8 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fdcdc70 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574df4 0x1d05da818 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t9 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t9 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fe59e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP SpringBoard t10 K state 0x1 hint 15 ev 0xfffffe2007719fe8 cont 0xfffffe000776af40
+SMP SpringBoard t10 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fee6b30 bt 0x218f5e720
+SMP SpringBoard t11 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t11 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16ff6df60 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1e30701e4 0x1e305cf0c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5SMP SpringBoard t12 K state 0x1 hint 15 ev 0xfffffe20077533d8 cont 0xfffffe000776af40
+SMP SpringBoard t12 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fffeb40 bt 0x218f5e720
+SMP SpringBoard t13 K state 0x41 hint 10 ev 0xfffffe166deab820 cont 0xfffffe000783ab2c
+SMP SpringBoard t13 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x17008a710 bt 0x1d4f2bf10 0x1d4f3ecfc 0x1d4f3e8fc 0x20c592a50 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t14 K state 0x1 hint 15 ev 0xfffffe2007749fe8 cont 0xfffffe000776af40
+SMP SpringBoard t14 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170116b30 bt 0x218f5e720
+SMP SpringBoard t15 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t15 pc 0x218f5e718 lr 0x0 sp 0x1701a2b70 bt
+SMP SpringBoard t16 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t16 pc 0x2099d5030 lr 0x2099e6b18 sp 0x170229f60 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1e30701e4 0x1e305cf0c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5SMP SpringBoard t17 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t17 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1702b5a20 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1c85686e0 0x1c856861c 0x1e2b7eea4 0x1e2b7ed80 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f4SMP SpringBoard t18 K state 0x1 hint 15 ev 0xfffffe2007764bf8 cont 0xfffffe000776af40
+SMP SpringBoard t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170346b30 bt 0x218f5e720
+SMP SpringBoard t19 K state 0x1 hint 15 ev 0xfffffe2007578bf8 cont 0xfffffe000776af40
+SMP SpringBoard t19 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1703d2b30 bt 0x218f5e720
+SMP SpringBoard t20 K state 0x1 hint 15 ev 0xfffffe20074b0bf8 cont 0xfffffe000776af40
+SMP SpringBoard t20 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x17045eb30 bt 0x218f5e720
+SMP SpringBoard t21 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t21 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1704e6430 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1e2d73128 0x1e2d75e78 0x1e2d75554 0x1e30701e4 0x1e305d28c 0x20c5aa240 0x1d4f5b7a8 0x1d4f5c780 0x1d4f339f8 0x1d4f40c68 0x1d4f4exec xpcproxy
+exec iconservicesagent
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET Sandbox: rapportd privilege 12000 denied
+SWEET AKS: SpringBoard sel 32 arg0 0 in 1/0 out 0/0 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+|SpringBoard| 1969-12-31 16:04:09.-299 SpringBoard[26:222] 
+|SpringBoard| Unbalanced calls to begin/end appearance transitions for <SBCoverSheetPrimarySlidingViewController: 0x10087dc00>.
+|SpringBoard| 
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 32 arg0 0 in 1/0 out 0/0 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 8 arg0 0 in 1/0 out 0/0 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: seserviced sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: seserviced sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET FB: display on
+SWEET FB: backboardd sel 79 in 2/0 out 0/40 -> 0x0
+exec xpcproxy
+exec xpcproxy
+|SpringBoard| 1969-12-31 16:04:11.-366 SpringBoard[26:222] 
+|SpringBoard| #configurationUpdateManager longPressBehavior: 0 previousValue: 0
+|SpringBoard| 
+SWEET SURF: SpringBoard create id 4 272x184 fmt 0x42475241 bpe 4 bpr 1088 planes 0 size 212992 keys 6 -> 0x0
+SWEET SURF: SpringBoard trap 0
+SWEET SURF: SpringBoard create id 5 312x202 fmt 0x4c413038 bpe 2 bpr 640 planes 0 size 131072 keys 6 -> 0x0
+SWEET SURF: SpringBoard create id 6 230x186 fmt 0x4c413038 bpe 2 bpr 480 planes 0 size 98304 keys 6 -> 0x0
+SWEET AKS: SpringBoard sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET SURF: SpringBoard sel 35
+exec xpcproxy
+SWEET FB: swap 7 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+|SpringBoard| objc[26]: Class MSDPreferencesFile is implemented in both /System/Library/PrivateFrameworks/MobileStoreDemoKit.framework/MobileStoreDemoKit (0x259229038) and /System/Library/SpringBoardPlugins/StoreDemoPlugin.servicebundle/StoreDemoPlugin (0|SpringBoard| e of the two will be used. Which one is undefined.
+|SpringBoard| objc[26]: Class MSDLogModel is implemented in both /System/Library/PrivateFrameworks/MobileStoreDemoKit.framework/MobileStoreDemoKit (0x259229088) and /System/Library/SpringBoardPlugins/StoreDemoPlugin.servicebundle/StoreDemoPlugin (0x1126b9|SpringBoard| e two will be used. Which one is undefined.
+|SpringBoard| objc[26]: Class MSDTestPreferences is implemented in both /System/Library/PrivateFrameworks/MobileStoreDemoKit.framework/MobileStoreDemoKit (0x25c216008) and /System/Library/SpringBoardPlugins/StoreDemoPlugin.servicebundle/StoreDemoPlugin (0|SpringBoard| e of the two will be used. Which one is undefined.
+SWEET FB: swap 8 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 9 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 10 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 11 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 8 arg0 0 in 1/0 out 0/0 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 8 arg0 0 in 1/0 out 0/0 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET FB: swap 12 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET FB: swap 13 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+exec useractivityd
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec calaccessd
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET HID: touch 0 down at 543,2134 edge
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET HID: touch 0 up at 502,551 edge
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET FB: swap 14 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 15 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 26 arg0 2 in 3/0 out 0/0 -> 0x0
+SWEET AKS: SpringBoard sel 27 arg0 2 in 2/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: adprivacyd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: adprivacyd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET FB: swap 16 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: corespeechd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: corespeechd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET FB: swap 17 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET FB: swap 18 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: fmfd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: fmfd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET FB: swap 19 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec Spotlight
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+exec xpcproxy
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: symptomsd-diag sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: symptomsd-diag sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: tccd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: tccd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec announced
+SWEET AKS: SpringBoard sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+exec siriinferenced
+exec xpcproxy
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+|SpringBoard| 1969-12-31 16:04:47.-191 SpringBoard[26:738] 
+|SpringBoard| ### Failed to Soft Linked: /System/Library/Frameworks/CarKit.framework/CarKit
+|SpringBoard| 
+exec xpcproxy
+exec siriactionsd
+SWEET AKS: navd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: navd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec parsec-fbf
+exec followupd
+SWEET AKS: navd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: cloudd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: cloudd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: imagent sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: imagent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: imagent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: imagent sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec mDNSResponder
+SMP --- sample 3
+SMP backboardd[56] slide 0x473c4000 mh 0x10265c000
+SMP backboardd t0 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t0 pc 0x2099d5704 lr 0x218f5eec8 sp 0x16d7a3880 bt 0x102665ce0 0x1eb9e8344 0x0
+SMP backboardd t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t1 pc 0x218f5eab4 lr 0x218f5e720 sp 0x16d82ab60 bt
+SMP backboardd t2 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d942b30 bt 0x218f5e720
+SMP backboardd t3 K state 0x41 hint 10 ev 0xfffffe166dea9a20 cont 0xfffffe000783ab2c
+SMP backboardd t3 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x16d9ce860 bt 0x1d4f2c4a0 0x102674a78 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t4 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16da59eb0 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d5966f70 0x218f600ec 0x218f5e72c
+SMP backboardd t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dae6b40 bt 0x218f5e720
+SMP backboardd t6 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t6 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dc7a9b0 bt 0x2099e6db8 0x2099d5524 0x1cf690884 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t7 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t7 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16de15d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t8 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t8 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16db72340 bt 0x1d4f49870 0x1d4f3f958 0x1d4f3edb4 0x1d4f3ee3c 0x1d4f3e918 0x1ead77328 0x218fbedec 0x218fb2ca8 0x1d4f5c7f8 0x1d4f30b44 0x1d4f375d4 0x1d4f381b0 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t9 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t9 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dd0ab40 bt 0x218f5e720
+SMP backboardd t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t10 pc 0x2099d788c lr 0x218f619a0 sp 0x16de9ff10 bt 0xffffffff00000002
+SMP backboardd t11 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t11 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dfadd90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t12 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t12 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e0b9d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t13 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t13 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e1c5d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t14 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t14 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16d8b5e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP backboardd t15 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t15 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dea2ae0 bt 0x218f5e720
+SMP backboardd t16 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t16 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t17 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t17 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt
+SMP backboardd t18 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e36aac0 bt 0x218f5e720
+SMP backboardd t19 K state 0x1 hint 15 ev 0xfffffe2007699fe8 cont 0xfffffe000776af40
+SMP backboardd t19 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e3f6ad0 bt 0x218f5e720
+SMP backboardd t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t20 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e482b40 bt 0x218f5e720
+SMP backboardd t21 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t21 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t22 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t22 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt
+SMP backboardd t23 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t23 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t24 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t24 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t25 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP backboardd t25 pc 0x2099d4fc4 lr 0x1d4f2bd9c sp 0x16e252f30 bt 0x1d4f2c328 0x1d4f40a80 0x218f600ec 0x218f5e72c
+SMP SpringBoard[26] slide 0x473c4000 mh 0x10048c000
+SMP SpringBoard t0 K state 0x1 hint 16 ev 0xfffffe24d3111e00 cont 0xfffffe00077e290c
+SMP SpringBoard t0 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16f970ec0 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1dcf3e94c 0x1dcf3d6d4 0x1dcf3d5ec 0x1dcf3d3bc 0x1dcf3d308 0x1dcf97b90 0x1d4f5c780 0x1d4f2cddc 0x1dcf97b74 0x1dcf51d4c 0x1dcf2a544 0x1dcf2a2a0 0x1dd217SMP SpringBoard t1 K state 0x1 hint 15 ev 0xfffffe2007501fe8 cont 0xfffffe000776af40
+SMP SpringBoard t1 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb12b40 bt 0x218f5e720
+SMP SpringBoard t2 K state 0x41 hint 16 ev 0xfffffe24d3110b80 cont 0xfffffe00077e290c
+SMP SpringBoard t2 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16fb9e570 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e3d88980 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t3 K state 0x1 hint 15 ev 0xfffffe20076ab3d8 cont 0xfffffe000776af40
+SMP SpringBoard t3 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16f9fab40 bt 0x218f5e720
+SMP SpringBoard t4 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t4 pc 0x218f5e718 lr 0x0 sp 0x16fa86b70 bt
+SMP SpringBoard t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t5 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fc2a580 bt 0x2099e6db8 0x2099d5524 0x1f1ee8338 0x1e3e77edc 0x1e3e7a30c 0x1ce59bb3c 0x1ce59c94c 0x1f1ee9050 0x1d4f3e630 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t6 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t6 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fcb6fc0 bt 0x218f5e720
+SMP SpringBoard t7 K state 0x1 hint 15 ev 0xfffffe200769dfe8 cont 0xfffffe000776af40
+SMP SpringBoard t7 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fd42ad0 bt 0x218f5e720
+SMP SpringBoard t8 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t8 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fdcdc70 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574df4 0x1d05da818 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t9 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t9 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fe59e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP SpringBoard t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t10 pc 0x218f5e718 lr 0x0 sp 0x16fee6b70 bt
+SMP SpringBoard t11 K state 0x1 hint 15 ev 0xfffffe2007751fe8 cont 0xfffffe000776af40
+SMP SpringBoard t11 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16ff72b30 bt 0x218f5e720
+SMP SpringBoard t12 K state 0x1 hint 15 ev 0xfffffe20077533d8 cont 0xfffffe000776af40
+SMP SpringBoard t12 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fffeb30 bt 0x218f5e720
+SMP SpringBoard t13 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t13 pc 0x218f5e718 lr 0x0 sp 0x17008ab70 bt
+SMP SpringBoard t14 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t14 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170116b30 bt 0x218f5e720
+SMP SpringBoard t15 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t15 pc 0x218f5e718 lr 0x0 sp 0x1701a2b70 bt
+SMP SpringBoard t16 K state 0x1 hint 15 ev 0xfffffe2007775fe8 cont 0xfffffe000776af40
+SMP SpringBoard t16 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x17022eb30 bt 0x218f5e720
+SMP SpringBoard t17 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t17 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1702b5a20 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1c85686e0 0x1c856861c 0x1e2b7eea4 0x1e2b7ed80 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f4SMP SpringBoard t18 K state 0x1 hint 15 ev 0xfffffe2007764bf8 cont 0xfffffe000776af40
+SMP SpringBoard t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170346b30 bt 0x218f5e720
+SMP SpringBoard t19 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t19 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1703cd4d0 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1c856883c 0x1c8568760 0x1d915d3a0 0x1d9165afc 0x1d9158de0 0x23924cb44 0x1d4f5b7a8 0x1d4f5c780 0x1d4f3SMP SpringBoard t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t20 pc 0x218f5e718 lr 0x0 sp 0x17045ea80 bt
+SMP SpringBoard t21 K state 0x1 hint 15 ev 0xfffffe2007679fe8 cont 0xfffffe000776af40
+SMP SpringBoard t21 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1704eafc0 bt 0x218f5e720
+SMP SpringBoard t22 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t22 pc 0x218f5e724 lr 0x0 sp 0x170577000 bt
+SMP SpringBoard t23 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP SpringBoard t23 pc 0x2099d4fac lr 0x1d4f2bd24 sp 0x170602cf0 bt 0x1d4f2c360 0x1d0581d9c 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t24 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t24 pc 0x2099d5030 lr 0x2099e6b18 sp 0x17068dc80 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574da4 0x20cd545b8 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t25 K state 0x41 hint 16 ev 0xfffffe24d3118d00 cont 0xfffffe00077e290c
+SMP SpringBoard t25 pc 0x2099d5538 lr 0x1d4f492cc sp 0x17071a490 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e2b809a8 0x1e2baa7e8 0x1e2b8edd8 0x1e2b85c80 0x236ca9d3c 0x236cb30ec 0x236cad198 0x236cabadc 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f4SMP SpringBoard t26 K state 0x41 hint 16 ev 0xfffffe24d3121280 cont 0xfffffe00077e290c
+SMP SpringBoard t26 pc 0x2099d5538 lr 0x1d4f492cc sp 0x1707a5fc0 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1d9d0964c 0x1d9d6faf8 0x1d9d6e9b4 0x1d9d93c6c 0x1d9d0c950 0x1d9d87ea0 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5SMP SpringBoard t27 K state 0x1 hint 15 ev 0xfffffe20078fb3d8 cont 0xfffffe000776af40
+SMP SpringBoard t27 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170832ac0 bt 0x218f5e720
+SMP SpringBoard t28 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t28 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1708beaa0 bt 0x218f5e720
+SMP SpringBoard t29 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t29 pc 0x2099d5030 lr 0x2099e6b18 sp 0x170946360 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1d9d0b08c 0x1d9d43ff4 0x1d9d124a8 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t30 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t30 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1709d2330 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1dcf65cb4 0x1dcf2dd40 0x1dcf4fd78 0x1dcf505cc 0x1dcf5d0e0 0x1dcf56540 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f4SMP SpringBoard t31 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t31 pc 0x2099d5030 lr 0x2099e6b18 sp 0x170a622e0 bt 0x2099e6db8 0x2099d5524 0x218fc62f0 0x218fc586c 0x218fa8358 0x218fa8a60 0x218fb0688 0x218fb3200 0x218fb1cbc 0x218fb1d8c 0x1e846e87c 0x1e8472d4c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f3SMP SpringBoard t32 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t32 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170aeeb30 bt 0x218f5e720
+SMP SpringBoard t33 K state 0x1 hint 15 ev 0xfffffe20078e9fe8 cont 0xfffffe000776af40
+SMP SpringBoard t33 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170b7ab30 bt 0x218f5e720
+SMP SpringBoard t34 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t34 pc 0x218f5e718 lr 0x0 sp 0x170c06b70 bt
+SMP SpringBoard t35 K state 0x1 hint 15 ev 0xfffffe20078e4bf8 cont 0xfffffe000776af40
+SMP SpringBoard t35 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170c92ac0 bt 0x218f5e720
+SMP SpringBoard t36 K state 0x1 hint 15 ev 0xfffffe20078e5fe8 cont 0xfffffe000776af40
+SMP SpringBoard t36 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170d1eb30 bt 0x218f5e720
+SMP SpringBoard t37 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t37 pc 0x218f5e718 lr 0x0 sp 0x170daab70 bt
+SMP SpringBoard t38 K state 0x1 hint 15 ev 0xfffffe20078e1fe8 cont 0xfffffe000776af40
+SMP SpringBoard t38 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170e36b30 bt 0x218f5e720
+SMP SpringBoard t39 K state 0x1 hint 15 ev 0xfffffe20078ddfe8 cont 0xfffffe000776af40
+SMP SpringBoard t39 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170ec2b40 bt 0x218f5e720
+SMP SpringBoard t40 K state 0x1 hint 15 ev 0xfffffe20078df3d8 cont 0xfffffe000776af40
+SMP SpringBoard t40 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170f4eb30 bt 0x218f5e720
+SWEET HID: touch 0 down at 883,1384
+SWEET HID: touch 0 up at 229,1700
+SWEET HID: touch 0 down at 982,1553
+SWEET HID: touch 0 up at 447,1745
+SWEET HID: touch 0 down at 1011,1555
+SWEET HID: touch 0 up at 327,1856
+SWEET HID: touch 0 down at 788,1519
+SWEET HID: touch 0 up at 392,1715
+SWEET AKS: useractivityd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: useractivityd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+SWEET HID: touch 0 down at 31,1728 edge
+SWEET HID: touch 0 up at 19,2042 edge
+exec xpcproxy
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: CloudKeychainProxy sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: CloudKeychainProxy sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: securityd sel 26 arg0 0 in 3/0 out 0/0 -> 0x0
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 27 arg0 0 in 2/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 26 arg0 0 in 3/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+SWEET AKS: securityd sel 27 arg0 0 in 2/0 out 0/0 -> 0x0
+SWEET AKS: suggestd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: suggestd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+SWEET AKS: calaccessd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: calaccessd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec awdd
+SWEET AKS: chronod sel 35 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec IMDPersistenceAgent
+SWEET AKS: dmd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: dmd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: dmd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec cdpd
+exec backupd
+exec itunesstored
+SWEET AKS: triald sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: triald sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: carkitd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: carkitd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: cloudpaird sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: cloudpaird sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec CircleJoinRequested
+exec ProtectedCloudKeySyncing
+exec geod
+SWEET AKS: useractivityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: suggestd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: suggestd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: CallHistorySyncHelper sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: CallHistorySyncHelper sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: chronod sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: chronod sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: chronod sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: chronod sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: suggestd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: suggestd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec com.apple.siri.embeddedspeech
+exec OTACrashCopier
+SWEET AKS: suggestd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: familycircled sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: familycircled sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: sharingd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: sharingd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SMP --- sample 4
+SMP backboardd[56] slide 0x473c4000 mh 0x10265c000
+SMP backboardd t0 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t0 pc 0x2099d5704 lr 0x218f5eec8 sp 0x16d7a3880 bt 0x102665ce0 0x1eb9e8344 0x0
+SMP backboardd t1 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t1 pc 0x218f5eab4 lr 0x218f5e720 sp 0x16d82ab60 bt
+SMP backboardd t2 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t2 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16d942b40 bt 0x218f5e720
+SMP backboardd t3 K state 0x41 hint 10 ev 0xfffffe166dea9a20 cont 0xfffffe000783ab2c
+SMP backboardd t3 pc 0x2099d5ad0 lr 0x1d4f2c128 sp 0x16d9ce860 bt 0x1d4f2c4a0 0x102674a78 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t4 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t4 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16da59eb0 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d5966f70 0x218f600ec 0x218f5e72c
+SMP backboardd t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t5 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dae6b40 bt 0x218f5e720
+SMP backboardd t6 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t6 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dc7a9b0 bt 0x2099e6db8 0x2099d5524 0x1cf690884 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t7 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t7 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16de15d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t8 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t8 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16db72340 bt 0x1d4f49870 0x1d4f3f958 0x1d4f3edb4 0x1d4f3ee3c 0x1d4f3e918 0x1ead77328 0x218fbedec 0x218fb2ca8 0x1d4f5c7f8 0x1d4f30b44 0x1d4f375d4 0x1d4f381b0 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP backboardd t9 K state 0x1 hint 15 ev 0xfffffe2007674bf8 cont 0xfffffe000776af40
+SMP backboardd t9 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dd0ab40 bt 0x218f5e720
+SMP backboardd t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t10 pc 0x2099d788c lr 0x218f619a0 sp 0x16de9ff10 bt 0xffffffff00000002
+SMP backboardd t11 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t11 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16dfadd90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t12 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t12 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e0b9d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t13 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t13 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16e1c5d90 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1cf8c5ccc 0x1cf8cf418 0x218f600ec 0x218f5e72c
+SMP backboardd t14 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP backboardd t14 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16d8b5e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP backboardd t15 K state 0x1 hint 15 ev 0xfffffe2007668bf8 cont 0xfffffe000776af40
+SMP backboardd t15 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16dea2ad0 bt 0x218f5e720
+SMP backboardd t16 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t16 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t17 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t17 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt
+SMP backboardd t18 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t18 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e36aac0 bt 0x218f5e720
+SMP backboardd t19 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t19 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e3f6ae0 bt 0x218f5e720
+SMP backboardd t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t20 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16e482b40 bt 0x218f5e720
+SMP backboardd t21 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t21 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t22 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t22 pc 0x2099d788c lr 0x218f619a0 sp 0x16e2dbf10 bt
+SMP backboardd t23 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t23 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t24 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t24 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t25 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP backboardd t25 pc 0x2099d788c lr 0x218f619a0 sp 0x16e24ff10 bt 0x0
+SMP backboardd t26 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP backboardd t26 pc 0x2099d4fc4 lr 0x1d4f2bd9c sp 0x16e252f30 bt 0x1d4f2c328 0x1d4f40a80 0x218f600ec 0x218f5e72c
+SMP SpringBoard[26] slide 0x473c4000 mh 0x10048c000
+SMP SpringBoard t0 K state 0x1 hint 16 ev 0xfffffe24d3111e00 cont 0xfffffe00077e290c
+SMP SpringBoard t0 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16f970ec0 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1dcf3e94c 0x1dcf3d6d4 0x1dcf3d5ec 0x1dcf3d3bc 0x1dcf3d308 0x1dcf97b90 0x1d4f5c780 0x1d4f2cddc 0x1dcf97b74 0x1dcf51d4c 0x1dcf2a544 0x1dcf2a2a0 0x1dd217SMP SpringBoard t1 K state 0x1 hint 15 ev 0xfffffe2007501fe8 cont 0xfffffe000776af40
+SMP SpringBoard t1 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fb12b30 bt 0x218f5e720
+SMP SpringBoard t2 K state 0x41 hint 16 ev 0xfffffe24d3110b80 cont 0xfffffe00077e290c
+SMP SpringBoard t2 pc 0x2099d5538 lr 0x1d4f492cc sp 0x16fb9e570 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e3d88980 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t3 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t3 pc 0x218f5e718 lr 0x0 sp 0x16f9fab70 bt
+SMP SpringBoard t4 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t4 pc 0x218f5e718 lr 0x0 sp 0x16fa86b70 bt
+SMP SpringBoard t5 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t5 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fc2a580 bt 0x2099e6db8 0x2099d5524 0x1f1ee8338 0x1e3e77edc 0x1e3e7a30c 0x1ce59bb3c 0x1ce59c94c 0x1f1ee9050 0x1d4f3e630 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t6 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t6 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x16fcb6fc0 bt 0x218f5e720
+SMP SpringBoard t7 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t7 pc 0x218f5e718 lr 0x0 sp 0x16fd42b70 bt
+SMP SpringBoard t8 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t8 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fdcdc70 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574df4 0x1d05da818 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t9 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t9 pc 0x2099d5030 lr 0x2099e6b18 sp 0x16fe59e40 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1ce264bec 0x1d8d81fac 0x218f600ec 0x218f5e72c
+SMP SpringBoard t10 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t10 pc 0x218f5e718 lr 0x0 sp 0x16fee6b70 bt
+SMP SpringBoard t11 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t11 pc 0x218f5e718 lr 0x0 sp 0x16ff72b70 bt
+SMP SpringBoard t12 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t12 pc 0x218f5e718 lr 0x0 sp 0x16fffeb70 bt
+SMP SpringBoard t13 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t13 pc 0x218f5e718 lr 0x0 sp 0x17008ab70 bt
+SMP SpringBoard t14 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t14 pc 0x218f5e718 lr 0x0 sp 0x170116b70 bt
+SMP SpringBoard t15 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t15 pc 0x218f5e718 lr 0x0 sp 0x1701a2b70 bt
+SMP SpringBoard t16 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t16 pc 0x218f5e718 lr 0x0 sp 0x17022eb70 bt
+SMP SpringBoard t17 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t17 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1702b5a20 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1c85686e0 0x1c856861c 0x1e2b7eea4 0x1e2b7ed80 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f4SMP SpringBoard t18 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t18 pc 0x218f5e718 lr 0x0 sp 0x170346b70 bt
+SMP SpringBoard t19 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t19 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1703cd4d0 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1c85d0224 0x1c8569cb0 0x1c856883c 0x1c8568760 0x1d915d3a0 0x1d9165afc 0x1d9158de0 0x23924cb44 0x1d4f5b7a8 0x1d4f5c780 0x1d4f3SMP SpringBoard t20 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t20 pc 0x218f5e718 lr 0x0 sp 0x17045ea80 bt
+SMP SpringBoard t21 K state 0x1 hint 15 ev 0xfffffe2007679fe8 cont 0xfffffe000776af40
+SMP SpringBoard t21 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1704eab30 bt 0x218f5e720
+SMP SpringBoard t22 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t22 pc 0x218f5e724 lr 0x0 sp 0x170577000 bt
+SMP SpringBoard t23 K state 0x1 hint 6 ev 0xfffffe00070065a8 cont 0xfffffe0007367d2c
+SMP SpringBoard t23 pc 0x2099d4fac lr 0x1d4f2bd24 sp 0x170602cf0 bt 0x1d4f2c360 0x1d0581d9c 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t24 K state 0x1 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t24 pc 0x2099d5030 lr 0x2099e6b18 sp 0x17068dc80 bt 0x2099e6db8 0x2099d5524 0x1ce220148 0x1ce2212e0 0x1ce225d20 0x1c8574ef8 0x1c8574da4 0x20cd545b8 0x1c858ca5c 0x218f600ec 0x218f5e72c
+SMP SpringBoard t25 K state 0x41 hint 16 ev 0xfffffe24d3118d00 cont 0xfffffe00077e290c
+SMP SpringBoard t25 pc 0x2099d5538 lr 0x1d4f492cc sp 0x17071a490 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1e2b809a8 0x1e2baa7e8 0x1e2b8edd8 0x1e2b85c80 0x236ca9d3c 0x236cb30ec 0x236cad198 0x236cabadc 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381b0 0x1d4f4SMP SpringBoard t26 K state 0x41 hint 16 ev 0xfffffe24d3121280 cont 0xfffffe00077e290c
+SMP SpringBoard t26 pc 0x2099d5538 lr 0x1d4f492cc sp 0x1707a5fc0 bt 0x1d4f49c78 0x1d4f3ece0 0x1d4f3e8fc 0x1d9d0964c 0x1d9d6faf8 0x1d9d6e9b4 0x1d9d93c6c 0x1d9d0c950 0x1d9d87ea0 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5SMP SpringBoard t27 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t27 pc 0x218f5e718 lr 0x0 sp 0x170832b70 bt
+SMP SpringBoard t28 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t28 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x1708beb30 bt 0x218f5e720
+SMP SpringBoard t29 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t29 pc 0x2099d5030 lr 0x2099e6b18 sp 0x170946360 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1d9d0b08c 0x1d9d43ff4 0x1d9d124a8 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f41f14 0x218f5ebd0 0x218f5e720
+SMP SpringBoard t30 K state 0x41 hint 2 ev 0x0 cont 0xfffffe0007305f20
+SMP SpringBoard t30 pc 0x2099d5030 lr 0x2099e6b18 sp 0x1709d2330 bt 0x2099e6db8 0x2099d5524 0x1d4f2e308 0x1d4f2e694 0x218fb20ec 0x1dcf65cb4 0x1dcf2dd40 0x1dcf4fd78 0x1dcf505cc 0x1dcf5d0e0 0x1dcf56540 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f381e4 0x1d4f4SMP SpringBoard t31 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t31 pc 0x2099d5030 lr 0x2099e6b18 sp 0x170a622e0 bt 0x2099e6db8 0x2099d5524 0x218fc62f0 0x218fc586c 0x218fa8358 0x218fa8a60 0x218fb0688 0x218fb3200 0x218fb1cbc 0x218fb1d8c 0x1e846e87c 0x1e8472d4c 0x1d4f5b7a8 0x1d4f5c780 0x1d4f376fc 0x1d4f3SMP SpringBoard t32 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t32 pc 0x218f5e718 lr 0x0 sp 0x170aeeb70 bt
+SMP SpringBoard t33 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t33 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170b7ab30 bt 0x218f5e720
+SMP SpringBoard t34 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t34 pc 0x218f5e718 lr 0x0 sp 0x170c06b70 bt
+SMP SpringBoard t35 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t35 pc 0x218f5e718 lr 0x0 sp 0x170c92b70 bt
+SMP SpringBoard t36 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t36 pc 0x218f5e718 lr 0x0 sp 0x170d1eb70 bt
+SMP SpringBoard t37 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t37 pc 0x218f5e718 lr 0x0 sp 0x170daab70 bt
+SMP SpringBoard t38 K state 0x4 hint 0 ev 0x0 (not blocked)
+SMP SpringBoard t38 pc 0x218f5e718 lr 0x0 sp 0x170e36b70 bt
+SMP SpringBoard t39 K state 0x1 hint 15 ev 0xfffffe20078ddfe8 cont 0xfffffe000776af40
+SMP SpringBoard t39 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170ec2b40 bt 0x218f5e720
+SMP SpringBoard t40 K state 0x1 hint 15 ev 0xfffffe20078df3d8 cont 0xfffffe000776af40
+SMP SpringBoard t40 pc 0x2099d54f0 lr 0x218f5ec1c sp 0x170f4eb30 bt 0x218f5e720
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: carkitd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: carkitd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: carkitd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: carkitd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: profiled sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec axassetsd
+SWEET AKS: lockdownd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: lockdownd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+exec homed
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET Sandbox: cloudd privilege 1002 denied
+SWEET HID: touch 0 down at 53,2107
+SWEET Sandbox: rapportd privilege 1002 denied
+SWEET AKS: searchpartyd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: searchpartyd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: UserEventAgent sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: UserEventAgent sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: UserEventAgent sel 103 arg0 0 in 0/0 out 1/0 -> 0x0
+SWEET HID: touch 0 up at 44,2115
+SWEET HID: touch 0 down at 70,39 edge
+SWEET HID: touch 0 up at 70,39 edge
+SWEET AKS: searchpartyd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET KEYS: key=0 down=1 pon=0x3 gpio4:c110=0x1
+SWEET HID: key 0x30 down (1 clients)
+SWEET KEYS: key=2 down=1 pon=0x3 gpio4:c110=0x1
+SWEET HID: key 0xea down (1 clients)
+SWEET AKS: UserEventAgent sel 102 arg0 0 in 0/0 out 0/0 -> 0x0
+exec xpcproxy
+exec remotepairingdeviced
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
