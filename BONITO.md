@@ -498,6 +498,6 @@ updates) are days, not months.
   4 GB VA quirk. GPUCC (sdm845) GDSC/RCG/CBCR offsets match flame's except no gpu_cc_ahb (0x1078).
   Mesa Turnip lists GPUId(615) (a6xx gen1). Display: bonito fb stride 4320 is not a multiple of
   64 either (flame reprograms the panel stride to 4352).
-  Steps: (1) run shim/out/bonito-gpu-probe1.img (handoff state), (2) get firmware (host has no
-  linux-firmware qcom files; zap from vendor_a via TWRP), (3) port 0094/0095 with the A615
+  Steps: (1) run shim/out/bonito-gpu-probe1.img (handoff state), (2) firmware: host has
+  /lib/firmware/qcom/a630_sqe.fw + a630_gmu.bin (linux-firmware); zap from vendor_a via TWRP, (3) port 0094/0095 with the A615
   differences, `sweetgpu=1`, boot-tested on its own, (4) 0096/0097/0115/0116 + userland.
