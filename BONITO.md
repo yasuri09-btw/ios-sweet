@@ -71,6 +71,16 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    so containermanagerd/lsd could create the app containers and the LaunchServices DB (they
    persist on the rw root).
 
+8. 2026-11-07 21:40 CST **THE ADRENO 615 RUNS OUR COMMANDS AND PAINTS THE SCREEN.** Shim GPU stage
+   (`shim/gpu.c`, commit 267c189, image `shim/out/bonito-gpu-up2.img`, photo
+   `logs/gpu-up2-MILESTONE.jpg`): CX up, GMU booted (init 0xbabeface, legacy raw ITCM firmware,
+   linux-firmware a630_gmu.bin), BOOT_SLUMBER OOB acked, SPTPRAC 0x28, HFI v1 init / fw version /
+   perf table / bw table / test all 0, GPU_SET acked -> GX GDSC 0xf8222000 (on), CP scratch
+   write/read OK, SQE (34184-byte linux-firmware a630_sqe.fw) + CP_ME_INIT idle, **zap shader
+   via TZ PAS 13: supported / init image / mem setup / auth and reset all rc 0**, secure mode off,
+   CP_MEM_WRITE fence `cafef00d`, then a 400-row gradient band drawn by the GPU (CP_MEM_WRITE +
+   CP_MEMCPY) into the panel framebuffer. No SMMU fault (gfsr 0).
+
 7. 2026-11-07 ~19:20 CST **TOUCH UNLOCK ON THE PIXEL 3A XL.** Swipe-up on the iOS 16 lock screen
    works (user: laggy, software rendering, but it works). Kernel 0089 (Synaptics RMI4 over GENI
    I2C, ts_1p8 via PM660 GPIO12, bonito buttons), image `shim/out/bonito-ios13-touch.img`
@@ -519,3 +529,10 @@ updates) are days, not months.
 - Next: port flame's `shim/gpuprobe.c` (cloned in scratchpad `flame-src/`) to bonito as a shim
   stage: GCC/GPUCC CX up, GMU (legacy: ITCM raw image, SPTPRAC, gfx rail, HFI v1, PDC 0x30080),
   zap via PAS, SQE, ring + fence. Output on screen (no shim log on bonito).
+- 21:39 GPU probe 1 (`bonito-gpu-up1.img`): stage 1 fine (CX on, ITCM/DTCM writable, SMMU
+  idr0 0x40016605 idr1 0x20008005: 5 SMRs, 5 CBs), stopped at `rsc wake TIMEOUT` (status0
+  0x1000000). Linux skips a6xx_rpmh_start on a cold boot (only after its own rpmh_stop):
+  removed (267c189). gpu_memnoc_gfx (BRANCH_VOTED) and snoc_dvm "HALTED" are harmless.
+- 21:40 probe 2: everything up to the GPU-painted band (milestone 8). Next: move this into
+  XNU = port flame 0094/0095 (sweet_a6xx.c/sweet_gpu.c) with the A615 path from shim/gpu.c,
+  firmware via ADT /chosen gpufw,*; then GPU present (scaled blit) for the framebuffer.
