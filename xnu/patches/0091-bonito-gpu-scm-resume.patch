@@ -1,0 +1,72 @@
+diff --git a/bsd/dev/sweet_gpu.c b/bsd/dev/sweet_gpu.c
+index c9ae48b..9bb5ced 100644
+--- a/bsd/dev/sweet_gpu.c
++++ b/bsd/dev/sweet_gpu.c
+@@ -175,26 +175,50 @@ a6_log(const char *fmt, ...)
+ 	va_end(ap);
+ }
+ 
+-/* SMC64 to TrustZone (qcom_scm convention): x0..x5 in, x0..x3 out. */
++/*
++ * SMC64 to TrustZone (qcom_scm convention): x0..x5 in, x0..x3 out. Like
++ * Linux's __scm_smc_do_quirk: TZ returns QCOM_SCM_INTERRUPTED (1) when an
++ * interrupt arrives during a call (the kernel runs with IRQs on, unlike the
++ * shim); the call is then resumed with x0 = 1 and the session cookie TZ left
++ * in x6 (ARM_SMCCC_QUIRK_QCOM_A6). Interrupts are masked around each SMC.
++ */
++#define QCOM_SCM_INTERRUPTED	1
++
+ void
+ a6_smc(uint64_t x[8])
+ {
+-	register uint64_t x0 __asm__("x0") = x[0];
+-	register uint64_t x1 __asm__("x1") = x[1];
+-	register uint64_t x2 __asm__("x2") = x[2];
+-	register uint64_t x3 __asm__("x3") = x[3];
+-	register uint64_t x4 __asm__("x4") = x[4];
+-	register uint64_t x5 __asm__("x5") = x[5];
+-	register uint64_t x6 __asm__("x6") = x[6];
+-	register uint64_t x7 __asm__("x7") = x[7];
+-	__asm__ volatile ("smc #0"
+-	    : "+r"(x0), "+r"(x1), "+r"(x2), "+r"(x3), "+r"(x4), "+r"(x5), "+r"(x6), "+r"(x7)
+-	    :
+-	    : "x8", "x9", "x10", "x11", "x12", "x13", "x14", "x15", "x16", "x17", "memory");
+-	x[0] = x0;
+-	x[1] = x1;
+-	x[2] = x2;
+-	x[3] = x3;
++	uint64_t fn = x[0], a0 = x[0], a6 = 0;
++	unsigned resumes = 0;
++	for (;;) {
++		register uint64_t x0 __asm__("x0") = a0;
++		register uint64_t x1 __asm__("x1") = x[1];
++		register uint64_t x2 __asm__("x2") = x[2];
++		register uint64_t x3 __asm__("x3") = x[3];
++		register uint64_t x4 __asm__("x4") = x[4];
++		register uint64_t x5 __asm__("x5") = x[5];
++		register uint64_t x6 __asm__("x6") = a6;
++		register uint64_t x7 __asm__("x7") = x[7];
++		boolean_t istate = ml_set_interrupts_enabled(FALSE);
++		__asm__ volatile ("smc #0"
++		    : "+r"(x0), "+r"(x1), "+r"(x2), "+r"(x3), "+r"(x4), "+r"(x5), "+r"(x6), "+r"(x7)
++		    :
++		    : "x8", "x9", "x10", "x11", "x12", "x13", "x14", "x15", "x16", "x17", "memory");
++		(void)ml_set_interrupts_enabled(istate);
++		if (x0 == QCOM_SCM_INTERRUPTED && resumes < 100000) {
++			a0 = QCOM_SCM_INTERRUPTED;
++			a6 = x6;
++			resumes++;
++			continue;
++		}
++		x[0] = x0;
++		x[1] = x1;
++		x[2] = x2;
++		x[3] = x3;
++		break;
++	}
++	if (resumes) {
++		a6_log("smc %llx: resumed %u times, rc %llx\n", (unsigned long long)fn, resumes, (unsigned long long)x[0]);
++	}
+ }
+ 
+ const uint8_t *

@@ -567,3 +567,8 @@ updates) are days, not months.
 - 22:05: 0090 CI run 42445378214 (workflow_dispatch on bonito, 268f188): in_progress.
 - 22:14: 0090 CI 42445378214 success -> `xnu/out-0090` (SHA OK). Images: `shim/out/bonito-ios20-gpu.img` (cpus=8, throttle args, sweetfb_hz=30, noconsole, sweetgpu=1, no sampler, --gpufw) and `shim/out/bonito-ios20-trip.img` (+ sweettrip=1).
 - 22:14:44: booted `shim/out/bonito-ios20-gpu.img`.
+- 22:20 **0090 result** (`logs/boot-0090-gpu.txt`): in the kernel CX on, GMU booted, me_init idle,
+  then `zap: init image rc 1 r1 82` -> bring-up FAILED (29 ms), CPU copy kept. rc 1 =
+  QCOM_SCM_INTERRUPTED: TZ was interrupted (IRQs on in the kernel, off in the shim). Patch
+  **0091**: a6_smc resumes like Linux's __scm_smc_do_quirk (x0 = 1, x6 = TZ's session cookie,
+  ARM_SMCCC_QUIRK_QCOM_A6) and masks interrupts around each SMC.
