@@ -272,3 +272,10 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 18:02: 0086 CI 42427313004 success -> `xnu/out-0086`. Image `shim/out/bonito-ios9-kstack.img` =
   0086 + bonito-ios2.adt (MACs) + cpus=1 + ufslogsecs=2 + `sweetsample=* sweetsamplesecs=60`,
   booted 18:02:24. Pull once a boot task visibly stalls for ~2 min.
+- 18:09: **0086 log** (`logs/boot-0086.txt`, 4 samples, cpus=1): fastest boot yet (SpringBoard
+  exec ~2 min, logo ~3 min). SpringBoard t0 still in the sync LaunchServices call to lsd (kernel:
+  hint 2 = port receive). lsd no longer in MobileGestalt (MAC fix works); lsd t2 waits on a sync
+  XPC from InstalledContentLibrary -> libsystem_containermanager -> **containermanagerd**, t1/t4
+  wait on a user lock (hint 10). containermanagerd t3/t4 are RUNNING (state 0x4, changing
+  backtraces): it is busy creating app containers (first boot work; persists on the rw root).
+  Next: one long run (30+ min, same image) so lsd/containermanagerd finish.
