@@ -61,7 +61,7 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    Gentoo's fsck.hfsplus (diskdev_cmds 332.14) segfaults even on a fresh volume: image checked by
    read-only mount instead. Flashing a raw image makes ABL write FILL chunks: use the .simg.
 
-6. 2026-11-07 ~18:25 CST **iOS LOCK SCREEN ON THE PIXEL 3A XL.** SpringBoard + PosterBoard
+6. 2026-11-07 ~18:22 CST **iOS LOCK SCREEN ON THE PIXEL 3A XL.** SpringBoard + PosterBoard
    presented the iOS 16 lock screen. Boot `shim/out/bonito-ios9-kstack.img` (kernel 0086, ADT
    `shim/out/bonito-ios2.adt` with /chosen MAC addresses, cpus=1, ufslogsecs=2, sweetsample=*
    sweetsamplesecs=60) booted 18:09:43 on the root image with the ByHost migration pref (flashed
