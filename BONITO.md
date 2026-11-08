@@ -363,3 +363,5 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 19:11: 0089 CI 42432525454 success -> `xnu/out-0089`; `shim/out/bonito-ios13-touch.img` = 0089 +
   bonito-ios2.adt + bonito-ios11 cmdline but `sweetsample=SpringBoard,backboardd sweetsamplesecs=60`.
   Booted 19:11:26. Test: lock screen -> power / swipe up; then pull for SMP + SWEET TOUCH lines.
+- 19:22: unlock boot log saved (`logs/boot-0089-unlock.txt`, 13 touch events). Next test:
+  `shim/out/bonito-ios14-cpu8.img` (0089, **cpus=8**, ADT has 8 CPU nodes), booted 19:22:04.
