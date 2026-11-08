@@ -1,0 +1,96 @@
+diff --git a/bsd/dev/sweet_gpu.c b/bsd/dev/sweet_gpu.c
+index f858e65..eac98b7 100644
+--- a/bsd/dev/sweet_gpu.c
++++ b/bsd/dev/sweet_gpu.c
+@@ -453,8 +453,13 @@ trip_fit(const struct a6_blit *fit, uint32_t *dw, uint32_t n)
+ /*
+  * Scale a mapped surface to fit (centred, bars black) into the panel. The CPU
+  * rendered it through the cache: clean its pages to memory first. Waits for
+- * the GPU (a few ms).
++ * the GPU (a few ms). 0 presented, 1 skipped (GPU busy: keep the previous
++ * frame), -1 not possible (use the CPU copy).
+  */
++static bool gpu_hung_locked(uint32_t hang_ms);
++static void gpu_recover_locked(const char *why);
++static uint64_t stat_busy;
++
+ int
+ sweet_gpu_present(int s, uint32_t offset, uint32_t w, uint32_t h, uint32_t pitch,
+     uint32_t *out_dx, uint32_t *out_dw)
+@@ -495,7 +500,29 @@ sweet_gpu_present(int s, uint32_t offset, uint32_t w, uint32_t h, uint32_t pitch
+ 
+ 	static uint32_t dw[A6_BLIT_INIT_MAX_DW + (TRIP_STRIPS + 2) * A6_BLIT_MAX_DW];
+ 	uint32_t n = 0;
+-	lck_mtx_lock(&sweet_gpu_lock);
++	/*
++	 * The ring is shared with the v2 clients (Turnip). Wait up to 50 ms for their work to finish;
++	 * still busy: skip this frame (1: the panel keeps the previous one; the CPU copy would show the
++	 * cropped frame between scaled ones). A client job without progress for a second is a hang:
++	 * reset (its fences complete, the client sees a fault).
++	 */
++	uint64_t wait_abs, start = mach_absolute_time();
++	nanoseconds_to_absolutetime(50000000ULL, &wait_abs);
++	for (;;) {
++		lck_mtx_lock(&sweet_gpu_lock);
++		if (a6_fence_done(&gpu, gpu.fence)) {
++			break;          /* lock held */
++		}
++		if (gpu_hung_locked(1000)) {
++			gpu_recover_locked("present");
++		}
++		lck_mtx_unlock(&sweet_gpu_lock);
++		if (mach_absolute_time() - start > wait_abs) {
++			stat_busy++;
++			return 1;
++		}
++		delay(500);
++	}
+ 	if (!blit_state_done) {
+ 		n = a6_blit_init_ib(dw);
+ 		blit_state_done = true;
+@@ -512,10 +539,16 @@ sweet_gpu_present(int s, uint32_t offset, uint32_t w, uint32_t h, uint32_t pitch
+ 	if (rc) {
+ 		uint64_t far;
+ 		uint32_t syn, fsr = a6_fault_status(&gpu, &far, &syn);
+-		a6_log("present: GPU timeout (fence %u, memory %u, smmu fsr %x far %llx); back to the CPU copy\n",
+-		    gpu.fence, a6_fence_read(&gpu), fsr, far);
+-		(void)a6_clear_fault(&gpu);
+-		gpu_ready = false;
++		/* Not fatal any more: the GPU stays in use; the hang check above resets a real hang. */
++		static uint32_t ntimeout;
++		if (ntimeout++ < 8) {
++			a6_log("present: GPU timeout (fence %u, memory %u, smmu fsr %x far %llx); CPU copy this frame\n",
++			    gpu.fence, a6_fence_read(&gpu), fsr, far);
++		}
++		if (fsr & ~0x600u) {    /* bits 10:9 are the format field (0x400 = AArch64), not a fault */
++			gpu_recover_locked("present fault");
++		}
++		rc = 1;                 /* skip: the blit may still land */
+ 	}
+ 	lck_mtx_unlock(&sweet_gpu_lock);
+ 	uint64_t t2 = mach_absolute_time();
+@@ -526,8 +559,8 @@ sweet_gpu_present(int s, uint32_t offset, uint32_t w, uint32_t h, uint32_t pitch
+ 		uint64_t k = stat_frames == 1 ? 1 : 300;
+ 		absolutetime_to_nanoseconds(stat_clean_abs, &c);
+ 		absolutetime_to_nanoseconds(stat_gpu_abs, &g);
+-		a6_log("present: %llu frames, avg cache clean %llu us, GPU %llu us\n", stat_frames,
+-		    c / 1000 / k, g / 1000 / k);
++		a6_log("present: %llu frames, avg cache clean %llu us, GPU %llu us, %llu skipped (GPU busy)\n",
++		    stat_frames, c / 1000 / k, g / 1000 / k, stat_busy);
+ 		stat_clean_abs = stat_gpu_abs = 0;
+ 	}
+ 	*out_dx = fit.dx;
+diff --git a/iokit/Kernel/arm/SweetFramebuffer.cpp b/iokit/Kernel/arm/SweetFramebuffer.cpp
+index 63da34d..1cfaad2 100644
+--- a/iokit/Kernel/arm/SweetFramebuffer.cpp
++++ b/iokit/Kernel/arm/SweetFramebuffer.cpp
+@@ -394,6 +394,9 @@ AppleCLCD::presentGPU(const uint8_t *rec)
+ 	uint32_t dx = 0, dw = 0;
+ 	int rc = sweet_gpu_present(slot, s->offset, s->width, s->height, s->bytesPerRow, &dx, &dw);
+ 	s->release();
++	if (rc > 0) {
++		return true;            /* GPU busy with Turnip's work: the panel keeps the previous frame */
++	}
+ 	if (rc) {
+ 		return gpu_fallback(7, "GPU blit failed");
+ 	}

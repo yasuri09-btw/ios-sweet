@@ -709,3 +709,12 @@ updates) are days, not months.
   back to CPU. Turnip's set_lost reason went to stderr (lost). Suspect: Submit with wait_fence
   returning kIOReturnTimeout (Turnip treats any non-Busy error as lost) -- unconfirmed. Next
   `ios30-mtl2`: TU_DEBUG=startup + MESA_LOG_FILE /var/local/turnip-backboardd.log.
+- 11:37: `ios31-mtl2` (0096 CI 42505190160): failing calls logged. Root cause found: the **present
+  path** submits its blit on the ring shared with Turnip and waits 100 ms; backboardd's first GPU work
+  was still running -> "present: GPU timeout (fence 7, memory 5)" -> `gpu_ready = false` -> every
+  later Turnip call failed (BoMap -> NoResources because map_at refuses when !gpu_ready; Submit ->
+  NotReady) = DeviceLost. Flashing = scaled GPU frames alternating with the cropped CPU copy.
+  **0097**: present waits up to 50 ms for client work, then skips the frame (rc 1, panel keeps the
+  previous one; SweetFramebuffer returns true); its own blit timing out also skips; a timeout never
+  disables the GPU; hang (no progress 1 s) -> gpu_recover_locked; SMMU FSR bits 10:9 (0x400 =
+  format) are not a fault.
