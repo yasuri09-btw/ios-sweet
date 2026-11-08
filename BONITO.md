@@ -603,3 +603,29 @@ updates) are days, not months.
 - 23:03: 0093 CI 42448691421 success -> `xnu/out-0093`, scan-sha3 0; linklibs got libfirehose_kernel.a only (no libcc_kext.a found in SDK/Xcode). Local relink: ld64.lld ignores -image_base/-segaddr/-segment_order/-static (not usable); Apple ld64 via cctools-port needs the user's OK to build. `tools/xnu-relink.py` written. Booted ios23-gpu at 23:03:23.
 - 23:1x: booted `shim/out/bonito-ios23-trip.img` (sweettrip=1, LSD mode).
 - 23:1x: **LSD mode works** (user: Apple logo "going batshit crazy", "LMAO it looks so funny"): strip waves + component swap cycling + trails, all on the 2D engine.
+
+## Handoff (2026-11-07 ~23:30 CST, usage limit)
+- **State:** kernel 0093 = GPU present works (milestone 9). `shim/out/bonito-ios23-gpu.img` (normal)
+  and `bonito-ios23-trip.img` (LSD mode, works). Phone was last booted into the trip image.
+  Patches 0090-0093 committed + pushed (fork/bonito). Build: `scratchpad mk0090.sh` pattern =
+  `tools/mkpayload.py K shim/out/bonito-ios2.adt OUT --gpufw research/gpu/fw/bonito --cmdline "..."`
+  + `shim/build.sh`; cmdline in BONITO.md 22:05 entry (cpus=8, throttle args, sweetgpu=1 [sweettrip=1]).
+  Always `python3 -I tools/scan-sha3.py KERNEL` before booting a new kernel.
+- **Open from 0092 boot:** Settings > About froze SpringBoard (not analysed; likely the HFS+ capacity
+  query known from sweet, not the GPU). CPU still renders iOS (no blur): needs Metal.
+- **Local kernel builds:** blocked. ld64.lld lacks -image_base/-segaddr/-segment_order/-static.
+  Apple ld64 via cctools-port (cloned in scratchpad) needs the user's OK to build (auto-mode denied).
+  CI artifact has the link kit + linklibs/libfirehose_kernel.a; libcc_kext.a not found yet.
+  `tools/xnu-relink.py` ready.
+- **Next: Metal on Turnip, built on CI (macOS runner has the iOS SDK; user has no Mac).** Follow flame
+  (iOS 16): Mesa **85fda3b36405bcaea8bffc64aa4f2651dc90770d** + UniXNU patches/mesa at UniXNU
+  **d07f3c3fc44fe3932be47af3cd5f3c169a531ee4** (BSD-2-Clause-Patent; order in its
+  scripts/data/adreno-compiler-inputs.json), meson cross arm64-apple-ios16.0 release
+  (flame tools/build-turnip-ios.sh options), `-Dtu-darwin-abi-dir` = flame phone/turnip/NativeAdrenoABI.h.
+  Then metal2vulkan bridge (pin 720ef1ce + 5 patches, flame phone/metal2/bridge) + frontend
+  (flame phone/metal2/*.mm), all as a new `metal.yml` workflow.
+  Kernel side = flame 0115 (NativeAdreno ABI v1 user client) adapted: **A615 GPU VA is 32-bit**
+  (windows must fit below 4 GB, or per-process page tables), GPU buffers from RAM XNU does not manage
+  (bonito low bank 0x80000000-0x100000000 minus carveouts; no PPL -> cacheable physmap aliases),
+  chip id 0x06010500, gmem 512K, Mesa highest_bank_bit 14. Also wanted first: bonito USB networking
+  (for pushing builds; else reflash userdata ~6 min per try).
