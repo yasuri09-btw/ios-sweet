@@ -573,3 +573,4 @@ updates) are days, not months.
   **0091**: a6_smc resumes like Linux's __scm_smc_do_quirk (x0 = 1, x6 = TZ's session cookie,
   ARM_SMCCC_QUIRK_QCOM_A6) and masks interrupts around each SMC.
 - 22:22: 0091 CI run 42446410261 (29b7358) in_progress.
+- 22:29: 0091 CI success -> `xnu/out-0091`; images `shim/out/bonito-ios21-{gpu,trip}.img`. Booted ios21-gpu at 22:30:14.
