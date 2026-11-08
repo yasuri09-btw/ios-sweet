@@ -374,3 +374,5 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   (bonito has no audio driver). Next: `shim/out/bonito-ios16-media.img` (0089, cpus=1,
   `sweetsample=SpringBoard,mediaremoted,mediaserverd,backboardd sweetsamplesecs=45`) to see who
   MediaRemote waits on. The first unlock at 19:20 got through, so the hang is intermittent.
+- 20:30: new session. Phone was in fastboot (retry count 0 -> set_active a). Booted
+  `shim/out/bonito-ios16-media.img` at 20:30:38 (MediaRemote sampler run, see 19:34).
