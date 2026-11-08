@@ -269,3 +269,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   sampler prints per thread `SMP name tN K state hint ev klr kbt ...` (scheduler state, block
   hint, wait event, saved kernel lr + fp backtrace inside its kernel stack, unslid) or `cont`;
   `sweetsample=*` skips kernel_task (name it explicitly to get it).
+- 18:02: 0086 CI 42427313004 success -> `xnu/out-0086`. Image `shim/out/bonito-ios9-kstack.img` =
+  0086 + bonito-ios2.adt (MACs) + cpus=1 + ufslogsecs=2 + `sweetsample=* sweetsamplesecs=60`,
+  booted 18:02:24. Pull once a boot task visibly stalls for ~2 min.
