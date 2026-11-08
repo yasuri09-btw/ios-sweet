@@ -1,0 +1,114 @@
+name: metal
+
+# Userland GPU stack for iOS 16 (arm64), built on a macOS runner (it has the iOS SDK):
+# Mesa's Turnip Vulkan driver with the Darwin kernel backend (metal/mesa-patches,
+# from UniXNU d07f3c3; the recipe follows ios-flame's tools/build-turnip-ios.sh).
+# The backend talks to our kernel's NativeAdreno user client (metal/turnip/NativeAdrenoABI.h).
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: runner image
+        default: macos-15
+  push:
+    branches: [bonito]
+    paths:
+      - "metal/**"
+      - ".github/workflows/metal.yml"
+
+env:
+  MESA_REPO: https://gitlab.freedesktop.org/mesa/mesa.git
+  MESA_MIRROR: https://chromium.googlesource.com/external/gitlab.freedesktop.org/mesa/mesa
+  MESA_SHA: 85fda3b36405bcaea8bffc64aa4f2651dc90770d
+  IOS_MIN: "16.0"
+
+jobs:
+  turnip:
+    runs-on: ${{ inputs.runner || 'macos-15' }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deps
+        run: |
+          brew install glslang bison flex
+          python3 -m venv venv
+          venv/bin/pip install -q meson mako pyyaml packaging
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-path
+
+      - name: Mesa source
+        run: |
+          git init -q mesa
+          git -C mesa fetch -q --depth 1 "$MESA_REPO" "$MESA_SHA" || git -C mesa fetch -q --depth 1 "$MESA_MIRROR" "$MESA_SHA"
+          git -C mesa checkout -q FETCH_HEAD
+          git -C mesa log --oneline -1
+          for p in metal/mesa-patches/*.patch; do
+            echo "== $p"
+            git -C mesa apply --whitespace=nowarn "$PWD/$p"
+          done
+
+      - name: Configure
+        run: |
+          SDK=$(xcrun --sdk iphoneos --show-sdk-path)
+          F="'-target', 'arm64-apple-ios$IOS_MIN', '-isysroot', '$SDK', '-fstack-protector-strong'"
+          cat > ios.cross <<EOF
+          [binaries]
+          c = '$(xcrun --sdk iphoneos --find clang)'
+          cpp = '$(xcrun --sdk iphoneos --find clang++)'
+          objc = '$(xcrun --sdk iphoneos --find clang)'
+          ar = '$(xcrun --sdk iphoneos --find ar)'
+          strip = '$(xcrun --sdk iphoneos --find strip)'
+          pkg-config = '/usr/bin/false'
+          [host_machine]
+          system = 'darwin'
+          cpu_family = 'aarch64'
+          cpu = 'arm64'
+          endian = 'little'
+          [properties]
+          needs_exe_wrapper = true
+          [built-in options]
+          c_args = [$F]
+          cpp_args = [$F]
+          objc_args = [$F]
+          c_link_args = [$F]
+          cpp_link_args = [$F]
+          objc_link_args = [$F]
+          EOF
+          cat ios.cross
+          export PATH=$PWD/venv/bin:$(brew --prefix bison)/bin:$(brew --prefix flex)/bin:$PATH
+          meson setup build mesa --cross-file ios.cross --wrap-mode=nodownload \
+            -Dgallium-drivers= -Dvulkan-drivers=freedreno -Dfreedreno-kmds=darwin \
+            -Dtu-darwin-abi-dir=$PWD/metal/turnip -Dplatforms=macos -Dglx=disabled -Degl=disabled \
+            -Dgbm=disabled -Dopengl=false -Dgles1=disabled -Dgles2=disabled -Dllvm=disabled \
+            -Dshared-glapi=disabled -Dxmlconfig=disabled -Dshader-cache=disabled -Dtools= \
+            -Dbuild-tests=false -Dvideo-codecs= -Dvulkan-layers= -Dlibunwind=disabled \
+            -Dlmsensors=disabled -Dvalgrind=disabled -Dexpat=disabled -Dzstd=disabled \
+            -Dbuildtype=release -Db_ndebug=true
+
+      - name: Build
+        run: |
+          export PATH=$PWD/venv/bin:$(brew --prefix bison)/bin:$(brew --prefix flex)/bin:$PATH
+          ninja -C build src/freedreno/vulkan/libvulkan_freedreno.dylib
+
+      - name: Collect
+        if: always()
+        run: |
+          mkdir -p out
+          cp build/src/freedreno/vulkan/libvulkan_freedreno.dylib out/ 2>/dev/null || true
+          cp -R mesa/include/vulkan out/vulkan-include 2>/dev/null || true
+          if [ -f out/libvulkan_freedreno.dylib ]; then
+            codesign -f -s - out/libvulkan_freedreno.dylib
+            otool -l out/libvulkan_freedreno.dylib | grep -A4 LC_BUILD_VERSION | head -6
+            nm -m out/libvulkan_freedreno.dylib | grep -c "weak external" || true
+            (cd out && shasum -a 256 libvulkan_freedreno.dylib > SHA256SUMS)
+          fi
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: turnip-ios
+          path: out/
+          if-no-files-found: warn
