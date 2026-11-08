@@ -483,3 +483,21 @@ visible result each:
 4. General AIR -> NIR -> ir3 compiler (Mesa) for apps. Long term.
 Alternative kept in mind: CPU render speed-ups (native 1080x2160 presentation, partial
 updates) are days, not months.
+- 21:25 **Plan change: port ios-flame's GPU stack** (github.com/NWylynko/ios-flame, MIT, Pixel 4
+  / Adreno 640, same ios-sweet base, kernel 0124): Metal on Mesa's Turnip through metal2vulkan
+  (`sweetmtl=2`), backboardd/SpringBoard/apps on the GPU, ~20-26 fps home-screen swipes.
+  Pieces: 0094 /dev/pmem (+SCM), 0095 A640 core in XNU (`bsd/dev/sweet_a6xx.c` + `sweet_gpu.c`:
+  GPUCC/GDSC, GMU boot + HFI, SMMU banks, SQE + zap via TZ PAS, ring; firmware passed as ADT
+  /chosen `gpufw,<file>` via `mkpayload.py --gpufw`; display present = GPU scaled blit),
+  0096/0097 SweetAccelerator + user client, 0102 RPMh votes, 0105-0109/0113 GPU fixes,
+  0115 v2 user client (NativeAdreno ABI) for Turnip, 0116-0122; userland `phone/metal2`,
+  `phone/turnip` (SweetMetal2.bundle). Their bring-up started as a shim probe (`shim/gpuprobe.c`).
+  A615 vs A640 (Linux a6xx_gmu.c / a6xx_catalog.c): A615 = chip 0x06010500, **a630 family:
+  legacy HFI v1, gfx rail on + SPTPRAC enable**, PDC address offset 0x30080 (A640 0x30090),
+  firmware a630_sqe.fw + a630_gmu.bin + a615_zap.mdt (bonito vendor: `a615_zap.mbn`), GMEM 512K,
+  4 GB VA quirk. GPUCC (sdm845) GDSC/RCG/CBCR offsets match flame's except no gpu_cc_ahb (0x1078).
+  Mesa Turnip lists GPUId(615) (a6xx gen1). Display: bonito fb stride 4320 is not a multiple of
+  64 either (flame reprograms the panel stride to 4352).
+  Steps: (1) run shim/out/bonito-gpu-probe1.img (handoff state), (2) get firmware (host has no
+  linux-firmware qcom files; zap from vendor_a via TWRP), (3) port 0094/0095 with the A615
+  differences, `sweetgpu=1`, boot-tested on its own, (4) 0096/0097/0115/0116 + userland.
