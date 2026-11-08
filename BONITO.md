@@ -702,3 +702,10 @@ updates) are days, not months.
   PermissionDenied /var/local/m2v-cache/backboardd" (dir made by root m2vtest on the mtl1 boot;
   backboardd runs as mobile) -> CPU rendering, white dock (no blur). SpringBoard/chronod: not listed
   (expected). Fix: boot files create /var/local/m2v-cache{,/backboardd} 0777 each boot -> `ios29-mtl2`.
+- 11:11: `ios29-mtl2`: backboardd opened the device ("Turnip Adreno (TM) 615 in 2693 ms", 39 MB pool,
+  submits + waits used), then every commandBuffer / surface import "DeviceLost"; one backboardd exec
+  (no crash loop; the flashing logo was the screen alternating, PosterBoard crashed once sig 5). Kernel
+  logged NO GPU hang reset; the present path later timed out (fence 8 done 5, status e705e5) and fell
+  back to CPU. Turnip's set_lost reason went to stderr (lost). Suspect: Submit with wait_fence
+  returning kIOReturnTimeout (Turnip treats any non-Busy error as lost) -- unconfirmed. Next
+  `ios30-mtl2`: TU_DEBUG=startup + MESA_LOG_FILE /var/local/turnip-backboardd.log.

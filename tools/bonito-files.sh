@@ -48,6 +48,7 @@ if [ -d "$M" ]; then
 	cp "$M/SweetMetal2.bundle/SweetMetal2" "$S/SweetMetal2"
 	cp "$M/SweetMetal2.bundle/Info.plist" "$S/Info.plist"
 	: > "$S/mtl2.log"
+	echo startup > "$S/mtl2-tu-debug"   # SweetMetal2: TU_DEBUG + MESA_LOG_FILE=/var/local/turnip-<proc>.log
 	X=/System/Library/Extensions/SweetMetal2.bundle
 	cat >> "$S/list" <<L
 file m2vtest /var/local/bin/m2vtest 755
@@ -56,6 +57,8 @@ file Info.plist $X/Info.plist 644
 file libvulkan_freedreno.dylib $X/libvulkan_freedreno.dylib 755
 file mtl2.log /var/local/mtl2.log 666
 dir /var/local/m2v-cache 777
+file mtl2-tu-debug /var/local/mtl2-tu-debug 644
+file mtl2.log /var/local/turnip-backboardd.log 666
 dir /var/local/m2v-cache/backboardd 777
 L
 fi
