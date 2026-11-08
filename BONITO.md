@@ -452,3 +452,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Next: ask what the screen shows (partly slid? dock? does power still toggle display?), and
   add a periodic frame counter to the FB driver (kernel patch) if needed.
 - 21:06:53: booted `shim/out/bonito-ios19-cpu8-throttle.img` again (user request).
+- ~21:12: user on the cpus=8 boot #2: the "unlock freeze" is **a graphical bug from software
+  rendering (no GPU acceleration)**, not a hang. Consistent with the cpus=8 samples (nothing
+  blocked). Summary of the evening: the cpus=1 freeze was real (SpringBoard main thread waiting
+  for an on-demand mediaremoted starved by I/O throttling + one core); throttle boot-args +
+  cpus=8 fix that and make boots much faster. **Current best image:
+  `shim/out/bonito-ios19-cpu8-throttle.img`.** Make the throttle settings permanent in the
+  kernel later (DKIOCISSOLIDSTATE in sweet_emmc_ioctl, or defaults in a patch) and drop the
+  sampler from the daily image.
