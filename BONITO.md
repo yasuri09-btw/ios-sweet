@@ -71,6 +71,11 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
    so containermanagerd/lsd could create the app containers and the LaunchServices DB (they
    persist on the rw root).
 
+9. 2026-11-07 ~23:08 CST **iOS FRAMES PRESENTED BY THE ADRENO 615.** Kernel 0093 (0090 GPU core +
+   present, 0091 SCM resume/IRQ mask, 0092 no EOR3, 0093 32-bit GPU VA), image
+   `shim/out/bonito-ios23-gpu.img` (`sweetgpu=1`, cpus=8): the whole 1125x2436 iOS frame scaled
+   to fit (997x2160 at x 41, black side bars) by the 2D engine every present; user: "IT FITS".
+
 8. 2026-11-07 21:40 CST **THE ADRENO 615 RUNS OUR COMMANDS AND PAINTS THE SCREEN.** Shim GPU stage
    (`shim/gpu.c`, commit 267c189, image `shim/out/bonito-gpu-up2.img`, photo
    `logs/gpu-up2-MILESTONE.jpg`): CX up, GMU booted (init 0xbabeface, legacy raw ITCM firmware,
