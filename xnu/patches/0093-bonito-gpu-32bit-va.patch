@@ -1,0 +1,62 @@
+diff --git a/bsd/dev/sweet_a6xx.c b/bsd/dev/sweet_a6xx.c
+index 90d4ff4..c044ac0 100644
+--- a/bsd/dev/sweet_a6xx.c
++++ b/bsd/dev/sweet_a6xx.c
+@@ -818,9 +818,8 @@ void a6_unmap_high(struct a6_gpu *g)
+ 	static const uint64_t zeros[511];
+ 	a6_write(a6_pool_pa(g, A6_OFF_GT_L1) + 8, zeros, sizeof(zeros));
+ 	g->pt_next = 0;
+-	uint64_t c = SMMU_CB(g->gpu_cb);	/* 39-bit VA from now on (T0SZ 25) */
+-	wr32(c + CB_TCR, 25 | (1u << 8) | (1u << 10) | (3u << 12) | (1u << 23));
+-	wr32(c + CB_TCR2, TCR2_VAL);
++	/* The A615 has 32-bit GPU addresses (Linux: ADRENO_QUIRK_4GB_VA): the bank keeps T0SZ 32
++	 * (flame's A640 widened it to 39 bits for surfaces at 4 GB; that faulted here). */
+ 	a6_tlb_flush(g);
+ }
+ 
+diff --git a/bsd/dev/sweet_a6xx.h b/bsd/dev/sweet_a6xx.h
+index 70f4d5b..c039bb8 100644
+--- a/bsd/dev/sweet_a6xx.h
++++ b/bsd/dev/sweet_a6xx.h
+@@ -17,8 +17,8 @@
+  *   pool + 0x218000  scratch: fence (+0), border colours (+0x800), event timestamps (+0x900)
+  *   pool + 0x400000  free for the environment (present IB, scaled frame)
+  *
+- * GPU VA (39 bits after bring-up): the pool at 0x10000000, the panel
+- * framebuffer at 0x20000000, surfaces with 4K pages from 4 GB up.
++ * GPU VA (32 bits on the A615): the pool at 0x10000000, the panel framebuffer
++ * at 0x20000000, surfaces with 4K pages from 1 GB up.
+  */
+ #ifndef SWEET_A6XX_H
+ #define SWEET_A6XX_H
+@@ -92,7 +92,7 @@ uint32_t a6_fence_read(const struct a6_gpu *g);
+ /* 4K pages (AP=01, NC) at iova -> pa; tables from the arena. Then a6_tlb_flush. */
+ int a6_map(struct a6_gpu *g, uint64_t iova, uint64_t pa, uint64_t size);
+ int a6_map_pages(struct a6_gpu *g, uint64_t iova, const uint64_t *pages, uint32_t npages, uint32_t page_size);
+-void a6_unmap_high(struct a6_gpu *g);	/* drop all mappings above 1 GB, reset the arena, 39-bit VA */
++void a6_unmap_high(struct a6_gpu *g);	/* drop all mappings above 1 GB, reset the arena */
+ void a6_tlb_flush(const struct a6_gpu *g);
+ int a6_clear_fault(const struct a6_gpu *g);	/* 1 if an SMMU fault was cleared */
+ uint32_t a6_fault_status(const struct a6_gpu *g, uint64_t *far, uint32_t *fsynr0);
+diff --git a/bsd/dev/sweet_gpu.c b/bsd/dev/sweet_gpu.c
+index 9bb5ced..4ff14cf 100644
+--- a/bsd/dev/sweet_gpu.c
++++ b/bsd/dev/sweet_gpu.c
+@@ -10,7 +10,7 @@
+  *
+  * Present (proven in the shim, 2026-11-07): iOS's swapped IOSurface (1125x2436
+  * BGRA, 4608-byte rows) is mapped into the GPU once per surface (4 slots at
+- * 4 GB + n * 16 MB) and scaled to fit, bilinear, into a buffer in the pool
++ * 1 GB + n * 16 MB: the A615 only has 32-bit GPU addresses) and scaled to fit, bilinear, into a buffer in the pool
+  * with 4352-byte rows (the 2D engine needs 64-byte pitches). Two unscaled
+  * blits then write the even and odd panel rows at pitch 8640 (2 x 4320), so
+  * the panel keeps ABL's 4320-byte stride: changing the stride left the
+@@ -298,7 +298,7 @@ sweet_gpu_ready(void)
+ /* ---- surfaces ---- */
+ 
+ #define SLOTS           4
+-#define SLOT_IOVA(n)    (0x100000000ULL + 0x1000000ULL * (n))
++#define SLOT_IOVA(n)    (0x40000000ULL + 0x1000000ULL * (n))	/* A615: 32-bit GPU VA (ADRENO_QUIRK_4GB_VA) */
+ #define SLOT_MAX        0x1000000ULL
+ #define SLOT_PAGES      1024
+ 

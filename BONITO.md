@@ -583,3 +583,15 @@ updates) are days, not months.
 - 22:44: 0092 CI 42447461825 success -> `xnu/out-0092`, scan-sha3: 0. Images `shim/out/bonito-ios22-{gpu,trip}.img`.
 - 22:47: 0091 log (`logs/boot-0091-gpu.txt`): **bring-up done, GPU ready in 60 ms** (zap OK, secure mode off, no SCM resumes needed: masking IRQs sufficed); then the EOR3 panic in the first present. Booted ios22-gpu at 22:46:17.
 - ~22:52: ios22-gpu: Apple logo appeared (user), no panic past backboardd's first frame.
+- 22:55 **0092 result** (`logs/boot-0092-gpu.txt`): no panic; GPU ready in 60 ms; first swaps had
+  several layers (`not exactly one layer`, CPU copy), then the full-frame surface mapped (slot 0,
+  686 x 16K pages) and the first GPU present **timed out with an SMMU translation fault at
+  0x100000000** (fsr 0x402) -> CPU copy for the rest of the boot (user: no fit, no bars; Settings
+  > About froze SpringBoard, not yet analysed). Cause: **the A615 has 32-bit GPU addresses**
+  (a6xx_catalog.c `ADRENO_QUIRK_4GB_VA`); flame's A640 maps surfaces from 4 GB with a 39-bit bank.
+  Patch **0093**: surface slots at 1 GB + n x 16 MB, the bank stays T0SZ 32.
+- Local kernel builds (user asked; CI takes 8-9 min): the xnu-kernel artifact already has the link
+  kit `kernel.development.sweet.link/` (all 1099 objects in `.a` + `.linkarguments`). Missing
+  locally: libfirehose_kernel.a (built by dxb into fakeroot) and libcc_kext.a (SDK); xnu.yml now
+  copies both into `out/linklibs/`. Plan: compile changed files with `XNU_CC_OBJDIR` (host clang),
+  swap them into the archive, relink with ld64.lld; verify against the CI kernel first.

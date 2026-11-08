@@ -117,7 +117,12 @@ jobs:
         run: |
           mkdir -p out
           cp -R dxb/fakeroot/System/Library/Kernels/. out/ 2>/dev/null || true
-          ls -la out
+          # Link-time libraries the kernel link kit (kernel.*.link) references, for local relinks
+          mkdir -p out/linklibs
+          cp dxb/fakeroot/usr/local/lib/kernel/libfirehose_kernel.a out/linklibs/ 2>/dev/null || true
+          SDK=$(xcrun --sdk macosx --show-sdk-path)
+          find "$SDK" "$(xcode-select -p)" -name 'libcc_kext*.a' -exec cp {} out/linklibs/ \; 2>/dev/null || true
+          ls -la out out/linklibs
           (cd out && shasum -a 256 kernel.* > SHA256SUMS) || true
 
       - uses: actions/upload-artifact@v4
