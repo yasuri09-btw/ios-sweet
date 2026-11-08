@@ -565,3 +565,4 @@ updates) are days, not months.
   `tools/mkpayload.py --gpufw research/gpu/fw/bonito` (gitignored copies of linux-firmware
   a630_gmu.bin/a630_sqe.fw + sargo a615_zap.mdt/.b02) adds the firmware to the ADT.
 - 22:05: 0090 CI run 42445378214 (workflow_dispatch on bonito, 268f188): in_progress.
+- 22:14: 0090 CI 42445378214 success -> `xnu/out-0090` (SHA OK). Images: `shim/out/bonito-ios20-gpu.img` (cpus=8, throttle args, sweetfb_hz=30, noconsole, sweetgpu=1, no sampler, --gpufw) and `shim/out/bonito-ios20-trip.img` (+ sweettrip=1).
