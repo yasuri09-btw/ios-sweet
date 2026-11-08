@@ -888,6 +888,41 @@ static uint32_t pkt4(uint32_t reg, uint32_t cnt)
 #define SRC_PITCH	4608
 #define DST_PITCH	4352
 
+/* one 2D-engine blit: BGRA8 linear -> BGRA8 linear, 64-byte pitches, inclusive 24.8 source coords */
+static void blit2d(uint32_t src, uint32_t src_w, uint32_t src_h, uint32_t src_pitch,
+		   uint32_t sx, uint32_t sy, uint32_t sw, uint32_t sh,
+		   uint32_t dst, uint32_t dst_pitch, uint32_t dx, uint32_t dy, uint32_t dw, uint32_t dh, int filter)
+{
+	uint64_t ts = GVA_SCRATCH + 0x900;
+#define REG(r, v)	do { ring(pkt4((r), 1)); ring(v); } while (0)
+#define EV_TS(e)	do { pkt7(0x46, 4); ring(e); ring((uint32_t)ts); ring(0); ring(0); } while (0)
+	REG(0x840a, 0);			/* GRAS_A2D_SCISSOR_TL/BR: no clip */
+	REG(0x840b, 0x3fff | (0x3fffu << 16));
+	REG(0x8c01, 0);
+	REG(0x8c00, 0x00f03000);
+	REG(0x8400, 0x00f03000);
+	REG(0xacc0, 0xf180);
+	ring(pkt4(0x8405, 2)); ring(dx | (dy << 16)); ring((dx + dw - 1) | ((dy + dh - 1) << 16));
+	ring(pkt4(0x8401, 4)); ring(sx << 8); ring((sx + sw - 1) << 8); ring(sy << 8); ring((sy + sh - 1) << 8);
+	ring(pkt4(0xb4c0, 5)); ring(0x00500430 | (filter ? 0x10000 : 0)); ring(src_w | (src_h << 15));
+	ring(src); ring(0); ring(src_pitch << 3);
+	ring(pkt4(0xb4ca, 3)); ring(src); ring(0); ring(0);
+	ring(pkt4(0x8c17, 4)); ring(0x430); ring(dst); ring(0); ring(dst_pitch >> 6);
+	ring(pkt4(0x8c20, 3)); ring(dst); ring(0); ring(0);
+	pkt7(0x26, 0);			/* blit_wfi_quirk */
+	pkt7(0x2c, 1); ring(3);		/* CP_BLIT, BLIT_OP_SCALE */
+	pkt7(0x26, 0);
+	EV_TS(0x1d);			/* PC_CCU_FLUSH_COLOR_TS */
+	EV_TS(0x1c);			/* PC_CCU_FLUSH_DEPTH_TS */
+	EV_TS(0x04);			/* CACHE_FLUSH_TS */
+#undef REG
+#undef EV_TS
+}
+
+#define G_MID		0x172000000UL	/* scaled frame, 4352-byte rows (9.4 MB) */
+#define GVA_MID		0x41000000u
+#define MID_PITCH	4352
+
 static void gpu_blit_test(int cb, int full)
 {
 	/* the source: CPU-drawn pattern (checker + border), mapped with 2 MB blocks */
@@ -899,25 +934,21 @@ static void gpu_blit_test(int cb, int full)
 			wr32(G_SRC + y * SRC_PITCH + 4 * x, c);
 		}
 	uintptr_t l2b = GMEM + 0x103000;		/* L2 for VA 1-2 GB */
-	zero32(l2b, 0x1000);
-	wr64(GT_L1 + 8, l2b | 3);
-	for (int i = 0; i < 6; i++)
-		wr64(l2b + 8 * i, (G_SRC + 0x200000UL * i) | (1u << 10) | (3u << 8) | (1u << 6) | 1u);
-	map_pages(GT_L3, GVA_SCRATCH, G_SCRATCH, 0x1000, 0);
-	zero32(G_SCRATCH, 0x1000);
+	if (!full) {
+		zero32(l2b, 0x1000);
+		wr64(GT_L1 + 8, l2b | 3);
+		for (int i = 0; i < 6; i++)
+			wr64(l2b + 8 * i, (G_SRC + 0x200000UL * i) | (1u << 10) | (3u << 8) | (1u << 6) | 1u);
+		for (int i = 0; i < 5; i++)
+			wr64(l2b + 8 * (8 + i), (G_MID + 0x200000UL * i) | (1u << 10) | (3u << 8) | (1u << 6) | 1u);
+		map_pages(GT_L3, GVA_SCRATCH, G_SCRATCH, 0x1000, 0);
+		zero32(G_SCRATCH, 0x1000);
+	}
 	uintptr_t c = SMMU_CB(cb);
 	wr32(c + 0x618, 0);
 	wr32(c + 0x7f0, 0);
 	wait_bit(c + 0x7f4, 1, 0, 10);
 
-	/* destination, pitch 4352: a 600-row band below the log, or the whole panel (fit) */
-	uint32_t dh = 600, dw = SRC_W * dh / SRC_H, dx = 780, dy = 1500;
-	if (full) {
-		dh = FB_H;
-		dw = (SRC_W * FB_H + SRC_H / 2) / SRC_H;
-		dx = (FB_W - dw) / 2;
-		dy = 0;
-	}
 	uint64_t border = GVA_SCRATCH + 0x800, ts = GVA_SCRATCH + 0x900;
 #define EV(e)		do { pkt7(0x46, 1); ring(e); } while (0)
 #define EV_TS(e)	do { pkt7(0x46, 4); ring(e); ring((uint32_t)ts); ring(0); ring(0); } while (0)
@@ -929,39 +960,39 @@ static void gpu_blit_test(int cb, int full)
 		REG(blit_init[i][0], blit_init[i][1]);
 	ring(pkt4(0xb302, 2)); ring((uint32_t)border); ring(0);
 	ring(pkt4(0xb180, 2)); ring((uint32_t)border); ring(0);
+	REG(0x80f0, 0);			/* GRAS_SC_WINDOW_SCISSOR_TL/BR */
+	REG(0x80f1, 0x3fff | (0x3fffu << 16));
 	EV_TS(0x1d);
 	EV(0x19);
 	EV(0x31);
 	pkt7(0x26, 0);
-	if (flush_wait("blit init"))
-		return;
-	REG(0x840a, 0);			/* GRAS_A2D_SCISSOR_TL: no clip (reset value clips on the A615) */
-	REG(0x840b, 0x3fff | (0x3fffu << 16));
-	REG(0x80f0, 0);			/* GRAS_SC_WINDOW_SCISSOR_TL/BR */
-	REG(0x80f1, 0x3fff | (0x3fffu << 16));
-	REG(0x8c01, 0);
-	REG(0x8c00, 0x00f03000);
-	REG(0x8400, 0x00f03000);
-	REG(0xacc0, 0xf180);
-	ring(pkt4(0x8405, 2)); ring(dx | (dy << 16)); ring((dx + dw - 1) | ((dy + dh - 1) << 16));
-	ring(pkt4(0x8401, 4)); ring(0); ring((SRC_W - 1) << 8); ring(0); ring((SRC_H - 1) << 8);
-	ring(pkt4(0xb4c0, 5)); ring(0x00500430 | 0x10000); ring(SRC_W | (SRC_H << 15));
-	ring(GVA_SRC); ring(0); ring(SRC_PITCH << 3);
-	ring(pkt4(0xb4ca, 3)); ring(GVA_SRC); ring(0); ring(0);
-	ring(pkt4(0x8c17, 4)); ring(0x430); ring(GVA_FB); ring(0); ring(DST_PITCH >> 6);
-	ring(pkt4(0x8c20, 3)); ring(GVA_FB); ring(0); ring(0);
-	pkt7(0x26, 0);			/* blit_wfi_quirk */
-	pkt7(0x2c, 1); ring(3);		/* CP_BLIT, BLIT_OP_SCALE */
-	pkt7(0x26, 0);
-	EV_TS(0x1d);
-	EV_TS(0x1c);
-	EV_TS(0x04);
-	flush_wait("blit");
 #undef EV
 #undef EV_TS
 #undef REG
-	uint32_t mid = rd32(FB_PA + (dy + dh / 2) * DST_PITCH + 4 * (dx + dw / 2));
-	con_printf("blit %ux%u at %u,%u: fb mid %x\n", dw, dh, dx, dy, mid);
+	if (flush_wait("blit init"))
+		return;
+
+	if (!full) {
+		/* small band straight into the panel memory (pitch 4352: shows sheared) */
+		uint32_t dh = 600, dw = SRC_W * dh / SRC_H, dx = 780, dy = 1500;
+		blit2d(GVA_SRC, SRC_W, SRC_H, SRC_PITCH, 0, 0, SRC_W, SRC_H, GVA_FB, DST_PITCH, dx, dy, dw, dh, 1);
+		flush_wait("blit");
+		con_printf("blit %ux%u at %u,%u: mid %x\n", dw, dh, dx, dy,
+			   rd32(FB_PA + (dy + dh / 2) * DST_PITCH + 4 * (dx + dw / 2)));
+		return;
+	}
+
+	/* the present path: scale to fit into MID (4352-byte rows), then even and odd panel rows
+	 * (2 x 4320 = 8640 = 135 x 64) with two unscaled blits; the panel keeps ABL's 4320 stride */
+	uint32_t dh = FB_H, dw = (SRC_W * FB_H + SRC_H / 2) / SRC_H, dx = (FB_W - dw) / 2;
+	zero32(G_MID, FB_H * MID_PITCH);
+	blit2d(GVA_SRC, SRC_W, SRC_H, SRC_PITCH, 0, 0, SRC_W, SRC_H, GVA_MID, MID_PITCH, dx, 0, dw, dh, 1);
+	blit2d(GVA_MID, FB_W, FB_H / 2, 2 * MID_PITCH, 0, 0, FB_W, FB_H / 2,
+	       GVA_FB, 2 * FB_STRIDE, 0, 0, FB_W, FB_H / 2, 0);
+	/* odd rows start at fb + 4320 (not 64-aligned): base fb + 4288, x offset 8 pixels */
+	blit2d(GVA_MID + MID_PITCH, FB_W, FB_H / 2, 2 * MID_PITCH, 0, 0, FB_W, FB_H / 2,
+	       GVA_FB + FB_STRIDE - 32, 2 * FB_STRIDE, 8, 0, FB_W, FB_H / 2, 0);
+	flush_wait("present");
 }
 
 static void gpu_run(int gmu_cb)
@@ -1072,21 +1103,16 @@ static void gpu_run(int gmu_cb)
 		gpu_paint(cb);
 		mdp_dump();
 		gpu_blit_test(cb, 0);
-		/* the panel pipe (VIG0, CTL0) reads 4352-byte rows from now on; ABL's autorefresh picks it up */
-		wr32(MDP_TOP + 0x4000 + 0x24, DST_PITCH);
-		wr32(MDP_TOP + 0x1000 + 0x18, 1);
-		delay_ms(50);
-		for (uint32_t o = 0; o < FB_H * DST_PITCH; o += 4)	/* black, so unwritten rows show */
+		for (uint32_t o = 0; o < FB_H * FB_STRIDE; o += 4)	/* black, so unwritten rows show */
 			wr32(FB_PA + o, 0xff000000);
 		gpu_blit_test(cb, 1);
-		con_set_stride(DST_PITCH);
 		con_home();
-		con_printf("stride %u ctl0 flush %x\n", rd32(MDP_TOP + 0x4000 + 0x24), rd32(MDP_TOP + 0x1000 + 0x18));
-		static const uint32_t rows[] = { 100, 1000, 2000, 2040, 2050, 2100, 2150, 2159 };
+		con_printf("present: panel stride %u (ABL's, untouched)\n", rd32(MDP_TOP + 0x4000 + 0x24));
+		static const uint32_t rows[] = { 0, 1, 100, 1000, 2000, 2150, 2158, 2159 };
 		for (unsigned i = 0; i < sizeof(rows) / sizeof(rows[0]); i++)
-			con_printf("row %u: x100 %x x540 %x x900 %x\n", rows[i],
-				   rd32(FB_PA + rows[i] * DST_PITCH + 4 * 100), rd32(FB_PA + rows[i] * DST_PITCH + 4 * 540),
-				   rd32(FB_PA + rows[i] * DST_PITCH + 4 * 900));
+			con_printf("row %u: x45 %x x540 %x x1030 %x\n", rows[i],
+				   rd32(FB_PA + rows[i] * FB_STRIDE + 4 * 45), rd32(FB_PA + rows[i] * FB_STRIDE + 4 * 540),
+				   rd32(FB_PA + rows[i] * FB_STRIDE + 4 * 1030));
 	}
 out:
 	cb_fault("gpu", cb);
