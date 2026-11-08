@@ -339,3 +339,5 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   thread stuck in a kernel page fault); USB (SMMU, see ios-flame's fix); driverkitd CRASH sig 9
   every boot; securityd AKS sel 10 unsupported; no RTC (1970). Rules: wait >= 10 min before
   calling a boot stuck; verify DT conventions in the driver before hardware writes.
+- 18:54: 0088 CI 42431176953 success -> `xnu/out-0088`; `shim/out/bonito-ios12-touch.img`
+  (0088 + bonito-ios2.adt + the bonito-ios11 cmdline) booted 18:54:02.
