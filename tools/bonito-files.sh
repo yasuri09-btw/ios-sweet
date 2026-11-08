@@ -9,6 +9,9 @@
 #   /System/Library/xpc/launchd.plist          research/gpu/launchd.plist.orig (the cache from
 #                                              research/ipsw-x/ios16-root.img = what is flashed)
 #                                              + job org.sweet.run (sweetrun; log /var/local/run.log)
+# With research/gpu/metal2-ios/ (metal2.yml artifact) also:
+#   /System/Library/Extensions/SweetMetal2.bundle/  (+ Turnip inside it; sweetmtl=2 loads it)
+#   /var/local/bin/m2vtest, /var/local/mtl2.log (empty, 666: SweetMetal2's log)
 # Everything under research/ stays out of git (Apple data, build artifacts).
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -39,4 +42,19 @@ file v2test /var/local/bin/v2test 755
 file run.txt /var/local/run.txt 644
 file launchd.plist /System/Library/xpc/launchd.plist 644
 L
+M=research/gpu/metal2-ios
+if [ -d "$M" ]; then
+	cp "$M/m2vtest" "$S/"
+	cp "$M/SweetMetal2.bundle/SweetMetal2" "$S/SweetMetal2"
+	cp "$M/SweetMetal2.bundle/Info.plist" "$S/Info.plist"
+	: > "$S/mtl2.log"
+	X=/System/Library/Extensions/SweetMetal2.bundle
+	cat >> "$S/list" <<L
+file m2vtest /var/local/bin/m2vtest 755
+file SweetMetal2 $X/SweetMetal2 755
+file Info.plist $X/Info.plist 644
+file libvulkan_freedreno.dylib $X/libvulkan_freedreno.dylib 755
+file mtl2.log /var/local/mtl2.log 666
+L
+fi
 echo "$S/list"

@@ -4,3 +4,4 @@ sleep 20
 /var/local/bin/v2test
 env TU_DEBUG=startup
 /var/local/bin/vktest
+/var/local/bin/m2vtest
