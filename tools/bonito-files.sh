@@ -55,6 +55,8 @@ file SweetMetal2 $X/SweetMetal2 755
 file Info.plist $X/Info.plist 644
 file libvulkan_freedreno.dylib $X/libvulkan_freedreno.dylib 755
 file mtl2.log /var/local/mtl2.log 666
+dir /var/local/m2v-cache 777
+dir /var/local/m2v-cache/backboardd 777
 L
 fi
 echo "$S/list"

@@ -698,3 +698,7 @@ updates) are days, not months.
   4 failed, pairs 12 ok 9 failed, 49 s. UI speed unchanged (CPU rendering, as expected).
   Next: `shim/out/bonito-ios28-mtl2.img` (sweetmtl=2, backboardd only, no tests; log
   /var/local/mtl2.log).
+- 11:03: `ios28-mtl2` (sweetmtl=2): backboardd loaded SweetMetal2 but "device refused: ShaderCache
+  PermissionDenied /var/local/m2v-cache/backboardd" (dir made by root m2vtest on the mtl1 boot;
+  backboardd runs as mobile) -> CPU rendering, white dock (no blur). SpringBoard/chronod: not listed
+  (expected). Fix: boot files create /var/local/m2v-cache{,/backboardd} 0777 each boot -> `ios29-mtl2`.
