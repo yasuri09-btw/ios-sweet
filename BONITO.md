@@ -365,3 +365,6 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   Booted 19:11:26. Test: lock screen -> power / swipe up; then pull for SMP + SWEET TOUCH lines.
 - 19:22: unlock boot log saved (`logs/boot-0089-unlock.txt`, 13 touch events). Next test:
   `shim/out/bonito-ios14-cpu8.img` (0089, **cpus=8**, ADT has 8 CPU nodes), booted 19:22:04.
+- 19:25: cpus=8 (`bonito-ios14-cpu8.img`) stalled at `exec mount` (multi-core stall). User chose
+  to go back to the 1-core touch image (`bonito-ios13-touch.img`). Diagnosis plan for later:
+  cpus=8 + `sweetsample=* sweetsamplesecs=30` (0086 kernel stacks), let it sit stuck ~2 min, pull.
