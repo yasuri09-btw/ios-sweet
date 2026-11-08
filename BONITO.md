@@ -439,3 +439,15 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
 - 20:56:43: booted `shim/out/bonito-ios19-cpu8-throttle.img`.
 - ~21:00: cpus=8 throttle boot sat in MSUEarlyBootTask[8] for a while, then it finished ("nothing to do") and the boot went on (user report).
 - ~21:02: **cpus=8 boot reached backboardd (first Apple logo)** with the throttle boot-args; the 19:25 cpus=8 boot without them stalled at `exec mount`.
+- 21:03: cpus=8 throttle boot: lock screen reached, much faster (user: "so much faster"); unlock
+  did not finish. Log `logs/boot-0089-cpu8.txt` (11 samples, sweetsample=*, slide 0x438dc000).
+  Sample 10 (after the swipe): **nothing is blocked**. SpringBoard t0 idle in its run loop
+  (GSEventRunModal), only 12 SB threads, none in a sync XPC/dispatch_sync; mediaremoted t0 idle
+  in its run loop (it started fine this time); backboardd's CA::Render::Server thread and the
+  4 IOMFBServer threads wait for messages; one bbd worker in dispatch_group_wait.
+  So the cpus=1 MediaRemote wait is gone, but the screen still does not finish the transition.
+  Caveat: `SWEET FB: swap` lines stop after 16 (0046 logs only the first 16), so the log cannot
+  tell whether frames are still being presented. SpringBoard AKS calls (5x 0xe00002c7 incl. sel 8)
+  are identical in the successful 19:20 unlock log, so not the cause.
+  Next: ask what the screen shows (partly slid? dock? does power still toggle display?), and
+  add a periodic frame counter to the FB driver (kernel patch) if needed.
