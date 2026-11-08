@@ -727,3 +727,11 @@ updates) are days, not months.
   Vulkan's device-lost is permanent for that process: 13.7k DeviceLost lines afterwards. No SMMU fault.
   Cause unknown. vktest's 256x256 draw passes, so first experiment is TU_DEBUG=sysmem (no GMEM/binning):
   `shim/out/bonito-ios33-mtl2.img`, `TU_DEBUG_OPTS=startup,sysmem tools/bonito-files.sh ...`.
+- 12:3x: `ios33-mtl2` (TU_DEBUG=startup,sysmem, `logs/boot-0097-sysmem.txt`): user saw the logo only, stuck for
+  minutes. No GPU hang/reset, no DeviceLost, but also only ONE framebuffer swap in the whole log (ios32 reached
+  the lock screen), so "no hang" may just mean it never reached the hanging workload: sysmem is NOT proven to
+  fix the hang. backboardd stayed alive (pool 38 -> 64 MB, kernel alive to the end). New: 45 pairs of
+  "fragmentFunction/vertexFunction is not a MTLFunction." from backboardd thread 494, spread over the whole
+  boot (16:03:45 to 16:07:47). Origin unconfirmed (text is not in our frontend; frontend's own check is
+  NativeBridgeMetalFrontend.mm:1077). Suspect NBFunction not satisfying Metal's check, as textures needed
+  MTLTextureImplementation (:1580). Not analysed: why swaps stop. Phone left in TWRP.
