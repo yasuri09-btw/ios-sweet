@@ -422,3 +422,17 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   next kernel step = DKIOCISSOLIDSTATE in sweet_emmc_ioctl, or set lowpri_throttle_enabled=0
   (sysctl debug.lowpri_throttle_enabled, no boot-arg).
 - 20:45:47: booted `shim/out/bonito-ios17-throttle.img`.
+- 20:55: throttle test result (`logs/boot-0089-throttle.txt`, boot #2 of ios17; boot #1 was a
+  slow boot the user reset; #2 sat a long time at usermanagerd init but went on, reached the
+  lock screen; unlock froze again). Boot-args took effect: mediaremoted (exec'd at unlock)
+  now shows state 0x4 (running) in samples 3-5 while still in dyld ObjC fixups, i.e. **no longer
+  throttled but still ~2 min of CPU-starved dyld work**, then sample 6 waits on logd
+  (firehose_send_get_logging_prefs) again, sample 7 runs in its own code. SpringBoard t0 waits
+  (hint 16 / hint 2) throughout. Conclusion: on one A55 core, a background daemon launched on
+  demand at unlock gets too little CPU next to SpringBoard's software-rendered animation.
+- Built `shim/out/bonito-ios19-cpu8-throttle.img`
+  = 0089 + bonito-ios2.adt (8 CPU nodes) + **cpus=8** + throttle boot-args + `sweetsample=*
+  sweetsamplesecs=30`. Hypothesis: the 19:25 cpus=8 mount stall was also throttling. Also
+  built `shim/out/bonito-ios18-throttle-all.img` (cpus=1, throttle, sweetsample=*), unused.
+  Other option if cores don't help: start mediaremoted at boot (RunAtLoad) so it is up before
+  the unlock.
