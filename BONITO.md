@@ -341,3 +341,9 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   calling a boot stuck; verify DT conventions in the driver before hardware writes.
 - 18:54: 0088 CI 42431176953 success -> `xnu/out-0088`; `shim/out/bonito-ios12-touch.img`
   (0088 + bonito-ios2.adt + the bonito-ios11 cmdline) booted 18:54:02.
+- 18:57: **TOUCH WORKS at driver level** (`logs/boot-0088.txt`): ts_1p8 = PM660 GPIO12 on, bus idle
+  (sda/scl 1/1), RMI4 PDT: F34 (fw), F01 (query 0x2c ctrl 0x0d data 0x06), F12 (query 0x4b
+  ctrl 0x13 data 0x08), F54 (page 1). F12 max 1079x2159, data1 0x08, 10 fingers. HID events
+  `touch 0 down at 611,1405` etc. arrived. Vol-up fixed (reads released). GPIO13 found back at
+  mode 0/out 0 (PMIC reset since 0087). That boot stalled at mount_hfs (random stall, before
+  backboardd: HID 0 clients). Re-booted 0088.

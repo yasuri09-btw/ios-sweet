@@ -1,0 +1,294 @@
+Darwin Kernel Version 22.6.0: Mon Aug 14 05:06:07 UTC 2023; runner:xnu-8796.141.3
+pmap_startup() init/release time: 13656 microsec
+pmap_startup() delayed init/release of 0 pages
+vm_page_bootstrap: 126263 free pages, 2873 wired pages, (up to 0 of which are delayed free)
+VM boostrap: 97 maps, 204 entries and 512 holes available
+Maximum number of VM swap files: 100
+mb                      : 0xfffffe10005d4000 - 0xfffffe10045d4000 (64M)
+bsd_pageable            : 0xfffffe10045d4000 - 0xfffffe10067dc000 (34M)
+ipc_kernel_map          : 0xfffffe10067dc000 - 0xfffffe100a7dc000 (64M)
+zones                   : 0xfffffe100a7dc000 - 0xfffffe300a7dc000 (128G)
+zone_meta               : 0xfffffe300a7dc000 - 0xfffffe3012dcc000 (133M)
+bufferhdr               : 0xfffffe3012dcc000 - 0xfffffe3012f3c000 (1472K)
+kmem_ptr_range          : 0xfffffe3012f3c000 - 0xfffffe460eebc000 (87G)
+io_submap               : 0xfffffe460eebc000 - 0xfffffe460f6bc000 (8M)
+ipc_kernel_copy_map     : 0xfffffe460f6bc000 - 0xfffffe460febc000 (8M)
+compressor              : 0xfffffe460febc000 - 0xfffffe4df1df0000 (31G)
+kmem_data_range         : 0xfffffe4df1df0000 - 0xfffffe8fa9758000 (262G)
+gIOKitPageableFixed3    : 0xfffffe8fa9758000 - 0xfffffe8faf758000 (96M)
+kmem_ptr_range_meta     : 0xfffffe8faf758000 - 0xfffffe8faff98000 (8M)
+gIOKitPageableFixed1    : 0xfffffe8faff98000 - 0xfffffe8fb5f98000 (96M)
+kmem_sprayqtn_range     : 0xfffffe8fb5f98000 - 0xfffffe8ff3dfc000 (990M)
+gIOKitPageableFixed0    : 0xfffffe8ff3dfc000 - 0xfffffe8ff9dfc000 (96M)
+gIOKitPageableFixed2    : 0xfffffe8ff9dfc000 - 0xfffffe8fffdfc000 (96M)
+kmem_large_ranges[1]    : 0 - 0 (0B)
+kmem_large_ranges[2]    : 0 - 0 (0B)
+kmem_large_ranges[3]    : 0 - 0 (0B)
+kmem_large_ranges[4]    : 0xfffffe8fbdb64800 - 0xfffffe8ff3dfc000 (866M)
+kmem_large_ranges[5]    : 0xfffffe5628d1d000 - 0xfffffe8fa9758000 (230G)
+"vm_compressor_mode" is 4
+zone_init: pgzalloc  0xfffffe100a7dc000:0xfffffe100b758000 (15M) [495 slots]
+zone_init: map VM    0xfffffe100b758000:0xfffffe14d81d0000 (19G)
+zone_init: map RO    0xfffffe14d81d0000:0xfffffe1671aa0000 (6G)
+zone_init: map GEN0  0xfffffe1671aa0000:0xfffffe1b3e518000 (19G)
+zone_init: map GEN1  0xfffffe1b3e518000:0xfffffe200af94000 (19G)
+zone_init: map GEN2  0xfffffe200af94000:0xfffffe24d7a10000 (19G)
+zone_init: map GEN3  0xfffffe24d7a10000:0xfffffe29a448c000 (19G)
+zone_init: map DATA  0xfffffe29a448c000:0xfffffe300a7dc000 (25G)
+zone_init: metadata  0xfffffe300a7ec000:0xfffffe30127ec000 (128M)
+zone_init: metabits  0xfffffe30127ec000:0xfffffe3012dbc000 (5M)
+zone_init: extra     0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 501 holes left
+Long logs support configured: size: 16384
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+Log queues configured: slot count: 8, per-slot size: 32768, total size: 262144
+Firehose configured: 16 chunks, 8 io pages
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+kdp_core zlib memory 0x8000
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+iBoot version: sweet-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+SWEET FB: AppleCLCD 1080x2160 stride 4320 at 0x9c000000, default surface 1, presented as 1125x2436
+SWEET CPU: requested=1 selected=1 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+	The Regents of the University of California. All rights reserved.
+
+MAC Framework successfully initialized
+using 2535 buffer headers and 2535 cluster IO buffer headers
+SWEET CPU: 1/1 CPUs initialized, SGI1 verified
+ktriage_register_subsystem_strings: set subsystem 8 strings
+calling mpo_policy_init for SWEET AMFI
+Security policy loaded: SWEET built-in Mobile File Integrity (SWEET AMFI)
+SWEET AMFI: platform binary policy registered (0)
+calling mpo_policy_init for Sandbox
+Security policy loaded: SWEET permissive sandbox stand-in (Sandbox)
+SWEET Sandbox: permissive policy registered (0)
+SWEET HFS: hfs-627.100.6 registered
+mcache: 1 CPU(s), 64 bytes CPU cache line size
+mbinit: done [64 MB total pool size, (42/21) split]
+dlil_init: Waiting for all the create dlil kernel threads to get scheduled at least once.
+dlil_init: All the created dlil kernel threads have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface lo0 have been scheduled at least once. Proceeding.
+ifnet_attach: Waiting for all kernel threads created for interface gif0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface gif0 have been scheduled at least once. Proceeding.
+skip attaching fsw to lo0 using legacy TX modelifnet_attach: Waiting for all kernel threads created for interface stf0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface stf0 have been scheduled at least once. Proceeding.
+SWEET EMMC: card ready, rca 1, 8-bit high speed (pwr 0x2/0x4)
+SWEET EMMC: "userdata": first sector 0x108e400, 51163 MiB, read-write, DMA at 0xe0000000
+SWEET KEYS: arb=0x50000000 apids=512 pon-apid=7 gpio4-apid=146 pon=0/1 gpio=0x1/1 mode=0/1 en=0x80/1 subtype=0x11/1
+BSD root: emmcroot0, major 1, minor 0
+jnl: b(1, 0): replay_journal: from: 7115264 to: 1639424 (joffset 0x82000)
+SWEET LOG: console log to the last 4100 KiB of the eMMC partition (sector 0x7479fd0)
+jnl: b(1, 0): journal replay done.
+hfs: Removed 6 orphaned / unlinked files and 20 directories 
+hfs: mounted iOSRoot on device b(1, 0)
+SWEET: root volume is not authenticated (error 25); continuing unsealed
+VM Swap Subsystem is ON
+SWEET TOUCH: starting in 45 s
+No POST boot-arg set.
+load_init_program: attempting to load /usr/appleinternal/sbin/launchd.development
+load_init_program: attempting to load /sbin/launchd
+exec launchd
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] check_np(0x16ae57bc0) vm_shared_region_start_address() failed
+SWEET Sandbox: launchd op 2
+Darwin Ignition Sequence Version 1.0.0: Tue Jul  2 20:41:23 PDT 2024; root:libignition-51~1974/libignition_core/RELEASE_ARM64
+libignition: 1: arguments           :
+libignition: 1:   ignition level    : 0x1
+libignition: 1:   force dylib root  : 0x0
+libignition: 1:   halt after stage  : n/a
+libignition: 1: ignition blob not available
+libignition: 1: configuration         :
+libignition: 1:   program             : launchd
+libignition: 1:   os environment      : n/a
+libignition: 1:   rd                  : emmcroot0
+libignition: 1:   arp0                : n/a
+libignition: 1:   rp                  : n/a
+libignition: 1:   pivot src           : n/a
+libignition: 1:   root ramdisk        : 0x0
+libignition: 1:   restore             : 0x0
+libignition: 1:   root device info    : 0x0
+libignition: 1:   can haz debugger    : 0x1
+libignition: 1:   rootfs mount flags  : 0x480d000
+libignition: 1:   ecid                : 0x0
+libignition: 1:   hardware target     : d22ap
+libignition: 1:   initproc            : 0x1
+libignition: 1:   single user         : 0x0
+libignition: 1:   userspace reboot    : 0x0
+libignition: 1:   secure boot level   : 0x0
+libignition: 1:   os version          : n/a
+libignition: 1: parameters          :
+libignition: 1:   version           : 0x1
+libignition: 1:   argc              : 0x1
+libignition: 1:   log fd            : 0xffffffffffffffff
+libignition: 1:   platform          : 0x2
+libignition: 1: boot spec           :
+libignition: 1:   name              : local
+libignition: 1:   stage count       : 0x7
+libignition: 1:        hello: commence primary ignition
+libignition: 1:        hello: hello from launchd.1
+libignition: 1:      preboot: ignition level insufficient: actual = 1, required >= 2
+libignition: 1: cryptex1 sniff: ignition level insufficient: actual = 1, required >= 2
+libignition: 1:        graft: ignition level insufficient: actual = 1, required >= 3
+libignition: 1: select os cryptex path: ignition level insufficient: actual = 1, required >= 3
+libignition: 1:  dylib_cache: discovering shared library cache
+libignition: 1:  dylib_cache: finding shared cache on system volume: ignition level = 1, search root fd = 4, subpath = System/Library/Caches/com.apple.dyld/
+libignition: 1:  dylib_cache: opened shared cache directory: /System/Library/Caches/com.apple.dyld
+libignition: 1:      goodbye: ignition sequence complete
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] check_np(0x16ae57150) vm_shared_region_start_address() failed
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5493:'dyld_shared_cache_arm64'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5273:'dyld_shared_cache_arm64.01'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5163:'dyld_shared_cache_arm64.02'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5053:'dyld_shared_cache_arm64.03'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f4f43:'dyld_shared_cache_arm64.04'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6043:'dyld_shared_cache_arm64.05'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5f33:'dyld_shared_cache_arm64.06'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5e23:'dyld_shared_cache_arm64.07'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5d13:'dyld_shared_cache_arm64.08'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5c03:'dyld_shared_cache_arm64.09'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f5af3:'dyld_shared_cache_arm64.10'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f59e3:'dyld_shared_cache_arm64.11'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f58d3:'dyld_shared_cache_arm64.12'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f69d3:'dyld_shared_cache_arm64.13'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f67b3:'dyld_shared_cache_arm64.14'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f66a3:'dyld_shared_cache_arm64.15'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6593:'dyld_shared_cache_arm64.16'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6483:'dyld_shared_cache_arm64.17'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6373:'dyld_shared_cache_arm64.18'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6263:'dyld_shared_cache_arm64.19'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6153:'dyld_shared_cache_arm64.20'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f33a3:'dyld_shared_cache_arm64.21'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3293:'dyld_shared_cache_arm64.22'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3183:'dyld_shared_cache_arm64.23'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3073:'dyld_shared_cache_arm64.24'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6e13:'dyld_shared_cache_arm64.25'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6d03:'dyld_shared_cache_arm64.26'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6bf3:'dyld_shared_cache_arm64.27.dylddata'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f6ae3:'dyld_shared_cache_arm64.28.dyldlinkedit'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3d33:'dyld_shared_cache_arm64.29'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3c23:'dyld_shared_cache_arm64.30'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3b13:'dyld_shared_cache_arm64.31'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3a03:'dyld_shared_cache_arm64.32'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f37e3:'dyld_shared_cache_arm64.33'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f36d3:'dyld_shared_cache_arm64.34'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f35c3:'dyld_shared_cache_arm64.35'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f34b3:'dyld_shared_cache_arm64.36'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f4393:'dyld_shared_cache_arm64.37'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f4283:'dyld_shared_cache_arm64.38'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446f3e43:'dyld_shared_cache_arm64.39'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446ec4a3:'dyld_shared_cache_arm64.40'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446ecd23:'dyld_shared_cache_arm64.41.dylddata'): not in trust cache
+shared_region: 0xf1a46a31ab5c7353 [1(launchd)] map(0xf1a46a3b446ecc13:'dyld_shared_cache_arm64.42.dyldlinkedit'): not in trust cache
+SWEET Sandbox: launchd op 4
+SWEET NET: launchd lo0 add address 127.0.0.1
+skip attaching fsw to lo0 using legacy TX modelcom.apple.xpc.launchd|1969-12-31 16:00:51.557023 <Notice>: hello
+com.apple.xpc.launchd|1969-12-31 16:00:51.566138 <Error>: Could not opt into 50 MB Jetsam high watermark: 22: Invalid argument
+com.apple.xpc.launchd|1969-12-31 16:00:51.566585 <Notice>: Darwin Bootstrapper Version 7.0.0: Thu Feb  1 20:33:09 PST 2024; root:libxpc_executables-2462.140.4.702.1~1/launchd/RELEASE_ARM64
+com.apple.xpc.launchd|1969-12-31 16:00:51.566729 <Notice>: boot-args = debug=0xc serial=3 cpus=1 keepsyms=1 -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 sweetfb_noconsole=1 sweetusb=0 ufslogsecs=2 sweetsample=-
+com.apple.xpc.launchd|1969-12-31 16:00:51.582874 (system) <Notice>: entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:00:51.584861 (system) <Notice>: created
+com.apple.xpc.launchd|1969-12-31 16:00:51.589499 (mount-phase-1) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xfffffe24d77f4040 is in state of change (start)
+vnode_create_internal: alias vnode 0xfffffe24d77f4040 is in state of change (end)
+exec mount_hfs
+SWEET TOUCH: mapping GCC/TLMM/SE7
+SWEET TOUCH: gcc vote=0x45be63c0 rcg=0 cfg=0x100000 dfs=0x21
+SWEET TOUCH: se7 fw=0x300 proto=3 status=0 tx=0x20102864 rx=0x20104900 ios=0
+SWEET TOUCH: packing tx=0x7f8fe/0xffefe rx=0x7f8fe/0xffefe gran=0
+SWEET TOUCH: bonito TLMM reset99=0x1/0 irq125=0x1/0 i2c6=0x1 i2c7=0x1 switch135=0x1
+SWEET TOUCH: PM660 GPIO13 mode=0 out=0 en=0x80 (left as is)
+SWEET TOUCH: ts_1p8 GPIO12 apid=76 apps=1 type=0x10 subtype=0x10 mode=0 out=0 en=0x80
+SWEET TOUCH: ts_1p8 on=1: mode=0x1 out=0x80 en=0x80
+SWEET TOUCH: before probe sda6=1 scl7=1 irq125=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F34 page 0 query 0x24 cmd 0 ctrl 0xc data 0 irqs 1 v2
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F01 page 0 query 0x2c cmd 0x23 ctrl 0xd data 0x6 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F12 page 0 query 0x4b cmd 0 ctrl 0x13 data 0x8 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: RMI F54 page 1 query 0x42 cmd 0x41 ctrl 0xe data 0 irqs 1 v0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=6 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=6 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=2 stretch=0 err=0 irq=0x1 seen=0x40000001 tx=2 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=3 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=3 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=38 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=38 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=11 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=11 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=37 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=37 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=1 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=1 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=5 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=5 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=9 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=9 status=0
+SWEET TOUCH: probe xfer addr=0x20 write len=1 stretch=1 err=0 irq=0x1 seen=0x40000001 tx=1 rx=0 status=0
+SWEET TOUCH: probe xfer addr=0x20 read len=15 stretch=0 err=0 irq=0xc000081 seen=0xc000081 tx=0 rx=15 status=0
+SWEET TOUCH: F12 max 1079x2159, data1 0x8 10 fingers (80 bytes), irq bytes 1, panel 1080x2160
+SWEET TOUCH: after probe sda6=1 scl7=1 irq125=0 se-status=0
+SWEET TOUCH: Synaptics RMI4 running, poll=10ms
+SWEET HID: touch 0 down at 405,1316
+SWEET HID: touch 0 up at 405,1316
+SWEET HID: touch 0 down at 367,1318
+SWEET HID: touch 0 up at 367,1318
+SWEET HID: touch 0 down at 292,1334
+SWEET HID: touch 0 up at 293,1344
+SWEET HID: touch 0 down at 357,1438
+SWEET HID: touch 0 up at 357,1438
+SWEET HID: touch 0 down at 415,1471
+SWEET HID: touch 0 up at 455,1456
+SWEET HID: touch 0 down at 583,1446
+SWEET HID: touch 0 up at 511,1610
+SWEET HID: touch 0 down at 611,1405
+SWEET HID: touch 0 up at 231,1462
+SWEET HID: touch 0 down at 31,107 edge
+SWEET HID: touch 0 up at 31,109 edge
+SWEET KEYS: key=0 down=1 pon=0x1 gpio4:c110=0x1
+SWEET HID: key 0x30 down (0 clients)
+SWEET KEYS: key=2 down=1 pon=0x3 gpio4:c110=0x1
+SWEET HID: key 0xea down (0 clients)
