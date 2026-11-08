@@ -314,3 +314,28 @@ Device dumps (live FDT, pmOS boot.img) live outside the repo: they contain IMEIs
   (was mode 0x00 out 0x00 en 0x80).
 - Patch **0088**: correct PPIDs; restores GPIO13 to mode 0x00/out 0x00/en 0x80 if it still
   shows 0087's values; logs SDA/SCL/IRQ levels before and after the RMI probe.
+
+## Handoff (2026-11-07 18:52 CST, usage limit near)
+- **State:** iOS 16.7 lock screen reached on bonito (milestone 6, 18:22). Phone is in **TWRP**
+  (adb root), plugged in. dtbo_a = factory overlays (keep). userdata = image flashed 17:09
+  (ByHost migration pref) + rw boots; app containers + LaunchServices DB are built (persist).
+- **Kernel 0088** (PMIC GPIO numbering fix, GPIO13 restore, I2C level logging) CI run
+  42431176953: in_progress . When done: `gh run download 42431176953 -R yasuri09-btw/ios-sweet -n xnu-kernel -D xnu/out-0088`,
+  then image = 0088 + `shim/out/bonito-ios2.adt` + cmdline of `shim/out/bonito-ios11-touch.img`
+  (`debug=0xc serial=3 cpus=1 keepsyms=1 -noprogress rd=emmcroot0 emmcrw=1 unentitled_ios_sim_launch=1
+  ignition_level=1 wdt_test=no_user_checkin rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30
+  sweetfb_noconsole=1 sweetusb=0 ufslogsecs=2 sweetsample=-`), build with
+  `python3 -I tools/mkpayload.py K ADT OUT --cmdline C` and
+  `MKBOOTIMG="python3 /home/ada/codestuff/tools/mkbootimg/mkbootimg.py" bash shim/build.sh ABS_PAYLOAD`.
+- **Boot loop recipe:** TWRP -> `doas .../adb reboot bootloader` -> check `getvar slot-retry-count:a`,
+  if 0 run `doas fastboot set_active a` (standing OK) -> `doas fastboot boot IMG`. Pull log: boot
+  `recovery/twrp/twrp-3.7.1_12-1-bonito.img`, then dd the last 1025 4K blocks of /dev/block/mmcblk0p72
+  via `doas adb exec-out` and `tools/sweet-log.py` (sweet-log-pull.sh needs plain adb; use doas adb).
+- **Test for 0088:** wait for the lock screen to be fully drawn (minutes after the logo), then
+  power / volume / swipe up from the bottom edge. Check `SWEET TOUCH` lines: ts_1p8 GPIO12 on,
+  "before probe sda6/scl7" (1/1 = idle bus), RMI F01/F12, "Synaptics RMI4 running". If the bus
+  is stuck low: look at ts-switch GPIO135 polarity and touch power-up order.
+- **Open issues:** multi-core boot-task stalls (cpus=1 workaround; 0085/0086 samplers show a
+  thread stuck in a kernel page fault); USB (SMMU, see ios-flame's fix); driverkitd CRASH sig 9
+  every boot; securityd AKS sel 10 unsupported; no RTC (1970). Rules: wait >= 10 min before
+  calling a boot stuck; verify DT conventions in the driver before hardware writes.
