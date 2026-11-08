@@ -564,3 +564,4 @@ updates) are days, not months.
   research/buildtree ...` with host clang 22 symlinked as ~/swift/usr/bin/clang{,++}: 0 errors.
   `tools/mkpayload.py --gpufw research/gpu/fw/bonito` (gitignored copies of linux-firmware
   a630_gmu.bin/a630_sqe.fw + sargo a615_zap.mdt/.b02) adds the firmware to the ADT.
+- 22:05: 0090 CI run 42445378214 (workflow_dispatch on bonito, 268f188): in_progress.
