@@ -48,7 +48,7 @@ if [ -d "$M" ]; then
 	cp "$M/SweetMetal2.bundle/SweetMetal2" "$S/SweetMetal2"
 	cp "$M/SweetMetal2.bundle/Info.plist" "$S/Info.plist"
 	: > "$S/mtl2.log"
-	echo startup > "$S/mtl2-tu-debug"   # SweetMetal2: TU_DEBUG + MESA_LOG_FILE=/var/local/turnip-<proc>.log
+	echo "${TU_DEBUG_OPTS:-startup}" > "$S/mtl2-tu-debug"   # SweetMetal2: TU_DEBUG + MESA_LOG_FILE=/var/local/turnip-<proc>.log
 	X=/System/Library/Extensions/SweetMetal2.bundle
 	cat >> "$S/list" <<L
 file m2vtest /var/local/bin/m2vtest 755

@@ -719,3 +719,11 @@ updates) are days, not months.
   disables the GPU; hang (no progress 1 s) -> gpu_recover_locked; SMMU FSR bits 10:9 (0x400 =
   format) are not a fault.
 - 11:59: 0097 CI 42506512951 -> xnu/out-0097, scan-sha3 0. `tools/bonito-mkimg.sh` built `shim/out/bonito-ios32-mtl2.img` (sweetmtl=2), booted. Result pending.
+- 12:1x: `ios32-mtl2` result (0097, `logs/boot-0097-mtl2.txt`, `logs/mtl2-0097.log`): the present fix
+  works (logo scaled, "7 skipped (GPU busy)", no gpu_ready loss), and part of the lock screen reached
+  the panel (user: about 10% of it drawn, alternating with the logo). Then a **real GPU hang in a Turnip
+  submit**: "v2 fence wait: GPU hang or fault (fence 18, done 12, smmu fsr 400 far 0): reset; rb rptr 250
+  wptr 32b, ib1 54630000 rem 8bc, ib2 54640000 rem 0, rbbm status ef0585". Recovery succeeded, but
+  Vulkan's device-lost is permanent for that process: 13.7k DeviceLost lines afterwards. No SMMU fault.
+  Cause unknown. vktest's 256x256 draw passes, so first experiment is TU_DEBUG=sysmem (no GMEM/binning):
+  `shim/out/bonito-ios33-mtl2.img`, `TU_DEBUG_OPTS=startup,sysmem tools/bonito-files.sh ...`.
